@@ -1,19 +1,26 @@
+import axios from 'axios'
 import querystring from 'querystring'
+import Cookies from 'js-cookie'
 
 const CLIENT_ID = 'b272fc29d92a4976b7e672079986f602'
 
-const generateRandomString = length => {
-  var text = ''
-  var possible =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-
-  for (var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length))
-  }
-  return text
+const getAccessToken = () => {
+  //Check and see if an access_token is available
+  return Cookies.get('spotify_access_token')
 }
 
-export const generateSpotifyAuthLink = function() {
+const generateSpotifyAuthLink = () => {
+  const generateRandomString = length => {
+    var text = ''
+    var possible =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+    for (var i = 0; i < length; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length))
+    }
+    return text
+  }
+
   var state = generateRandomString(16)
   var stateKey = 'spotify_auth_state'
 
@@ -29,4 +36,17 @@ export const generateSpotifyAuthLink = function() {
     redirect_uri: redirectUri,
     state: state
   })}`
+}
+
+const getProfileInfo = async () => {
+  const response = await axios.get('https://api.spotify.com/v1/me', {
+    headers: { Authorization: 'Bearer ' + getAccessToken() }
+  })
+
+  return response.data
+}
+
+export default {
+  generateSpotifyAuthLink,
+  getProfileInfo
 }
