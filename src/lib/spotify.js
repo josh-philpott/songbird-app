@@ -47,6 +47,7 @@ const getProfileInfo = async () => {
 }
 
 export default {
+  getAccessToken,
   generateSpotifyAuthLink,
   getProfileInfo
 }
