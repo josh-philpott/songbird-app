@@ -24,11 +24,12 @@ const generateSpotifyAuthLink = () => {
   var state = generateRandomString(16)
   var stateKey = 'spotify_auth_state'
 
-  document.cookie = `${stateKey}=${state};max-age=604800;domain=localhost:3002`
+  document.cookie = `${stateKey}=${state};max-age=604800;domain=localhost:3001`
 
   // your application requests authorization
-  const redirectUri = 'http://localhost:3002/spotify/callback'
-  var scope = 'user-read-private user-read-email'
+  const redirectUri = 'http://localhost:3001/spotify/callback'
+  var scope =
+    'user-read-private user-read-email user-read-currently-playing user-read-playback-state'
   return `https://accounts.spotify.com/authorize?${querystring.stringify({
     response_type: 'code',
     client_id: CLIENT_ID,
@@ -46,8 +47,19 @@ const getProfileInfo = async () => {
   return response.data
 }
 
+const getCurrentlyPlaying = async () => {
+  const response = await axios.get(
+    'https://api.spotify.com/v1/me/player/currently-playing',
+    {
+      headers: { Authorization: 'Bearer ' + getAccessToken() }
+    }
+  )
+  return response.data
+}
+
 export default {
-  getAccessToken,
   generateSpotifyAuthLink,
+  getAccessToken,
+  getCurrentlyPlaying,
   getProfileInfo
 }

@@ -52,7 +52,22 @@ class Broadcaster extends React.Component {
     this.state = {
       isLoading: true,
       name: '',
-      profileImage: ''
+      profileImage: '',
+      isBroadcasting: false
+    }
+  }
+
+  async logCurrentlyPlaying() {
+    const currentlyPlaying = await spotifyApi.getCurrentlyPlaying()
+    console.log(currentlyPlaying)
+
+    if (!currentlyPlaying) {
+      this.setState({ isBroadcasting: false })
+    } else {
+      this.setState({
+        isBroadcasting: true,
+        ...currentlyPlaying
+      })
     }
   }
 
@@ -63,6 +78,8 @@ class Broadcaster extends React.Component {
       name: profile.display_name,
       profileImage: profile.images[0].url
     })
+    // poll for currently playing track
+    setInterval(this.logCurrentlyPlaying.bind(this), 3000)
   }
 
   render() {
@@ -70,10 +87,32 @@ class Broadcaster extends React.Component {
     if (this.state.isLoading) {
       body = <div>Loading...</div>
     } else {
-      body = (
+      let profileInfo = (
         <div>
           <h1>Sup, {this.state.name}</h1>
           <img src={this.state.profileImage} alt='User Profile Photo' />
+        </div>
+      )
+
+      let currentlyBroadcasting
+
+      if (!this.state.isBroadcasting) {
+        currentlyBroadcasting = (
+          <p>
+            To start broadcasting, open up a spotify player and start playing a
+            song!
+          </p>
+        )
+      } else {
+        currentlyBroadcasting = (
+          <div>Currently Broadcasting: {this.state.item.name}</div>
+        )
+      }
+
+      body = (
+        <div>
+          {profileInfo}
+          {currentlyBroadcasting}
         </div>
       )
     }
