@@ -29,7 +29,7 @@ const generateSpotifyAuthLink = () => {
   // your application requests authorization
   const redirectUri = 'http://localhost:3001/spotify/callback'
   var scope =
-    'user-read-private user-read-email user-read-currently-playing user-read-playback-state'
+    'user-read-private user-read-email user-read-currently-playing user-read-playback-state user-modify-playback-state'
   return `https://accounts.spotify.com/authorize?${querystring.stringify({
     response_type: 'code',
     client_id: CLIENT_ID,
@@ -57,9 +57,35 @@ const getCurrentlyPlaying = async () => {
   return response.data
 }
 
+const pause = async () => {
+  await axios.put(
+    'https://api.spotify.com/v1/me/player/pause',
+    {},
+    {
+      headers: { Authorization: 'Bearer ' + getAccessToken() }
+    }
+  )
+}
+
+const play = async (uri, position_ms) => {
+  await axios.put(
+    'https://api.spotify.com/v1/me/player/play',
+    {
+      uris: [uri],
+      position_ms
+      //TODO: I need to control the device here... We'll need a UI element for that as well
+    },
+    {
+      headers: { Authorization: 'Bearer ' + getAccessToken() }
+    }
+  )
+}
+
 export default {
   generateSpotifyAuthLink,
   getAccessToken,
   getCurrentlyPlaying,
-  getProfileInfo
+  getProfileInfo,
+  pause,
+  play
 }
