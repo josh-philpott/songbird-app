@@ -3,9 +3,6 @@ import { Helmet } from 'react-helmet'
 
 import spotifyApi from '../lib/spotify'
 import broadcastApi from '../lib/broadcast'
-//import nanoid from 'nanoid'
-
-const broadcastId = 'abc' //nanoid
 
 class Broadcaster extends React.Component {
   constructor(props) {
@@ -14,12 +11,14 @@ class Broadcaster extends React.Component {
       isLoading: true,
       name: '',
       profileImage: '',
-      isBroadcasting: false
+      isBroadcasting: false,
+      broadcastId: ''
     }
   }
 
-  async logCurrentlyPlaying() {
+  async broadcast() {
     const currentlyPlaying = await spotifyApi.getCurrentlyPlaying()
+    const { broadcastId } = this.state
 
     await broadcastApi.broadcast({ broadcastId, currentlyPlaying })
 
@@ -33,18 +32,20 @@ class Broadcaster extends React.Component {
       })
     }
 
-    setTimeout(this.logCurrentlyPlaying.bind(this), 3000)
+    setTimeout(this.broadcast.bind(this), 3000)
   }
 
   async componentDidMount() {
     const profile = await spotifyApi.getProfileInfo()
+    const broadcastId = await broadcastApi.create()
     this.setState({
       isLoading: false,
       name: profile.display_name,
-      profileImage: profile.images[0].url
+      profileImage: profile.images[0].url,
+      broadcastId: broadcastId
     })
     // poll for currently playing track
-    this.logCurrentlyPlaying()
+    this.broadcast()
   }
 
   render() {
@@ -56,7 +57,6 @@ class Broadcaster extends React.Component {
         <div>
           <h1>Sup, {this.state.name}</h1>
           <img src={this.state.profileImage} alt='User Profile Photo' />
-          <p>${broadcastId}</p>
         </div>
       )
 
@@ -78,6 +78,10 @@ class Broadcaster extends React.Component {
       body = (
         <div>
           {profileInfo}
+          <p>
+            Broadcast URL: http://localhost:3001/listener?broadcastId=
+            {this.state.broadcastId}
+          </p>
           {currentlyBroadcasting}
         </div>
       )

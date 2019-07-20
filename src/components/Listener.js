@@ -1,5 +1,6 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
+import querystring from 'query-string'
 
 import spotifyApi from '../lib/spotify'
 import broadcastApi from '../lib/broadcast'
@@ -38,8 +39,10 @@ class Listener extends React.Component {
   }
 
   async syncPlayback() {
+    if (!this.state.broadcastId) return
+
     const listenerStatus = await spotifyApi.getCurrentlyPlaying()
-    const broadcasterStatus = await broadcastApi.listen('abc')
+    const broadcasterStatus = await broadcastApi.listen(this.state.broadcastId)
 
     const listenerId = listenerStatus.id
     const listenerProgressMs = listenerStatus.progress_ms
@@ -73,15 +76,18 @@ class Listener extends React.Component {
   }
 
   async componentDidMount() {
+    const { broadcastId } = querystring.parse(this.props.location.search)
     const profile = await spotifyApi.getProfileInfo()
     // poll for currently playing track
-    this.syncPlayback()
 
     this.setState({
       isLoading: false,
       name: profile.display_name,
-      profileImage: profile.images[0].url
+      profileImage: profile.images[0].url,
+      broadcastId
     })
+
+    this.syncPlayback()
   }
 
   render() {
@@ -92,7 +98,7 @@ class Listener extends React.Component {
       let profileInfo = (
         <div>
           <h1>Hi, {this.state.name}</h1>
-          <p>You're in listening mode! Broadcast 'abc'</p>
+          <p>You're in listening mode! Broadcast {this.state.broadcastId}</p>
           <img src={this.state.profileImage} alt='User Profile Photo' />
         </div>
       )
