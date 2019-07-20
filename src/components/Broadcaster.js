@@ -79,7 +79,7 @@ class Broadcaster extends React.Component {
         <div>
           {profileInfo}
           <p>
-            Broadcast URL: http://localhost:3001/listener?broadcastId=
+            Broadcast URL: {process.env.REACT_APP_API_URL}/listener?broadcastId=
             {this.state.broadcastId}
           </p>
           {currentlyBroadcasting}

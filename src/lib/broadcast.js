@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-const broadcastApiUrl = 'http://localhost:3001/api/broadcast'
+const broadcastApiUrl = `${process.env.REACT_APP_API_URL}/api/broadcast`
 
 const getAccessToken = () => {
   //Check and see if an access_token is available
