@@ -14,6 +14,7 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 MVP Todos
 
+- Handle Spotify Refresh Token
 - Page Styling
   - Home Page
   - Broadcaster
