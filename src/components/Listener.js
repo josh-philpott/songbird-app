@@ -60,9 +60,6 @@ class Listener extends React.Component {
       broadcasterProgressMs
     )
 
-    console.log(idsEqual)
-    console.log(isPlayingEqual)
-    console.log(isWithinDebouncePeriod)
     if (!idsEqual || !isPlayingEqual || !isWithinDebouncePeriod) {
       console.log('syncing')
       await this.setListener(

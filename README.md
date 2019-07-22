@@ -1,12 +1,12 @@
 # About
 
-SilentDisco allows you to sync your currently playing Spotify music with your friends.
+Songbird allows you to sync your currently playing Spotify music with your friends.
 
 ## How It Works
 
 The Broadcaster logs in via Spotify and starts a broadcast.
 
-Listeners login via their spotify account and join the Broadcast. SilentDisco will sync the listeners spotify session to the whatever the broadcaster is playing!
+Listeners login via their spotify account and join the Broadcast. Songbird will sync the listeners spotify session to the whatever the broadcaster is playing!
 
 Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
@@ -14,6 +14,7 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 MVP Todos
 
+- Target the 'SongBridge' player as the listeners device
 - Handle Spotify Refresh Token
 - Page Styling
   - Home Page
@@ -41,6 +42,13 @@ MVP Todos
 - Generated Broadcast Short Code
   - Display Link on Broadcast page
   - /listen/broadcastId grabs that broadcast
+
+7/21/19
+
+- Temporarily removed 'state' check from Spotify Auth after fighting with cross-domain cookies
+- Productionized and deployed to heroku (api) and netlify (app)
+- Broke out Spotify Authentication, Callback comonents
+- Added AuthenticatedRoute handler with properly handled redirects
 
 # Current Thoughts
 

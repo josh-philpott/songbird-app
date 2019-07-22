@@ -2,18 +2,17 @@ import axios from 'axios'
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 
+import Cookies from 'js-cookie'
 import queryString from 'query-string'
 
-import silentDiscoApi from '../lib/silentdisco'
-import spotifyApi from '../lib/spotify'
+import songbirdApi from '../../lib/songbird'
 
 class SpotifyCallback extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       isLoading: true,
-      name: '',
-      profileImage: ''
+      redirectLocation: ''
     }
   }
 
@@ -22,20 +21,22 @@ class SpotifyCallback extends React.Component {
     const code = params.code || null
     const state = params.state || null
 
-    await silentDiscoApi.fetchSpotifyAccessToken(code, state)
-    const profile = await spotifyApi.getProfileInfo()
+    const redirectLocation = Cookies.get('redirect_location') || '/broadcaster'
+    Cookies.remove('redirect_location')
+
+    await songbirdApi.fetchSpotifyAccessToken(code, state)
+
     this.setState({
       isLoading: false,
-      name: profile.display_name,
-      profileImage: profile.images[0].url
+      redirectLocation
     })
   }
 
   render() {
     if (this.state.isLoading) {
-      return <div>Loading Profile...</div>
+      return <div>Loading...</div>
     } else {
-      return <Redirect to='/broadcaster' />
+      return <Redirect to={this.state.redirectLocation} />
     }
   }
 }
