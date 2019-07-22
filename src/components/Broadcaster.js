@@ -41,7 +41,7 @@ class Broadcaster extends React.Component {
     this.setState({
       isLoading: false,
       name: profile.display_name,
-      profileImage: profile.images[0].url,
+      profileImage: profile.images[0].url || '',
       broadcastId: broadcastId
     })
     // poll for currently playing track

@@ -77,10 +77,15 @@ class Listener extends React.Component {
     const profile = await spotifyApi.getProfileInfo()
     // poll for currently playing track
 
+    const profileImage =
+      profile.images && profile.images[0] && profile.image[0].url
+        ? profile.images[0].url
+        : ''
+
     this.setState({
       isLoading: false,
       name: profile.display_name,
-      profileImage: profile.images[0].url,
+      profileImage,
       broadcastId
     })
 
