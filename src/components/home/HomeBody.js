@@ -49,11 +49,12 @@ function HomeBody() {
         style={{ height: '600px', width: '200px', color: grey }}
       />
       <Content>
-        <Title>Share Music Together</Title>
+        <Title>Listen Together</Title>
         <Description>
-          Are you hearing me? provides a cohesive listening experience for your
-          friends by connecting your spotify accounts. The broadcaster has
-          control while the listeners can sit back and enjoy the experience.
+          Broadcast your Spotify session to friends. Login, create a room, and
+          share the link. Your friends will be listening right alongside. It's
+          just like going back to the days of splitting headphones on the bus...
+          except less Emo.
         </Description>
         <SpotifyLoginLink href='/login'>
           <img src={process.env.PUBLIC_URL + '/img/spotify-logo.svg'} />
