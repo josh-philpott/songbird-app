@@ -88,7 +88,7 @@ class Broadcaster extends React.Component {
         <div>
           {profileInfo}
           <p>
-            Broadcast URL: {process.env.REACT_APP_API_URL}/listener?broadcastId=
+            Broadcast URL: https://songbridge.netlify.com/listener?broadcastId=
             {this.state.broadcastId}
           </p>
           {currentlyBroadcasting}
