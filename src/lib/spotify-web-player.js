@@ -1,6 +1,6 @@
 import spotifyApi from './spotify'
 
-export const initializeSpotifyWebPlayer = () => {
+export const setupSpotifyWebPlayerCallback = onReady => {
   window.onSpotifyWebPlaybackSDKReady = () => {
     const token = spotifyApi.getAccessToken()
     const player = new window.Spotify.Player({
@@ -31,6 +31,7 @@ export const initializeSpotifyWebPlayer = () => {
     // Ready
     player.addListener('ready', ({ device_id }) => {
       console.log('Ready with Device ID', device_id)
+      onReady(device_id)
     })
 
     // Not Ready

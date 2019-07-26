@@ -34,9 +34,9 @@ const pause = async () => {
   )
 }
 
-const play = async (uri, position_ms) => {
+const play = async (uri, position_ms, deviceId) => {
   await axios.put(
-    'https://api.spotify.com/v1/me/player/play',
+    `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
     {
       uris: [uri],
       position_ms

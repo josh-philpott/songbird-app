@@ -12,14 +12,15 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 # TODO
 
-MVP Todos
+- Add some validation around getting profile information to handle defaulting some items (profile image?)
+- Add check if they're a spotify premium member
+- Default to standard profile image
 
-- Target the 'SongBridge' player as the listeners device
+- Styling
+  - Fix Home Page scaling issues. Get it looking good up to a standard mobile view (pick those sizes?)
+  - Listener Page
+  - Broadcaster Page
 - Handle Spotify Refresh Token
-- Page Styling
-  - Home Page
-  - Broadcaster
-  - Listener
 - Componetize
   - Broadcaster
     - BroadcastStream
@@ -33,15 +34,17 @@ MVP Todos
   - Broadcast and Listeners synced via Websockets
 - Support Multiple Concurrent Broadcasts
   - Broadcasts to be stored to Postgres or Redis (planning to start with Postgres and move to Redis if it becomes an issue in syncing)
+- Move sync logic to API
+  - Bridge will sync _while_ the player is open and the active device.
+  - Once the player is not the active device, we should stop syncing to that listener
 
 # Work Log
 
-7/20/19
+7/25/19
 
-- PM2 ecosystem setup
-- Generated Broadcast Short Code
-  - Display Link on Broadcast page
-  - /listen/broadcastId grabs that broadcast
+- Fix Profile Picture Bug on Listener Page
+- Target the 'SongBridge' player as the listeners device
+- SongBridge player should only attempt to load on the listener page. Manage the script injection such that it doesn't load prior.
 
 7/21/19
 
@@ -49,6 +52,13 @@ MVP Todos
 - Productionized and deployed to heroku (api) and netlify (app)
 - Broke out Spotify Authentication, Callback comonents
 - Added AuthenticatedRoute handler with properly handled redirects
+
+7/20/19
+
+- PM2 ecosystem setup
+- Generated Broadcast Short Code
+  - Display Link on Broadcast page
+  - /listen/broadcastId grabs that broadcast
 
 # Current Thoughts
 

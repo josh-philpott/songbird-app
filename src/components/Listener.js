@@ -5,14 +5,15 @@ import querystring from 'query-string'
 import spotifyApi from '../lib/spotify'
 import broadcastApi from '../lib/broadcast'
 
-import { initializeSpotifyWebPlayer } from '../lib/spotify-web-player'
+import Script from 'react-load-script'
+import { setupSpotifyWebPlayerCallback } from '../lib/spotify-web-player'
 
 const DEBOUNCE_MS = 5000
 
 class Listener extends React.Component {
   constructor(props) {
     super(props)
-    initializeSpotifyWebPlayer()
+    setupSpotifyWebPlayerCallback(this.setDeviceId.bind(this))
     this.state = {
       isLoading: true
     }
@@ -27,14 +28,15 @@ class Listener extends React.Component {
     broadcasterUri,
     broadcasterProgressMs,
     broadcasterIsPlaying,
-    listenerIsPlaying
+    listenerIsPlaying,
+    deviceId
   ) {
     if (listenerIsPlaying && !broadcasterIsPlaying) {
       //pause listener
       await spotifyApi.pause()
     } else {
       //play listener at broadcaster position
-      await spotifyApi.play(broadcasterUri, broadcasterProgressMs)
+      await spotifyApi.play(broadcasterUri, broadcasterProgressMs, deviceId)
     }
   }
 
@@ -60,16 +62,33 @@ class Listener extends React.Component {
       broadcasterProgressMs
     )
 
-    if (!idsEqual || !isPlayingEqual || !isWithinDebouncePeriod) {
+    const isWebPlayerReady = this.state.deviceId
+
+    if (
+      (!idsEqual || !isPlayingEqual || !isWithinDebouncePeriod) &&
+      isWebPlayerReady
+    ) {
       console.log('syncing')
       await this.setListener(
         broadcasterUri,
         broadcasterProgressMs,
         broadcasterIsPlaying,
-        listenerIsPlaying
+        listenerIsPlaying,
+        this.state.deviceId
       )
     }
     setTimeout(this.syncPlayback.bind(this), 3000)
+  }
+
+  /**
+   * Receives the device ID from the Spotify Web Player
+   * @param {} deviceId
+   */
+  setDeviceId(deviceId) {
+    console.log(`Spotify Web Player Ready with Device ID: ${deviceId}!`)
+    this.setState({
+      deviceId
+    })
   }
 
   async componentDidMount() {
@@ -78,7 +97,7 @@ class Listener extends React.Component {
     // poll for currently playing track
 
     const profileImage =
-      profile.images && profile.images[0] && profile.image[0].url
+      profile.images && profile.images[0] && profile.images[0].url
         ? profile.images[0].url
         : ''
 
@@ -105,16 +124,14 @@ class Listener extends React.Component {
         </div>
       )
 
-      body = <div>{profileInfo}</div>
+      body = (
+        <div>
+          {profileInfo}
+          <Script url='https://sdk.scdn.co/spotify-player.js' />
+        </div>
+      )
     }
-    return (
-      <div>
-        <Helmet>
-          <script src='https://sdk.scdn.co/spotify-player.js' />
-        </Helmet>
-        {body}
-      </div>
-    )
+    return <div>{body}</div>
   }
 }
 
