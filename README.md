@@ -45,6 +45,9 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 - Fix Profile Picture Bug on Listener Page
 - Target the 'SongBridge' player as the listeners device
 - SongBridge player should only attempt to load on the listener page. Manage the script injection such that it doesn't load prior.
+- Listener page gets broadcaster name, profile picture, and basic song info
+- Navbar handles sign in state
+- Some styling fixes to the home page
 
 7/21/19
 
