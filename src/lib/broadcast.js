@@ -8,8 +8,11 @@ const getAccessToken = () => {
   return Cookies.get('spotify_access_token')
 }
 
-const create = async () => {
-  const response = await axios.post(`${broadcastApiUrl}/create`)
+const create = async (broadcasterName, profileImageUrl) => {
+  const response = await axios.post(`${broadcastApiUrl}/create`, {
+    broadcasterName,
+    profileImageUrl
+  })
   return response.data
 }
 

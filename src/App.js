@@ -26,6 +26,8 @@ class AppRouter extends React.Component {
             href='https://fonts.googleapis.com/css?family=Heebo:300,400&display=swap'
             rel='stylesheet'
           />
+
+          <style>{'body { background-color: #eae7de}'}</style>
         </Helmet>
       </section>
     )

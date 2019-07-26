@@ -5,14 +5,14 @@ import { grey, primaryFont } from '../styles/base'
 const Body = styled.section`
   display: flex;
   justify-content: space-between;
-
   height: 600px;
+  overflow-y: scroll;
 `
 
 const Content = styled.section`
   width: 680px;
   height: 240px;
-  margin: 150px auto;
+  margin: 150px 30px;
 `
 
 const Title = styled.h1`
@@ -29,7 +29,7 @@ const Description = styled.p`
 const SpotifyLoginLink = styled.a`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
 
   height: 45px;
   width: 240px;
@@ -39,6 +39,10 @@ const SpotifyLoginLink = styled.a`
 
   border: 1px solid ${grey};
   text-decoration: none;
+
+  :hover {
+    background-color: #e2ded2
+  }
 `
 
 function HomeBody() {
@@ -46,7 +50,7 @@ function HomeBody() {
     <Body>
       <img
         src={process.env.PUBLIC_URL + '/img/headphone-left.svg'}
-        style={{ height: '600px', width: '200px', color: grey }}
+        style={{ height: '100%', width: '200px', color: grey }}
       />
       <Content>
         <Title>Listen Together</Title>
@@ -63,7 +67,7 @@ function HomeBody() {
       </Content>
       <img
         src={process.env.PUBLIC_URL + '/img/headphone-right.svg'}
-        style={{ height: '600px', width: '200px', color: grey }}
+        style={{ height: '100%', width: '200px', color: grey }}
       />
     </Body>
   )

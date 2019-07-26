@@ -37,11 +37,20 @@ class Broadcaster extends React.Component {
 
   async componentDidMount() {
     const profile = await spotifyApi.getProfileInfo()
-    const broadcastId = await broadcastApi.create()
+
+    const profileImageUrl =
+      profile && profile.images && profile.images[0]
+        ? profile.images[0].url
+        : ''
+    const broadcastId = await broadcastApi.create(
+      profile.display_name,
+      profileImageUrl
+    )
+
     this.setState({
       isLoading: false,
       name: profile.display_name,
-      profileImage: profile.images[0].url || '',
+      profileImage: profileImageUrl,
       broadcastId: broadcastId
     })
     // poll for currently playing track

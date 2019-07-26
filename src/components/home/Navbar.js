@@ -26,6 +26,9 @@ const navLinkStyle = `
   background-color: inherit;
   border:0px;
   ${primaryFont}
+  :hover {
+    background-color: #e2ded2
+  }
 `
 
 const NavLogoButton = styled.button`
@@ -38,16 +41,24 @@ const NavLinkButton = styled.button`
   margin-left: 50px;
 `
 
-function Navbar() {
+function Navbar(props) {
+  const navLinks = props.loggedIn ? (
+    <NavLinks>
+      <NavLinkButton>Sign Out</NavLinkButton>
+    </NavLinks>
+  ) : (
+    <NavLinks>
+      <NavLinkButton>login</NavLinkButton>
+      <NavLinkButton>how it works</NavLinkButton>
+      <NavLinkButton>contact</NavLinkButton>
+    </NavLinks>
+  )
+
   return (
     <NavContainer>
       <NavInnerContainer>
-        <NavLogoButton>can you hear me?</NavLogoButton>
-        <NavLinks>
-          <NavLinkButton>login</NavLinkButton>
-          <NavLinkButton>how it works</NavLinkButton>
-          <NavLinkButton>contact</NavLinkButton>
-        </NavLinks>
+        <NavLogoButton>Songbridge</NavLogoButton>
+        {navLinks}
       </NavInnerContainer>
     </NavContainer>
   )
