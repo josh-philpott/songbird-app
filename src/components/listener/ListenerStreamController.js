@@ -1,10 +1,10 @@
 import React from 'react'
 
-import spotifyApi from '../lib/spotify'
-import broadcastApi from '../lib/broadcast'
+import spotifyApi from '../../lib/spotify'
+import broadcastApi from '../../lib/broadcast'
 
 import Script from 'react-load-script'
-import { setupSpotifyWebPlayerCallback } from '../lib/spotify-web-player'
+import { setupSpotifyWebPlayerCallback } from '../../lib/spotify-web-player'
 
 const DEBOUNCE_MS = 5000
 

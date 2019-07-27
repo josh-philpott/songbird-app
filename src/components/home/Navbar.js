@@ -44,7 +44,7 @@ const NavLinkButton = styled.button`
 function Navbar(props) {
   const navLinks = props.loggedIn ? (
     <NavLinks>
-      <NavLinkButton>Sign Out</NavLinkButton>
+      <NavLinkButton>sign out</NavLinkButton>
     </NavLinks>
   ) : (
     <NavLinks>
@@ -57,7 +57,7 @@ function Navbar(props) {
   return (
     <NavContainer>
       <NavInnerContainer>
-        <NavLogoButton>Songbridge</NavLogoButton>
+        <NavLogoButton>songbridge</NavLogoButton>
         {navLinks}
       </NavInnerContainer>
     </NavContainer>

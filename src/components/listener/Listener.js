@@ -1,20 +1,16 @@
 import React from 'react'
-import { Helmet } from 'react-helmet'
 import querystring from 'query-string'
 
-import spotifyApi from '../lib/spotify'
-import broadcastApi from '../lib/broadcast'
+import spotifyApi from '../../lib/spotify'
+import broadcastApi from '../../lib/broadcast'
 
-import Navbar from './home/Navbar'
+import Navbar from '../home/Navbar'
 
-import Script from 'react-load-script'
-import { setupSpotifyWebPlayerCallback } from '../lib/spotify-web-player'
-
+import RoomInfo from './RoomInfo'
+import ListenerPlayer from './player/ListenerPlayer'
 import ListenerStreamController from './ListenerStreamController'
 
 import styled from 'styled-components'
-
-const DEBOUNCE_MS = 5000
 
 const Body = styled.section`
   margin: 30px auto;
@@ -42,26 +38,28 @@ class Listener extends React.Component {
         ? profile.images[0].url
         : ''
 
-    const currentSongName =
-      broadcast && broadcast.currentlyPlaying && broadcast.currentlyPlaying.item
-        ? broadcast.currentlyPlaying.item.name
-        : 'Nothing'
-
-    const currentSongArtist =
+    let currentSongInfo = {
+      name: 'N/A',
+      artist: 'N/A',
+      albumArtUrl: ''
+    }
+    if (
       broadcast &&
       broadcast.currentlyPlaying &&
-      broadcast.currentlyPlaying.item.artists &&
-      broadcast.currentlyPlaying.item.artists[0]
-        ? broadcast.currentlyPlaying.item.artists[0].name
-        : 'Noone'
+      broadcast.currentlyPlaying.item
+    ) {
+      currentSongInfo.name = broadcast.currentlyPlaying.item.name
+      currentSongInfo.artist = broadcast.currentlyPlaying.item.artists[0].name
+      currentSongInfo.albumArtUrl =
+        broadcast.currentlyPlaying.item.album.images[0].url
+    }
 
     this.setState({
       isLoading: false,
       name: profile.display_name,
       broadcasterName: broadcast.broadcasterName,
       broadcastProfileImageUrl: broadcast.profileImageUrl,
-      currentSongName,
-      currentSongArtist,
+      currentSongInfo,
       profileImage,
       broadcastId
     })
@@ -80,8 +78,8 @@ class Listener extends React.Component {
             alt='User Profile Photo'
           />
           <p>
-            Currently Playing: {this.state.currentSongName} by{' '}
-            {this.state.currentSongArtist}
+            Currently Playing: {this.state.currentSongInfo.name} by{' '}
+            {this.state.currentSongInfo.artist}
           </p>
         </Body>
       )
@@ -89,12 +87,16 @@ class Listener extends React.Component {
       body = (
         <div>
           <Navbar loggedIn={true} />
-          {profileInfo}
+          <RoomInfo
+            broadcasterProfileImage={this.state.broadcastProfileImageUrl}
+            broadcasterName={this.state.name}
+          />
+          <ListenerPlayer currentSongInfo={this.state.currentSongInfo} />
           <ListenerStreamController broadcastId={this.state.broadcastId} />
         </div>
       )
     }
-    return <div>{body}</div>
+    return body
   }
 }
 

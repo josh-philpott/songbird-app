@@ -12,10 +12,10 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 # TODO
 
+- replace profile image with svg
 - Add some validation around getting profile information to handle defaulting some items (profile image?)
 - Add check if they're a spotify premium member
 - Default to standard profile image
-
 - Styling
   - Fix Home Page scaling issues. Get it looking good up to a standard mobile view (pick those sizes?)
   - Listener Page
@@ -39,6 +39,10 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
   - Once the player is not the active device, we should stop syncing to that listener
 
 # Work Log
+
+7/27/19
+
+- Listener Page Styling
 
 7/25/19
 
