@@ -10,7 +10,7 @@ const PeopleIcon = styled.img`
 const ViewCounter = props => {
   return (
     <section>
-      <PeopleIcon src={process.env.PUBLIC_URL + '/img/profile-icon.png'} />
+      <PeopleIcon src={process.env.PUBLIC_URL + '/img/profile-icon.svg'} />
       {props.viewCount || 0}
     </section>
   )

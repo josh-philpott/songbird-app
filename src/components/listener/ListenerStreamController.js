@@ -7,10 +7,12 @@ import Script from 'react-load-script'
 import { setupSpotifyWebPlayerCallback } from '../../lib/spotify-web-player'
 
 const DEBOUNCE_MS = 5000
+const SYNC_ENABLED = process.env.REACT_APP_DEV_MODE === 'true'
 
 class ListenerStreamController extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {}
     setupSpotifyWebPlayerCallback(this.setDeviceId.bind(this))
   }
 
@@ -44,6 +46,8 @@ class ListenerStreamController extends React.Component {
       const broadcast = await broadcastApi.listen(this.props.broadcastId)
       const broadcasterStatus = broadcast.currentlyPlaying
 
+      this.props.streamUpdateHandler(broadcasterStatus)
+
       const listenerId = listenerStatus.id
       const listenerProgressMs = listenerStatus.progress_ms
       const listenerIsPlaying = listenerStatus.is_playing
@@ -64,9 +68,10 @@ class ListenerStreamController extends React.Component {
 
       if (
         (!idsEqual || !isPlayingEqual || !isWithinDebouncePeriod) &&
-        isWebPlayerReady
+        isWebPlayerReady &&
+        SYNC_ENABLED
       ) {
-        console.log('syncing')
+        console.debug('syncing')
         await this.setListener(
           broadcasterUri,
           broadcasterProgressMs,
@@ -78,7 +83,7 @@ class ListenerStreamController extends React.Component {
     } catch (error) {
       console.error(error)
     } finally {
-      setTimeout(this.syncPlayback.bind(this), 3000)
+      setTimeout(this.syncPlayback.bind(this), 500)
     }
   }
 
@@ -87,7 +92,7 @@ class ListenerStreamController extends React.Component {
    * @param {} deviceId
    */
   setDeviceId(deviceId) {
-    console.log(`Spotify Web Player Ready with Device ID: ${deviceId}!`)
+    console.debug(`Spotify Web Player Ready with Device ID: ${deviceId}!`)
     this.setState({
       deviceId
     })

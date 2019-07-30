@@ -51,6 +51,7 @@ function HomeBody() {
       <img
         src={process.env.PUBLIC_URL + '/img/headphone-left.svg'}
         style={{ height: '100%', width: '200px', color: grey }}
+        alt='right headphone background'
       />
       <Content>
         <Title>Listen Together</Title>
@@ -61,13 +62,17 @@ function HomeBody() {
           except less Emo.
         </Description>
         <SpotifyLoginLink href='/login'>
-          <img src={process.env.PUBLIC_URL + '/img/spotify-logo.svg'} />
+          <img
+            src={process.env.PUBLIC_URL + '/img/spotify-logo.svg'}
+            alt='spotify logo'
+          />
           <p>login through Spotify</p>
         </SpotifyLoginLink>
       </Content>
       <img
         src={process.env.PUBLIC_URL + '/img/headphone-right.svg'}
         style={{ height: '100%', width: '200px', color: grey }}
+        alt='left headphone background'
       />
     </Body>
   )

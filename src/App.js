@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { BrowserRouter as Router, Route, DefaultRoute } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Broadcaster from './components/Broadcaster'
 import Home from './components/home/Home'
 import Listener from './components/listener/Listener'

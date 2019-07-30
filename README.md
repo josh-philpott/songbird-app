@@ -12,6 +12,8 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 # TODO
 
+- overflow handling for player songs
+  - overflow w/ marquee
 - replace profile image with svg
 - Add some validation around getting profile information to handle defaulting some items (profile image?)
 - Add check if they're a spotify premium member
@@ -40,9 +42,12 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 # Work Log
 
+## 7/29/19
+
 7/27/19
 
 - Listener Page Styling
+- move current song info to syncPlayback in handler
 
 7/25/19
 

@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import { white, H2, primaryFont } from '../../styles/base'
 import ViewCounter from './ViewCounter'
 
+import ListenerStreamController from '../ListenerStreamController'
+
 const Player = styled.section`
   width: 480px;
   height: 220px;
@@ -43,6 +45,7 @@ const BottomRightContainer = styled.section`
   display: flex;
   flex-direction: column;
   margin: 0px auto;
+  padding: 0px 20px;
 `
 
 const SongTitle = styled.h3`
@@ -64,27 +67,47 @@ class ListenerPlayer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLoading: true
+      isLoading: true,
+      currentSongInfo: {}
     }
   }
 
   async componentDidMount() {}
 
+  setCurrentSongInfo(currentlyPlaying) {
+    let currentSongInfo = {}
+    if (currentlyPlaying && currentlyPlaying.item) {
+      currentSongInfo.name = currentlyPlaying.item.name
+      currentSongInfo.artist = currentlyPlaying.item.artists[0].name
+      currentSongInfo.albumArtUrl = currentlyPlaying.item.album.images[0].url
+    }
+
+    this.setState({
+      isLoading: false,
+      currentSongInfo
+    })
+  }
+
   render() {
-    console.log(this.props.currentSongInfo)
     return (
       <Player>
         <TopRow>
           <Header>Currently Playing</Header>
           <ViewCounter />
         </TopRow>
-        <SecondRow>
-          <AlbumArt src={this.props.currentSongInfo.albumArtUrl} />
-          <BottomRightContainer>
-            <SongTitle>{this.props.currentSongInfo.name}</SongTitle>
-            <ArtistName>{this.props.currentSongInfo.artist}</ArtistName>
-          </BottomRightContainer>
-        </SecondRow>
+        {this.state.isLoading ? null : (
+          <SecondRow>
+            <AlbumArt src={this.state.currentSongInfo.albumArtUrl} />
+            <BottomRightContainer>
+              <SongTitle>{this.state.currentSongInfo.name}</SongTitle>
+              <ArtistName>{this.state.currentSongInfo.artist}</ArtistName>
+            </BottomRightContainer>
+          </SecondRow>
+        )}
+        <ListenerStreamController
+          streamUpdateHandler={this.setCurrentSongInfo.bind(this)}
+          broadcastId={this.props.broadcastId}
+        />
       </Player>
     )
   }

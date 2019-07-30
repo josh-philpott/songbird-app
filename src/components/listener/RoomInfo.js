@@ -1,7 +1,7 @@
 import React from 'react'
 
 import styled from 'styled-components'
-import { white, black, grey, H1 } from '../styles/base'
+import { grey, H1 } from '../styles/base'
 import OnAirSign from './OnAirSign'
 
 const Banner = styled.section`
@@ -37,10 +37,7 @@ class RoomInfo extends React.Component {
   render() {
     return (
       <Banner>
-        <UserProfileImage
-          class='banner-element'
-          src={this.props.broadcasterProfileImage}
-        />
+        <UserProfileImage src={this.props.broadcasterProfileImage} />
         <RoomText>{this.props.broadcasterName}'s Room</RoomText>
         <OnAirSign onAir={true} />
       </Banner>

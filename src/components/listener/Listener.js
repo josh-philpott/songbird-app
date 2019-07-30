@@ -8,7 +8,6 @@ import Navbar from '../home/Navbar'
 
 import RoomInfo from './RoomInfo'
 import ListenerPlayer from './player/ListenerPlayer'
-import ListenerStreamController from './ListenerStreamController'
 
 import styled from 'styled-components'
 
@@ -32,34 +31,15 @@ class Listener extends React.Component {
     const broadcast = await broadcastApi.listen(broadcastId)
 
     // poll for currently playing track
-
     const profileImage =
       profile.images && profile.images[0] && profile.images[0].url
         ? profile.images[0].url
         : ''
 
-    let currentSongInfo = {
-      name: 'N/A',
-      artist: 'N/A',
-      albumArtUrl: ''
-    }
-    if (
-      broadcast &&
-      broadcast.currentlyPlaying &&
-      broadcast.currentlyPlaying.item
-    ) {
-      currentSongInfo.name = broadcast.currentlyPlaying.item.name
-      currentSongInfo.artist = broadcast.currentlyPlaying.item.artists[0].name
-      currentSongInfo.albumArtUrl =
-        broadcast.currentlyPlaying.item.album.images[0].url
-    }
-
     this.setState({
       isLoading: false,
-      name: profile.display_name,
       broadcasterName: broadcast.broadcasterName,
       broadcastProfileImageUrl: broadcast.profileImageUrl,
-      currentSongInfo,
       profileImage,
       broadcastId
     })
@@ -70,29 +50,14 @@ class Listener extends React.Component {
     if (this.state.isLoading) {
       body = <Body>Loading...</Body>
     } else {
-      let profileInfo = (
-        <Body style={{ margin: '30px auto' }}>
-          <p>You're listening to {this.state.broadcasterName}'s room.</p>
-          <img
-            src={this.state.broadcastProfileImageUrl}
-            alt='User Profile Photo'
-          />
-          <p>
-            Currently Playing: {this.state.currentSongInfo.name} by{' '}
-            {this.state.currentSongInfo.artist}
-          </p>
-        </Body>
-      )
-
       body = (
         <div>
           <Navbar loggedIn={true} />
           <RoomInfo
             broadcasterProfileImage={this.state.broadcastProfileImageUrl}
-            broadcasterName={this.state.name}
+            broadcasterName={this.state.broadcasterName}
           />
-          <ListenerPlayer currentSongInfo={this.state.currentSongInfo} />
-          <ListenerStreamController broadcastId={this.state.broadcastId} />
+          <ListenerPlayer broadcastId={this.state.broadcastId} />
         </div>
       )
     }

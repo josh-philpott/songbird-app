@@ -1,8 +1,9 @@
 import React from 'react'
-import { Helmet } from 'react-helmet'
 
 import spotifyApi from '../lib/spotify'
 import broadcastApi from '../lib/broadcast'
+
+const IS_DEV_MODE = process.env.REACT_APP_DEV_MODE === 'true'
 
 class Broadcaster extends React.Component {
   constructor(props) {
@@ -20,19 +21,22 @@ class Broadcaster extends React.Component {
     const currentlyPlaying = await spotifyApi.getCurrentlyPlaying()
     const { broadcastId } = this.state
 
-    await broadcastApi.broadcast({ broadcastId, currentlyPlaying })
+    await broadcastApi.broadcast({
+      broadcastId,
+      currentlyPlaying
+    })
 
     if (!currentlyPlaying) {
       this.setState({ isBroadcasting: false })
     } else {
-      console.log('Broadcasting!')
+      console.debug('Broadcasting!')
       this.setState({
         isBroadcasting: true,
         ...currentlyPlaying
       })
     }
 
-    setTimeout(this.broadcast.bind(this), 3000)
+    setTimeout(this.broadcast.bind(this), 1000)
   }
 
   async componentDidMount() {
@@ -44,7 +48,8 @@ class Broadcaster extends React.Component {
         : ''
     const broadcastId = await broadcastApi.create(
       profile.display_name,
-      profileImageUrl
+      profileImageUrl,
+      IS_DEV_MODE
     )
 
     this.setState({
@@ -65,7 +70,7 @@ class Broadcaster extends React.Component {
       let profileInfo = (
         <div>
           <h1>Sup, {this.state.name}</h1>
-          <img src={this.state.profileImage} alt='User Profile Photo' />
+          <img src={this.state.profileImage} alt='User Profile' />
         </div>
       )
 
@@ -95,14 +100,7 @@ class Broadcaster extends React.Component {
         </div>
       )
     }
-    return (
-      <div>
-        <Helmet>
-          <script src='https://sdk.scdn.co/spotify-player.js' />
-        </Helmet>
-        {body}
-      </div>
-    )
+    return <div>{body}</div>
   }
 }
 
