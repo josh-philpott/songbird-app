@@ -12,11 +12,10 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 # TODO
 
-- Styling
-  - Listener Page
-    - progress bar
-    - overflow handling for player songs
-    - overflow w/ marquee?
+- progress bar style updates
+  - background color should be white
+  - position not quite on?
+- Pause broadcast button
 - Add some validation around getting profile information to handle defaulting some items (profile image?)
 - Add check if they're a spotify premium member
 - Default to standard profile image

@@ -44,8 +44,11 @@ const Header = styled(H2)`
 const BottomRightContainer = styled.section`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   margin: 0px auto;
-  padding: 0px 20px;
+  padding-left: 20px;
+  flex-grow: 1;
+  max-width: 330px;
 `
 
 const SongTitle = styled.h3`
@@ -55,12 +58,44 @@ const SongTitle = styled.h3`
   line-height: 2;
   color: ${white};
   margin: 0px;
+
+  max-width: 345px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `
 
 const ArtistName = styled.p`
   ${primaryFont}
   color: ${white};
   margin: 0px;
+
+  max-width: 345px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`
+
+const TopContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+`
+
+const ProgressContainer = styled.section`
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: ${white};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+const ProgressBar = styled.progress`
+  flex-grow: 1;
+  margin: 0px 10px;
 `
 
 class ListenerPlayer extends React.Component {
@@ -68,11 +103,37 @@ class ListenerPlayer extends React.Component {
     super(props)
     this.state = {
       isLoading: true,
-      currentSongInfo: {}
+      currentSongInfo: {},
+      currentlyPlaying: {},
+      progressString: '',
+      durationString: ''
     }
   }
 
   async componentDidMount() {}
+
+  calculateProgressString(ms) {
+    const totalSeconds = Math.floor(ms / 1000)
+    const seconds = totalSeconds % 60
+    const minutes = Math.floor(totalSeconds / 60)
+
+    let secondsString = seconds < 10 ? `0${seconds}` : seconds.toString()
+    return `${minutes}:${secondsString}`
+  }
+
+  setProgressStrings(currentlyPlaying) {
+    const progressString = this.calculateProgressString(
+      currentlyPlaying.progress_ms
+    )
+    const durationString = this.calculateProgressString(
+      currentlyPlaying.item.duration_ms
+    )
+
+    this.setState({
+      progressString,
+      durationString
+    })
+  }
 
   setCurrentSongInfo(currentlyPlaying) {
     let currentSongInfo = {}
@@ -82,9 +143,12 @@ class ListenerPlayer extends React.Component {
       currentSongInfo.albumArtUrl = currentlyPlaying.item.album.images[0].url
     }
 
+    this.setProgressStrings(currentlyPlaying)
+
     this.setState({
       isLoading: false,
-      currentSongInfo
+      currentSongInfo,
+      currentlyPlaying
     })
   }
 
@@ -99,8 +163,18 @@ class ListenerPlayer extends React.Component {
           <SecondRow>
             <AlbumArt src={this.state.currentSongInfo.albumArtUrl} />
             <BottomRightContainer>
-              <SongTitle>{this.state.currentSongInfo.name}</SongTitle>
-              <ArtistName>{this.state.currentSongInfo.artist}</ArtistName>
+              <TopContainer>
+                <SongTitle>{this.state.currentSongInfo.name}</SongTitle>
+                <ArtistName>{this.state.currentSongInfo.artist}</ArtistName>
+              </TopContainer>
+              <ProgressContainer>
+                <p>{this.state.progressString}</p>
+                <ProgressBar
+                  value={this.state.currentlyPlaying.progress_ms}
+                  max={this.state.currentlyPlaying.item.duration_ms}
+                />
+                <p>{this.state.durationString}</p>
+              </ProgressContainer>
             </BottomRightContainer>
           </SecondRow>
         )}
