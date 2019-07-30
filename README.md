@@ -12,37 +12,36 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 # TODO
 
-- overflow handling for player songs
-  - overflow w/ marquee
-- replace profile image with svg
+- Styling
+  - Listener Page
+    - progress bar
+    - overflow handling for player songs
+    - overflow w/ marquee?
 - Add some validation around getting profile information to handle defaulting some items (profile image?)
 - Add check if they're a spotify premium member
 - Default to standard profile image
 - Styling
   - Fix Home Page scaling issues. Get it looking good up to a standard mobile view (pick those sizes?)
-  - Listener Page
   - Broadcaster Page
 - Handle Spotify Refresh Token
-- Componetize
-  - Broadcaster
-    - BroadcastStream
-    - BroadcastInterface
-    - SpotifyListener
-  - Listener
-    - ListenerStream
-    - ListenerInterface
-    - SpotifyController
+
+## TODO Laters
+
 - Sync Performance Optimizations
-  - Broadcast and Listeners synced via Websockets
-- Support Multiple Concurrent Broadcasts
-  - Broadcasts to be stored to Postgres or Redis (planning to start with Postgres and move to Redis if it becomes an issue in syncing)
+  - Websockets?
+- Broadcasts to be stored to Postgres or Redis (planning to start with Postgres and move to Redis if it becomes an issue in syncing)
 - Move sync logic to API
   - Bridge will sync _while_ the player is open and the active device.
   - Once the player is not the active device, we should stop syncing to that listener
 
 # Work Log
 
-## 7/29/19
+7/29/19
+
+- bug fixes for listener not updating
+- replace profile image with svg
+- dev mode
+- minor style updates and log cleanup
 
 7/27/19
 
