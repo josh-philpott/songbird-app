@@ -16,6 +16,14 @@ class ListenerStreamController extends React.Component {
     setupSpotifyWebPlayerCallback(this.setDeviceId.bind(this))
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.syncEnabled === true && this.props.syncEnabled === false) {
+      //if the stream was paused
+      console.log('pausing because sync was disabled')
+      spotifyApi.pause()
+    }
+  }
+
   isWithinDebouncePeriod(listenerProgressMs, broadcasterProgressMs) {
     const diff = Math.abs(broadcasterProgressMs - listenerProgressMs)
     return diff < DEBOUNCE_MS
