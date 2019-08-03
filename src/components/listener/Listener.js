@@ -76,7 +76,7 @@ class Listener extends React.Component {
 
           {this.state.syncEnabled ? (
             <SyncButton onClick={this.toggleSyncEnabled.bind(this)}>
-              <span>stop syncing</span>
+              <span>pause broadcast</span>
             </SyncButton>
           ) : (
             <SyncButton onClick={this.toggleSyncEnabled.bind(this)}>
@@ -84,7 +84,7 @@ class Listener extends React.Component {
                 src={process.env.PUBLIC_URL + '/img/play-icon.svg'}
                 alt='play'
               />
-              <span>sync with broadcast</span>
+              <span>play broadcast</span>
             </SyncButton>
           )}
 
