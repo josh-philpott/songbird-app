@@ -23,3 +23,20 @@ export const H2 = styled.h2`
   line-height: 35px;
   margin: 0px;
 `
+
+export const buttonBase = `
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  border: 1px solid ${grey};
+  border-radius: 3px;
+  box-sizing: border-box;
+  background-color: inherit;
+
+  ${primaryFont}
+
+  :hover {
+    background-color: #e2ded2;
+  }
+`

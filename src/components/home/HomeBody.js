@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { grey, primaryFont } from '../styles/base'
+import { grey, primaryFont, buttonBase } from '../styles/base'
 
 const Body = styled.section`
   display: flex;
@@ -27,22 +27,13 @@ const Description = styled.p`
 `
 
 const SpotifyLoginLink = styled.a`
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-
   height: 45px;
   width: 240px;
-  border-radius: 3px;
 
   ${primaryFont}
-
-  border: 1px solid ${grey};
+  ${buttonBase}
+  
   text-decoration: none;
-
-  :hover {
-    background-color: #e2ded2
-  }
 `
 
 function HomeBody() {
