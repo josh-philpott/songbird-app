@@ -123,10 +123,10 @@ class ListenerPlayer extends React.Component {
 
   setProgressStrings(currentlyPlaying) {
     const progressString = this.calculateProgressString(
-      currentlyPlaying.progress_ms
+      currentlyPlaying.progress_ms || 0
     )
     const durationString = this.calculateProgressString(
-      currentlyPlaying.item.duration_ms
+      currentlyPlaying.item.duration_ms || 0
     )
 
     this.setState({
@@ -141,9 +141,10 @@ class ListenerPlayer extends React.Component {
       currentSongInfo.name = currentlyPlaying.item.name
       currentSongInfo.artist = currentlyPlaying.item.artists[0].name
       currentSongInfo.albumArtUrl = currentlyPlaying.item.album.images[0].url
+      currentSongInfo.progress_ms = currentlyPlaying.progress_ms
+      currentSongInfo.duration_ms = currentlyPlaying.item.duration_ms
+      this.setProgressStrings(currentlyPlaying)
     }
-
-    this.setProgressStrings(currentlyPlaying)
 
     this.setState({
       isLoading: false,
@@ -170,8 +171,8 @@ class ListenerPlayer extends React.Component {
               <ProgressContainer>
                 <p>{this.state.progressString}</p>
                 <ProgressBar
-                  value={this.state.currentlyPlaying.progress_ms}
-                  max={this.state.currentlyPlaying.item.duration_ms}
+                  value={this.state.currentSongInfo.progress_ms || 0}
+                  max={this.state.currentSongInfo.duration_ms || 0}
                 />
                 <p>{this.state.durationString}</p>
               </ProgressContainer>
