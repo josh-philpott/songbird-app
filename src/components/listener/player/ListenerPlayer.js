@@ -110,8 +110,6 @@ class ListenerPlayer extends React.Component {
     }
   }
 
-  async componentDidMount() {}
-
   calculateProgressString(ms) {
     const totalSeconds = Math.floor(ms / 1000)
     const seconds = totalSeconds % 60
@@ -157,7 +155,7 @@ class ListenerPlayer extends React.Component {
     return (
       <Player>
         <TopRow>
-          <Header>Currently Playing</Header>
+          <Header>Currently Broadcasting</Header>
           <ViewCounter />
         </TopRow>
         {this.state.isLoading ? null : (
@@ -182,6 +180,7 @@ class ListenerPlayer extends React.Component {
         <ListenerStreamController
           streamUpdateHandler={this.setCurrentSongInfo.bind(this)}
           broadcastId={this.props.broadcastId}
+          syncEnabled={this.props.syncEnabled}
         />
       </Player>
     )

@@ -10,6 +10,7 @@ import RoomInfo from './RoomInfo'
 import ListenerPlayer from './player/ListenerPlayer'
 
 import styled from 'styled-components'
+import { buttonBase } from '../styles/base'
 
 const Body = styled.section`
   margin: 30px auto;
@@ -17,11 +18,20 @@ const Body = styled.section`
   text-align: center;
 `
 
+const SyncButton = styled.button`
+  width: 238px;
+  height: 44px;
+
+  margin: 0px auto;
+
+  ${buttonBase}
+`
 class Listener extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLoading: true
+      isLoading: true,
+      syncEnabled: false
     }
   }
 
@@ -45,6 +55,12 @@ class Listener extends React.Component {
     })
   }
 
+  toggleSyncEnabled() {
+    this.setState({
+      syncEnabled: !this.state.syncEnabled
+    })
+  }
+
   render() {
     let body
     if (this.state.isLoading) {
@@ -57,7 +73,25 @@ class Listener extends React.Component {
             broadcasterProfileImage={this.state.broadcastProfileImageUrl}
             broadcasterName={this.state.broadcasterName}
           />
-          <ListenerPlayer broadcastId={this.state.broadcastId} />
+
+          {this.state.syncEnabled ? (
+            <SyncButton onClick={this.toggleSyncEnabled.bind(this)}>
+              <span>stop syncing</span>
+            </SyncButton>
+          ) : (
+            <SyncButton onClick={this.toggleSyncEnabled.bind(this)}>
+              <img
+                src={process.env.PUBLIC_URL + '/img/play-icon.svg'}
+                alt='play'
+              />
+              <span>sync with broadcast</span>
+            </SyncButton>
+          )}
+
+          <ListenerPlayer
+            broadcastId={this.state.broadcastId}
+            syncEnabled={this.state.syncEnabled}
+          />
         </div>
       )
     }
