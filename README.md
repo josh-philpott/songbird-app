@@ -12,9 +12,6 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 # TODO
 
-- progress bar style updates
-  - background color should be white
-  - position not quite on?
 - Pause broadcast button
 - Broadcaster leaving should stop broadcast
 - Add some validation around getting profile information to handle defaulting some items (profile image?)
@@ -24,6 +21,9 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
   - Fix Home Page scaling issues. Get it looking good up to a standard mobile view (pick those sizes?)
   - Broadcaster Page
 - Handle Spotify Refresh Token
+- progress bar style updates
+  - background color should be white
+  - position not quite on?
 
 ## TODO Laters
 

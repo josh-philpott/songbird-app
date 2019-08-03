@@ -7,7 +7,7 @@ import Script from 'react-load-script'
 import { setupSpotifyWebPlayerCallback } from '../../lib/spotify-web-player'
 
 const DEBOUNCE_MS = 5000
-const SYNC_ENABLED = !(process.env.REACT_APP_DEV_MODE === 'true')
+const IS_DEV_MODE = process.env.REACT_APP_DEV_MODE === 'true'
 
 class ListenerStreamController extends React.Component {
   constructor(props) {
@@ -69,7 +69,8 @@ class ListenerStreamController extends React.Component {
       if (
         (!idsEqual || !isPlayingEqual || !isWithinDebouncePeriod) &&
         isWebPlayerReady &&
-        SYNC_ENABLED
+        this.props.syncEnabled &&
+        !IS_DEV_MODE
       ) {
         console.debug('syncing')
         await this.setListener(
