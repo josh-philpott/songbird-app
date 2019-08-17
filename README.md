@@ -12,7 +12,6 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 # TODO
 
-- Pause broadcast button
 - Broadcaster leaving should stop broadcast
 - Add some validation around getting profile information to handle defaulting some items (profile image?)
 - Add check if they're a spotify premium member
@@ -35,6 +34,10 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
   - Once the player is not the active device, we should stop syncing to that listener
 
 # Work Log
+
+8/2/19
+
+- Pause broadcast button
 
 7/29/19
 
