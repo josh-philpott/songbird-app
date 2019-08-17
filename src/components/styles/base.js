@@ -3,6 +3,7 @@ import styled from 'styled-components'
 export const grey = '#2B2A2A'
 export const black = '#2A2A2A'
 export const white = '#F2F1EB'
+export const green = '#94d7a3'
 
 export const primaryFont = `
   font-family: Heebo, sans-serif;
