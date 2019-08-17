@@ -1,21 +1,7 @@
 import React from 'react'
 
-import styled from 'styled-components'
-import { grey } from '../styles/base'
-
-const Dot = styled.section`
-  height: 6px;
-  width: 6px;
-  border-radius: 50%;
-  margin-right: 5px;
-`
-const GreenDot = styled(Dot)`
-  background-color: #94d7a3;
-`
-
-const GreyDot = styled(Dot)`
-  background-color: ${grey};
-`
+import { grey, green } from '../styles/base'
+import Dot from '../Dot'
 
 const ON_TIME = 1000
 const OFF_TIME = 500
@@ -42,7 +28,8 @@ class BlinkingGreenDot extends React.Component {
   }
 
   render() {
-    return this.state.dotOn ? <GreenDot /> : <GreyDot />
+    const dotColor = this.state.dotOn ? green : grey
+    return <Dot color={dotColor} />
   }
 }
 

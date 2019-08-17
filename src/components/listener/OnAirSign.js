@@ -3,6 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { white, black } from '../styles/base'
 import BlinkingGreenDot from './BlinkingGreenDot'
+import Dot from '../Dot'
 
 const Container = styled.section`
   height: 24px;
@@ -20,13 +21,6 @@ const Container = styled.section`
   line-height: 197.19%;
   max-width: 71px;
 `
-const WhiteDot = styled.section`
-  height: 6px;
-  width: 6px;
-  border-radius: 50%;
-  margin-right: 5px;
-  background-color: ${white};
-`
 
 function OnAirSign(props) {
   if (props.onAir) {
@@ -39,7 +33,7 @@ function OnAirSign(props) {
   } else {
     return (
       <Container>
-        <WhiteDot />
+        <Dot color={white} />
         OFF AIR
       </Container>
     )
