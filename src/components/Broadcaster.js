@@ -3,6 +3,8 @@ import React from 'react'
 import spotifyApi from '../lib/spotify'
 import broadcastApi from '../lib/broadcast'
 
+import io from 'socket.io-client'
+
 const IS_DEV_MODE = process.env.REACT_APP_DEV_MODE === 'true'
 
 class Broadcaster extends React.Component {
@@ -15,16 +17,17 @@ class Broadcaster extends React.Component {
       isBroadcasting: false,
       broadcastId: ''
     }
+    const socket = io('http://localhost:8080')
+    socket.emit('test-event', function() {
+      console.log('ack')
+    })
   }
 
   async broadcast() {
     const currentlyPlaying = await spotifyApi.getCurrentlyPlaying()
     const { broadcastId } = this.state
 
-    await broadcastApi.broadcast({
-      broadcastId,
-      currentlyPlaying
-    })
+    await broadcastApi.broadcast(broadcastId, currentlyPlaying)
 
     if (!currentlyPlaying) {
       this.setState({ isBroadcasting: false })
@@ -51,6 +54,10 @@ class Broadcaster extends React.Component {
       profileImageUrl,
       IS_DEV_MODE
     )
+
+    broadcastApi.registerListener(broadcastId, currentlyPlaying => {
+      console.log(`broadcast updated ${JSON.stringify(currentlyPlaying)}`)
+    })
 
     this.setState({
       isLoading: false,
