@@ -1,7 +1,10 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import io from 'socket.io-client'
 
 const broadcastApiUrl = `${process.env.REACT_APP_API_URL}/api/broadcast`
+
+const socket = io('http://localhost:8080')
 
 const getAccessToken = () => {
   //Check and see if an access_token is available
@@ -9,16 +12,27 @@ const getAccessToken = () => {
 }
 
 const create = async (broadcasterName, profileImageUrl, debug) => {
-  const response = await axios.post(`${broadcastApiUrl}/create`, {
-    broadcasterName,
-    profileImageUrl,
-    debug
+  const broadcastCreatePromise = new Promise((resolve, reject) => {
+    console.log('creating broadcast')
+    socket.emit(
+      'create broadcast',
+      broadcasterName,
+      profileImageUrl,
+      debug,
+      val => {
+        console.log(`broadcast created ${val}`)
+        resolve(val)
+      }
+    ) //TODO: Timeout for reject?
   })
-  return response.data
+
+  const broadcastId = await broadcastCreatePromise
+
+  return broadcastId
 }
 
-const broadcast = async currentlyPlaying => {
-  const response = await axios.put(
+const broadcast = async (broadcastId, currentlyPlaying) => {
+  /*const response = await axios.put(
     `${broadcastApiUrl}/update`,
     {
       currentlyPlaying
@@ -27,7 +41,18 @@ const broadcast = async currentlyPlaying => {
       headers: { Authorization: 'Bearer ' + getAccessToken() }
     }
   )
-  return response.data
+  return response.data*/
+  console.log(`update broadcast ${broadcastId}`)
+  socket.emit('update broadcast', broadcastId, currentlyPlaying)
+}
+
+const registerListener = async (broadcastId, callback) => {
+  socket.on('broadcast updated', currentlyPlaying => {
+    console.log(`broadcast updated ${JSON.stringify(currentlyPlaying)}`)
+    callback(currentlyPlaying)
+  })
+  //const response = await axios.get(`${broadcastApiUrl}/${broadcastId}`)
+  //return response.data
 }
 
 const listen = async broadcastId => {
@@ -38,5 +63,6 @@ const listen = async broadcastId => {
 export default {
   create,
   broadcast,
-  listen
+  listen,
+  registerListener
 }
