@@ -3,6 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { white, H2, primaryFont } from '../../styles/base'
 import ViewCounter from './ViewCounter'
+import ProgressBar from './ProgressBar'
 
 import ListenerStreamController from '../ListenerStreamController'
 
@@ -83,21 +84,6 @@ const TopContainer = styled.section`
   flex-direction: column;
 `
 
-const ProgressContainer = styled.section`
-  font-family: Open Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  color: ${white};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-const ProgressBar = styled.progress`
-  flex-grow: 1;
-  margin: 0px 10px;
-`
-
 class ListenerPlayer extends React.Component {
   constructor(props) {
     super(props)
@@ -110,29 +96,6 @@ class ListenerPlayer extends React.Component {
     }
   }
 
-  calculateProgressString(ms) {
-    const totalSeconds = Math.floor(ms / 1000)
-    const seconds = totalSeconds % 60
-    const minutes = Math.floor(totalSeconds / 60)
-
-    let secondsString = seconds < 10 ? `0${seconds}` : seconds.toString()
-    return `${minutes}:${secondsString}`
-  }
-
-  setProgressStrings(currentlyPlaying) {
-    const progressString = this.calculateProgressString(
-      currentlyPlaying.progress_ms || 0
-    )
-    const durationString = this.calculateProgressString(
-      currentlyPlaying.item.duration_ms || 0
-    )
-
-    this.setState({
-      progressString,
-      durationString
-    })
-  }
-
   setCurrentSongInfo(currentlyPlaying) {
     let currentSongInfo = {}
     if (currentlyPlaying && currentlyPlaying.item) {
@@ -141,7 +104,6 @@ class ListenerPlayer extends React.Component {
       currentSongInfo.albumArtUrl = currentlyPlaying.item.album.images[0].url
       currentSongInfo.progress_ms = currentlyPlaying.progress_ms
       currentSongInfo.duration_ms = currentlyPlaying.item.duration_ms
-      this.setProgressStrings(currentlyPlaying)
     }
 
     this.setState({
@@ -166,14 +128,10 @@ class ListenerPlayer extends React.Component {
                 <SongTitle>{this.state.currentSongInfo.name}</SongTitle>
                 <ArtistName>{this.state.currentSongInfo.artist}</ArtistName>
               </TopContainer>
-              <ProgressContainer>
-                <p>{this.state.progressString}</p>
-                <ProgressBar
-                  value={this.state.currentSongInfo.progress_ms || 0}
-                  max={this.state.currentSongInfo.duration_ms || 0}
-                />
-                <p>{this.state.durationString}</p>
-              </ProgressContainer>
+              <ProgressBar
+                progress_ms={this.state.currentSongInfo.progress_ms}
+                duration_ms={this.state.currentSongInfo.duration_ms}
+              />
             </BottomRightContainer>
           </SecondRow>
         )}
