@@ -15,7 +15,7 @@ class Broadcaster extends React.Component {
       isBroadcasting: false,
       broadcastId: ''
     }
-    const socket = io('http://localhost:8080')
+    const socket = io(process.env.REACT_APP_API_URL)
     socket.emit('test-event', function() {
       console.log('ack')
     })
