@@ -5,8 +5,6 @@ import broadcastApi from '../lib/broadcast'
 
 import io from 'socket.io-client'
 
-const IS_DEV_MODE = process.env.REACT_APP_DEV_MODE === 'true'
-
 class Broadcaster extends React.Component {
   constructor(props) {
     super(props)
@@ -50,9 +48,9 @@ class Broadcaster extends React.Component {
         ? profile.images[0].url
         : ''
     const broadcastId = await broadcastApi.create(
+      profile.id,
       profile.display_name,
-      profileImageUrl,
-      IS_DEV_MODE
+      profileImageUrl
     )
 
     broadcastApi.registerListener(broadcastId, currentlyPlaying => {

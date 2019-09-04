@@ -11,14 +11,14 @@ const getAccessToken = () => {
   return Cookies.get('spotify_access_token')
 }
 
-const create = async (broadcasterName, profileImageUrl, debug) => {
+const create = async (id, broadcasterName, profileImageUrl) => {
   const broadcastCreatePromise = new Promise((resolve, reject) => {
     console.log('creating broadcast')
     socket.emit(
       'create broadcast',
+      id,
       broadcasterName,
       profileImageUrl,
-      debug,
       val => {
         console.log(`broadcast created ${val}`)
         resolve(val)
@@ -32,27 +32,15 @@ const create = async (broadcasterName, profileImageUrl, debug) => {
 }
 
 const broadcast = async (broadcastId, currentlyPlaying) => {
-  /*const response = await axios.put(
-    `${broadcastApiUrl}/update`,
-    {
-      currentlyPlaying
-    },
-    {
-      headers: { Authorization: 'Bearer ' + getAccessToken() }
-    }
-  )
-  return response.data*/
   console.log(`update broadcast ${broadcastId}`)
   socket.emit('update broadcast', broadcastId, currentlyPlaying)
 }
 
 const registerListener = async (broadcastId, callback) => {
-  socket.on('broadcast updated', currentlyPlaying => {
-    console.log(`broadcast updated ${JSON.stringify(currentlyPlaying)}`)
-    callback(currentlyPlaying)
+  socket.on('broadcast updated', async currentlyPlaying => {
+    await callback(currentlyPlaying)
   })
-  //const response = await axios.get(`${broadcastApiUrl}/${broadcastId}`)
-  //return response.data
+  socket.emit('join', broadcastId)
 }
 
 const listen = async broadcastId => {

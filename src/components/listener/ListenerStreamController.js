@@ -3,16 +3,17 @@ import React from 'react'
 import spotifyApi from '../../lib/spotify'
 import broadcastApi from '../../lib/broadcast'
 
+import isSyncRequired from '../../services/syncRequired'
+
 import Script from 'react-load-script'
 import { setupSpotifyWebPlayerCallback } from '../../lib/spotify-web-player'
-
-const DEBOUNCE_MS = 5000
-const IS_DEV_MODE = process.env.REACT_APP_DEV_MODE === 'true'
 
 class ListenerStreamController extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      syncInProgress: false
+    }
     setupSpotifyWebPlayerCallback(this.setDeviceId.bind(this))
   }
 
@@ -22,11 +23,6 @@ class ListenerStreamController extends React.Component {
       console.log('pausing because sync was disabled')
       spotifyApi.pause()
     }
-  }
-
-  isWithinDebouncePeriod(listenerProgressMs, broadcasterProgressMs) {
-    const diff = Math.abs(broadcasterProgressMs - listenerProgressMs)
-    return diff < DEBOUNCE_MS
   }
 
   async setListener(
@@ -45,54 +41,45 @@ class ListenerStreamController extends React.Component {
     }
   }
 
-  async syncPlayback() {
-    if (!this.props.broadcastId) return
+  async handleStreamUpdate(broadcasterCurrentlyPlaying) {
+    console.log('handle stream update')
+    console.log(broadcasterCurrentlyPlaying)
+    if (this.state.handlingUpdate) {
+      //if we're already handling a sync, don't pile on
+      return
+    }
+
+    this.setState({
+      handlingUpdate: true
+    })
 
     try {
-      const listenerStatus = await spotifyApi.getCurrentlyPlaying()
+      const listenerCurrentlyPlaying = await spotifyApi.getCurrentlyPlaying()
+      this.props.streamUpdateHandler(broadcasterCurrentlyPlaying)
 
-      const broadcast = await broadcastApi.listen(this.props.broadcastId)
-      const broadcasterStatus = broadcast.currentlyPlaying
-
-      this.props.streamUpdateHandler(broadcasterStatus)
-
-      const listenerId = listenerStatus.id
-      const listenerProgressMs = listenerStatus.progress_ms
-      const listenerIsPlaying = listenerStatus.is_playing
-
-      const broadcasterId = broadcasterStatus.id
-      const broadcasterUri = broadcasterStatus.item.uri
-      const broadcasterProgressMs = broadcasterStatus.progress_ms
-      const broadcasterIsPlaying = broadcasterStatus.is_playing
-
-      const idsEqual = listenerId === broadcasterId
-      const isPlayingEqual = listenerIsPlaying === broadcasterIsPlaying
-      const isWithinDebouncePeriod = this.isWithinDebouncePeriod(
-        listenerProgressMs,
-        broadcasterProgressMs
+      const syncRequired = isSyncRequired(
+        listenerCurrentlyPlaying,
+        broadcasterCurrentlyPlaying,
+        this.state.deviceId
       )
 
-      const isWebPlayerReady = this.state.deviceId
-
-      if (
-        (!idsEqual || !isPlayingEqual || !isWithinDebouncePeriod) &&
-        isWebPlayerReady &&
-        this.props.syncEnabled &&
-        !IS_DEV_MODE
-      ) {
+      if (syncRequired && this.state.deviceId && this.props.syncEnabled) {
         console.debug('syncing')
+
         await this.setListener(
-          broadcasterUri,
-          broadcasterProgressMs,
-          broadcasterIsPlaying,
-          listenerIsPlaying,
+          broadcasterCurrentlyPlaying.item.uri,
+          broadcasterCurrentlyPlaying.progress_ms,
+          broadcasterCurrentlyPlaying.is_playing,
+          listenerCurrentlyPlaying.is_playing,
           this.state.deviceId
         )
       }
     } catch (error) {
       console.error(error)
     } finally {
-      setTimeout(this.syncPlayback.bind(this), 500)
+      this.setState({
+        handlingUpdate: false
+      })
     }
   }
 
@@ -105,10 +92,15 @@ class ListenerStreamController extends React.Component {
     this.setState({
       deviceId
     })
+    broadcastApi.registerListener(
+      this.props.broadcastId,
+      this.handleStreamUpdate.bind(this)
+    )
+    console.log('listener registered')
   }
 
-  async componentDidMount() {
-    this.syncPlayback()
+  componentDidMount() {
+    console.log('component did mount')
   }
 
   render() {
