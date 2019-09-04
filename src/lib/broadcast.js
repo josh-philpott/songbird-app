@@ -3,8 +3,7 @@ import Cookies from 'js-cookie'
 import io from 'socket.io-client'
 
 const broadcastApiUrl = `${process.env.REACT_APP_API_URL}/api/broadcast`
-
-const socket = io('http://localhost:8080')
+const socket = io(process.env.REACT_APP_API_URL)
 
 const getAccessToken = () => {
   //Check and see if an access_token is available
