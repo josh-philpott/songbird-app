@@ -131,6 +131,7 @@ class ListenerPlayer extends React.Component {
               <ProgressBar
                 progress_ms={this.state.currentSongInfo.progress_ms}
                 duration_ms={this.state.currentSongInfo.duration_ms}
+                is_playing={this.state.currentlyPlaying.is_playing}
               />
             </BottomRightContainer>
           </SecondRow>
