@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import spotifyApi from '../../lib/spotify'
 import broadcastApi from '../../lib/broadcast'
@@ -94,7 +95,8 @@ class ListenerStreamController extends React.Component {
     })
     broadcastApi.registerListener(
       this.props.broadcastId,
-      this.handleStreamUpdate.bind(this)
+      this.handleStreamUpdate.bind(this),
+      this.props.broadcasterDisconnectHandler
     )
     console.log('listener registered')
   }
@@ -109,3 +111,10 @@ class ListenerStreamController extends React.Component {
 }
 
 export default ListenerStreamController
+
+ListenerStreamController.propTypes = {
+  broadcasterDisconnectHandler: PropTypes.func,
+  streamUpdateHandler: PropTypes.func,
+  syncEnabled: PropTypes.bool,
+  broadcastId: PropTypes.string
+}

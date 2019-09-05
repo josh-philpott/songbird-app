@@ -35,10 +35,19 @@ const broadcast = async (broadcastId, currentlyPlaying) => {
   socket.emit('update broadcast', broadcastId, currentlyPlaying)
 }
 
-const registerListener = async (broadcastId, callback) => {
+const registerListener = async (
+  broadcastId,
+  broadcastUpdatedCallback,
+  broadcasterDisconnectedCallback
+) => {
   socket.on('broadcast updated', async currentlyPlaying => {
-    await callback(currentlyPlaying)
+    await broadcastUpdatedCallback(currentlyPlaying)
   })
+
+  socket.on('broadcaster disconnected', async () => {
+    await broadcasterDisconnectedCallback()
+  })
+
   socket.emit('join', broadcastId)
 }
 

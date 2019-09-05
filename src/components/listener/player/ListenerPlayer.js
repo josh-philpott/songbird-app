@@ -1,7 +1,7 @@
 import React from 'react'
 
 import styled from 'styled-components'
-import { white, H2, primaryFont } from '../../styles/base'
+import { white, H2, primaryFont, P } from '../../styles/base'
 import ViewCounter from './ViewCounter'
 import ProgressBar from './ProgressBar'
 
@@ -92,7 +92,8 @@ class ListenerPlayer extends React.Component {
       currentSongInfo: {},
       currentlyPlaying: {},
       progressString: '',
-      durationString: ''
+      durationString: '',
+      isBroadcasting: true
     }
   }
 
@@ -104,12 +105,20 @@ class ListenerPlayer extends React.Component {
       currentSongInfo.albumArtUrl = currentlyPlaying.item.album.images[0].url
       currentSongInfo.progress_ms = currentlyPlaying.progress_ms
       currentSongInfo.duration_ms = currentlyPlaying.item.duration_ms
+      this.setState({
+        isLoading: false,
+        currentSongInfo,
+        currentlyPlaying,
+        isBroadcasting: true
+      })
+    } else {
+      this.setState({ isLoading: false, isBroadcasting: false })
     }
+  }
 
+  handleBroadcasterDisconnect() {
     this.setState({
-      isLoading: false,
-      currentSongInfo,
-      currentlyPlaying
+      isBroadcasting: false
     })
   }
 
@@ -120,24 +129,33 @@ class ListenerPlayer extends React.Component {
           <Header>Currently Broadcasting</Header>
           <ViewCounter />
         </TopRow>
-        {this.state.isLoading ? null : (
-          <SecondRow>
-            <AlbumArt src={this.state.currentSongInfo.albumArtUrl} />
-            <BottomRightContainer>
-              <TopContainer>
-                <SongTitle>{this.state.currentSongInfo.name}</SongTitle>
-                <ArtistName>{this.state.currentSongInfo.artist}</ArtistName>
-              </TopContainer>
-              <ProgressBar
-                progress_ms={this.state.currentSongInfo.progress_ms}
-                duration_ms={this.state.currentSongInfo.duration_ms}
-                is_playing={this.state.currentlyPlaying.is_playing}
-              />
-            </BottomRightContainer>
-          </SecondRow>
+        {this.state.isBroadcasting ? (
+          <>
+            {this.state.isLoading ? null : (
+              <SecondRow>
+                <AlbumArt src={this.state.currentSongInfo.albumArtUrl} />
+                <BottomRightContainer>
+                  <TopContainer>
+                    <SongTitle>{this.state.currentSongInfo.name}</SongTitle>
+                    <ArtistName>{this.state.currentSongInfo.artist}</ArtistName>
+                  </TopContainer>
+                  <ProgressBar
+                    progress_ms={this.state.currentSongInfo.progress_ms}
+                    duration_ms={this.state.currentSongInfo.duration_ms}
+                    is_playing={this.state.currentlyPlaying.is_playing}
+                  />
+                </BottomRightContainer>
+              </SecondRow>
+            )}
+          </>
+        ) : (
+          <P>Nothing is playing...</P>
         )}
         <ListenerStreamController
           streamUpdateHandler={this.setCurrentSongInfo.bind(this)}
+          broadcasterDisconnectHandler={this.handleBroadcasterDisconnect.bind(
+            this
+          )}
           broadcastId={this.props.broadcastId}
           syncEnabled={this.props.syncEnabled}
         />

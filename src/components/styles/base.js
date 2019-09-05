@@ -25,6 +25,11 @@ export const H2 = styled.h2`
   margin: 0px;
 `
 
+export const P = styled.p`
+  ${primaryFont}
+  color: ${white}
+`
+
 export const buttonBase = `
   display: flex;
   align-items: center;
