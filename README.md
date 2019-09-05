@@ -12,7 +12,6 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 # TODO
 
-- Pause broadcast button
 - Broadcaster leaving should stop broadcast
 - Add some validation around getting profile information to handle defaulting some items (profile image?)
 - Add check if they're a spotify premium member
@@ -20,21 +19,24 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 - Styling
   - Fix Home Page scaling issues. Get it looking good up to a standard mobile view (pick those sizes?)
   - Broadcaster Page
-- Handle Spotify Refresh Token
-- progress bar style updates
-  - background color should be white
-  - position not quite on?
+  - progress bar style updates
+    - background color should be white
+    - position not quite on?
 
 ## TODO Laters
 
-- Sync Performance Optimizations
-  - Websockets?
 - Broadcasts to be stored to Postgres or Redis (planning to start with Postgres and move to Redis if it becomes an issue in syncing)
-- Move sync logic to API
-  - Bridge will sync _while_ the player is open and the active device.
-  - Once the player is not the active device, we should stop syncing to that listener
 
 # Work Log
+
+9/5/19
+Haven't been logging recently so this is a quick overview of things I've done recently
+
+- Pause broadcast button
+- Websockets
+- Logic to determine whether listeners will need a sync lives in API layer. The Client layer just accepts commands via websockets and executes on spotify for the client.
+- Handle Spotify Refresh Token
+- A room is created based upon a users spotify ID. So that a persons listen link is always the same
 
 7/29/19
 
