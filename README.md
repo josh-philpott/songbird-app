@@ -12,6 +12,8 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 # TODO
 
+- Make sure audio stops on the broadcastending
+- On Air sign shouldn't flash if the broadcaster disconnects & there should be a message about the broadcaster not being there. May need to move stream handler logic to the top level of the listener page
 - Add some validation around getting profile information to handle defaulting some items (profile image?)
 - Add check if they're a spotify premium member
 - Default to standard profile image
