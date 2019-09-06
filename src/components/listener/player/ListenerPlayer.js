@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import styled from 'styled-components'
 import { white, H2, primaryFont, P } from '../../styles/base'
@@ -98,6 +99,7 @@ class ListenerPlayer extends React.Component {
   }
 
   setCurrentSongInfo(currentlyPlaying) {
+    this.props.handleBroadcastStatusChange(true)
     let currentSongInfo = {}
     if (currentlyPlaying && currentlyPlaying.item) {
       currentSongInfo.name = currentlyPlaying.item.name
@@ -117,9 +119,11 @@ class ListenerPlayer extends React.Component {
   }
 
   handleBroadcasterDisconnect() {
+    console.log('broadcaster disconnected')
     this.setState({
       isBroadcasting: false
     })
+    this.props.handleBroadcastStatusChange(false)
   }
 
   render() {
@@ -165,3 +169,9 @@ class ListenerPlayer extends React.Component {
 }
 
 export default ListenerPlayer
+
+ListenerPlayer.propTypes = {
+  broadcastId: PropTypes.string,
+  handleBroadcastStatusChange: PropTypes.func,
+  syncEnabled: PropTypes.bool
+}

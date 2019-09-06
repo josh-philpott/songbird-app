@@ -31,7 +31,8 @@ class Listener extends React.Component {
     super(props)
     this.state = {
       isLoading: true,
-      syncEnabled: false
+      syncEnabled: false,
+      isBroadcasting: false
     }
   }
 
@@ -61,6 +62,12 @@ class Listener extends React.Component {
     })
   }
 
+  handleBroadcastStatusChange(isBroadcasting) {
+    this.setState({
+      isBroadcasting
+    })
+  }
+
   render() {
     let body
     if (this.state.isLoading) {
@@ -72,6 +79,7 @@ class Listener extends React.Component {
           <RoomInfo
             broadcasterProfileImage={this.state.broadcastProfileImageUrl}
             broadcasterName={this.state.broadcasterName}
+            isBroadcasting={this.state.isBroadcasting}
           />
 
           {this.state.syncEnabled ? (
@@ -91,6 +99,9 @@ class Listener extends React.Component {
           <ListenerPlayer
             broadcastId={this.state.broadcastId}
             syncEnabled={this.state.syncEnabled}
+            handleBroadcastStatusChange={this.handleBroadcastStatusChange.bind(
+              this
+            )}
           />
         </div>
       )

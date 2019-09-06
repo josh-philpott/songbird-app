@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import styled from 'styled-components'
 import { grey, H1 } from '../styles/base'
@@ -24,25 +25,20 @@ const UserProfileImage = styled.img`
   border: 1px solid ${grey};
 `
 
-class RoomInfo extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isLoading: true
-    }
-  }
-
-  async componentDidMount() {}
-
-  render() {
-    return (
-      <Banner>
-        <UserProfileImage src={this.props.broadcasterProfileImage} />
-        <RoomText>{this.props.broadcasterName}'s Room</RoomText>
-        <OnAirSign onAir={true} />
-      </Banner>
-    )
-  }
+function RoomInfo(props) {
+  return (
+    <Banner>
+      <UserProfileImage src={props.broadcasterProfileImage} />
+      <RoomText>{props.broadcasterName}'s Room</RoomText>
+      <OnAirSign onAir={props.isBroadcasting} />
+    </Banner>
+  )
 }
 
 export default RoomInfo
+
+RoomInfo.propTypes = {
+  broadcasterName: PropTypes.string,
+  broadcasterProfileImage: PropTypes.string,
+  isBroadcasting: PropTypes.bool
+}
