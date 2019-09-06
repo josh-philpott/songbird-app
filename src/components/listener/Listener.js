@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import querystring from 'query-string'
 
-import spotifyApi from '../../lib/spotify'
 import broadcastApi from '../../lib/broadcast'
 
 import Navbar from '../home/Navbar'
@@ -26,68 +25,63 @@ const SyncButton = styled.button`
 
   ${buttonBase}
 `
-class Listener extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isLoading: true,
-      syncEnabled: false,
-      isBroadcasting: false
+
+function Listener(props) {
+  const [isLoading, setIsLoading] = useState(true)
+  const [isBroadcasting, setIsBroadcasting] = useState(false)
+  const [isValidBroadcastId, setIsValidBroadcastId] = useState(true)
+  const [broadcasterName, setBroadcasterName] = useState('')
+  const [broadcastId, setBroadcastId] = useState()
+  const [broadcasterProfileImageUrl, setBroadcasterProfileImageUrl] = useState()
+  const [syncEnabled, setSyncEnabled] = useState(false)
+
+  const setProfileInfo = async () => {
+    const { broadcastId } = querystring.parse(props.location.search)
+    const broadcastInfo = await broadcastApi.getBroadcastInfo(broadcastId)
+
+    if (broadcastInfo) {
+      setBroadcastId(broadcastId)
+      setBroadcasterName(broadcastInfo.broadcasterName)
+      setBroadcasterProfileImageUrl(broadcastInfo.profileImageUrl)
+      setIsLoading(false)
+    } else {
+      setIsValidBroadcastId(false)
+      setIsLoading(false)
     }
   }
 
-  async componentDidMount() {
-    const { broadcastId } = querystring.parse(this.props.location.search)
-    const profile = await spotifyApi.getProfileInfo()
-    const broadcast = await broadcastApi.listen(broadcastId)
+  useEffect(() => {
+    setProfileInfo()
+  })
 
-    // poll for currently playing track
-    const profileImage =
-      profile.images && profile.images[0] && profile.images[0].url
-        ? profile.images[0].url
-        : ''
-
-    this.setState({
-      isLoading: false,
-      broadcasterName: broadcast.broadcasterName,
-      broadcastProfileImageUrl: broadcast.profileImageUrl,
-      profileImage,
-      broadcastId
-    })
+  const toggleSyncEnabled = () => {
+    setSyncEnabled(!syncEnabled)
   }
 
-  toggleSyncEnabled() {
-    this.setState({
-      syncEnabled: !this.state.syncEnabled
-    })
+  const handleBroadcastStatusChange = broadcasting => {
+    setIsBroadcasting(broadcasting)
   }
 
-  handleBroadcastStatusChange(isBroadcasting) {
-    this.setState({
-      isBroadcasting
-    })
-  }
-
-  render() {
-    let body
-    if (this.state.isLoading) {
-      body = <Body>Loading...</Body>
-    } else {
-      body = (
-        <div>
+  if (isLoading) {
+    return <Body>Loading...</Body>
+  } else {
+    if (!isValidBroadcastId) return <Body>Not a valid broadcast id...</Body>
+    else {
+      return (
+        <>
           <Navbar loggedIn={true} />
           <RoomInfo
-            broadcasterProfileImage={this.state.broadcastProfileImageUrl}
-            broadcasterName={this.state.broadcasterName}
-            isBroadcasting={this.state.isBroadcasting}
+            broadcasterProfileImage={broadcasterProfileImageUrl}
+            broadcasterName={broadcasterName}
+            isBroadcasting={isBroadcasting}
           />
 
-          {this.state.syncEnabled ? (
-            <SyncButton onClick={this.toggleSyncEnabled.bind(this)}>
+          {syncEnabled ? (
+            <SyncButton onClick={toggleSyncEnabled.bind(this)}>
               <span>pause broadcast</span>
             </SyncButton>
           ) : (
-            <SyncButton onClick={this.toggleSyncEnabled.bind(this)}>
+            <SyncButton onClick={toggleSyncEnabled.bind(this)}>
               <img
                 src={process.env.PUBLIC_URL + '/img/play-icon.svg'}
                 alt='play'
@@ -97,16 +91,13 @@ class Listener extends React.Component {
           )}
 
           <ListenerPlayer
-            broadcastId={this.state.broadcastId}
-            syncEnabled={this.state.syncEnabled}
-            handleBroadcastStatusChange={this.handleBroadcastStatusChange.bind(
-              this
-            )}
+            broadcastId={broadcastId}
+            syncEnabled={syncEnabled}
+            handleBroadcastStatusChange={handleBroadcastStatusChange.bind(this)}
           />
-        </div>
+        </>
       )
     }
-    return body
   }
 }
 

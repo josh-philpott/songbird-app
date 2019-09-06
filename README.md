@@ -25,6 +25,11 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
   - background color should be white
   - position not quite on?
 
+Design:
+
+- Error handling
+  - Invalid broadcast id?
+
 ## TODO Laters
 
 - Sync Performance Optimizations

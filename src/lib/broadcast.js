@@ -51,7 +51,7 @@ const registerListener = async (
   socket.emit('join', broadcastId)
 }
 
-const listen = async broadcastId => {
+const getBroadcastInfo = async broadcastId => {
   const response = await axios.get(`${broadcastApiUrl}/${broadcastId}`)
   return response.data
 }
@@ -59,6 +59,6 @@ const listen = async broadcastId => {
 export default {
   create,
   broadcast,
-  listen,
+  getBroadcastInfo,
   registerListener
 }
