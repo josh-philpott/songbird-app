@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import querystring from 'query-string'
 
 import broadcastApi from '../../lib/broadcast'
+import spotifyApi from '../../lib/spotify'
 
 import Navbar from '../home/Navbar'
 
@@ -35,7 +36,13 @@ function Listener(props) {
   const [broadcasterProfileImageUrl, setBroadcasterProfileImageUrl] = useState()
   const [syncEnabled, setSyncEnabled] = useState(false)
 
-  const setProfileInfo = async () => {
+  const [listenerProfileInfo, setListenerProfileInfo] = useState({
+    id: '',
+    imageUrl: '',
+    name: ''
+  })
+
+  const setBroadcasterInfo = async () => {
     const { broadcastId } = querystring.parse(props.location.search)
     const broadcastInfo = await broadcastApi.getBroadcastInfo(broadcastId)
 
@@ -50,9 +57,29 @@ function Listener(props) {
     }
   }
 
+  const fetchListenerProfileInfo = async () => {
+    console.log('fetching listener profile')
+    const profile = await spotifyApi.getProfileInfo()
+    if (profile) {
+      const profileImageUrl = spotifyApi.extractProfileImage(profile)
+
+      setListenerProfileInfo({
+        id: profile.id,
+        imageUrl: profileImageUrl,
+        name: profile.display_name
+      })
+    }
+  }
+
   useEffect(() => {
-    setProfileInfo()
-  })
+    console.log('fetch broadcaster info effect')
+    setBroadcasterInfo()
+  }, [])
+
+  useEffect(() => {
+    console.log('fetch listener effect')
+    fetchListenerProfileInfo()
+  }, [])
 
   const toggleSyncEnabled = () => {
     setSyncEnabled(!syncEnabled)
@@ -94,6 +121,7 @@ function Listener(props) {
             broadcastId={broadcastId}
             syncEnabled={syncEnabled}
             handleBroadcastStatusChange={handleBroadcastStatusChange.bind(this)}
+            listenerProfileInfo={listenerProfileInfo}
           />
         </>
       )

@@ -64,10 +64,20 @@ const play = async (uri, position_ms, deviceId) => {
   )
 }
 
+//utils
+const extractProfileImage = profile => {
+  return profile && profile.images && profile.images[0]
+    ? profile.images[0].url
+    : ''
+}
+
 export default {
+  // Spotify API Requests
   getAccessToken,
   getCurrentlyPlaying,
   getProfileInfo,
   pause,
-  play
+  play,
+  // Utility functions
+  extractProfileImage
 }

@@ -12,7 +12,8 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 # TODO
 
-- Make sure audio stops on the broadcastending
+- Viewers UI
+- Make sure audio stops upon the broadcast ending
 - On Air sign shouldn't flash if the broadcaster disconnects & there should be a message about the broadcaster not being there. May need to move stream handler logic to the top level of the listener page
 - Add some validation around getting profile information to handle defaulting some items (profile image?)
 - Add check if they're a spotify premium member
@@ -32,14 +33,25 @@ Design:
 
 ## TODO Laters
 
-- Sync Performance Optimizations
-  - Websockets?
 - Broadcasts to be stored to Postgres or Redis (planning to start with Postgres and move to Redis if it becomes an issue in syncing)
-- Move sync logic to API
-  - Bridge will sync _while_ the player is open and the active device.
-  - Once the player is not the active device, we should stop syncing to that listener
+- Broadcaster info retrived in server instead of posted from client? (this can wait until trying to build a mobile app)
 
 # Work Log
+
+9/10/19
+
+- More work on viewers
+  - Broadcaster is not added to viewer list
+  - Listeners send real profile info on registration
+
+9/9/19
+
+- Viewers
+
+9/6/19
+
+- Refactored a few of my components to use hooks
+- Handle broadcast
 
 9/5/19
 

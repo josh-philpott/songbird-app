@@ -42,18 +42,14 @@ class Broadcaster extends React.Component {
 
   async componentDidMount() {
     const profile = await spotifyApi.getProfileInfo()
-
-    const profileImageUrl =
-      profile && profile.images && profile.images[0]
-        ? profile.images[0].url
-        : ''
+    const profileImageUrl = spotifyApi.extractProfileImage(profile)
     const broadcastId = await broadcastApi.create(
       profile.id,
       profile.display_name,
       profileImageUrl
     )
 
-    broadcastApi.registerListener(broadcastId, currentlyPlaying => {
+    broadcastApi.registerListener(broadcastId, true, currentlyPlaying => {
       console.log(`broadcast updated ${JSON.stringify(currentlyPlaying)}`)
     })
 

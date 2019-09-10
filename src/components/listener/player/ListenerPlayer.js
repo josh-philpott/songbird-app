@@ -162,6 +162,7 @@ class ListenerPlayer extends React.Component {
           )}
           broadcastId={this.props.broadcastId}
           syncEnabled={this.props.syncEnabled}
+          listenerProfileInfo={this.props.listenerProfileInfo}
         />
       </Player>
     )
@@ -173,5 +174,6 @@ export default ListenerPlayer
 ListenerPlayer.propTypes = {
   broadcastId: PropTypes.string,
   handleBroadcastStatusChange: PropTypes.func,
-  syncEnabled: PropTypes.bool
+  syncEnabled: PropTypes.bool,
+  listenerProfileInfo: PropTypes.object
 }

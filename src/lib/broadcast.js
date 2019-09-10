@@ -37,8 +37,10 @@ const broadcast = async (broadcastId, currentlyPlaying) => {
 
 const registerListener = async (
   broadcastId,
+  isBroadcaster,
   broadcastUpdatedCallback,
-  broadcasterDisconnectedCallback
+  broadcasterDisconnectedCallback,
+  listenerProfileInfo
 ) => {
   socket.on('broadcast updated', async currentlyPlaying => {
     await broadcastUpdatedCallback(currentlyPlaying)
@@ -48,7 +50,23 @@ const registerListener = async (
     await broadcasterDisconnectedCallback()
   })
 
-  socket.emit('join', broadcastId)
+  socket.on('viewers update', async viewers => {
+    console.log('viewers updated')
+    console.log(viewers)
+  })
+
+  if (listenerProfileInfo) {
+    socket.emit(
+      'join',
+      broadcastId,
+      isBroadcaster,
+      listenerProfileInfo.id,
+      listenerProfileInfo.name,
+      listenerProfileInfo.imageUrl
+    )
+  } else {
+    socket.emit('join', broadcastId, isBroadcaster)
+  }
 }
 
 const getBroadcastInfo = async broadcastId => {

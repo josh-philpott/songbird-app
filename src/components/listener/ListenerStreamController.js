@@ -95,8 +95,10 @@ class ListenerStreamController extends React.Component {
     })
     broadcastApi.registerListener(
       this.props.broadcastId,
+      false,
       this.handleStreamUpdate.bind(this),
-      this.props.broadcasterDisconnectHandler
+      this.props.broadcasterDisconnectHandler,
+      this.props.listenerProfileInfo
     )
     console.log('listener registered')
   }
@@ -116,5 +118,7 @@ ListenerStreamController.propTypes = {
   broadcasterDisconnectHandler: PropTypes.func,
   streamUpdateHandler: PropTypes.func,
   syncEnabled: PropTypes.bool,
-  broadcastId: PropTypes.string
+  broadcastId: PropTypes.string,
+  //TODO: Prop drilling here I might want to fix. Maybe load this info in context?
+  listenerProfileInfo: PropTypes.object
 }
