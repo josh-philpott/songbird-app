@@ -97,6 +97,7 @@ class ListenerStreamController extends React.Component {
       this.props.broadcastId,
       false,
       this.handleStreamUpdate.bind(this),
+      this.props.viewersUpdateHandler,
       this.props.broadcasterDisconnectHandler,
       this.props.listenerProfileInfo
     )
@@ -116,6 +117,7 @@ export default ListenerStreamController
 
 ListenerStreamController.propTypes = {
   broadcasterDisconnectHandler: PropTypes.func,
+  viewersUpdateHandler: PropTypes.func,
   streamUpdateHandler: PropTypes.func,
   syncEnabled: PropTypes.bool,
   broadcastId: PropTypes.string,

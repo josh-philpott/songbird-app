@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import querystring from 'query-string'
+import styled from 'styled-components'
 
 import broadcastApi from '../../lib/broadcast'
 import spotifyApi from '../../lib/spotify'
 
+import { buttonBase } from '../styles/base'
 import Navbar from '../home/Navbar'
-
 import RoomInfo from './RoomInfo'
 import ListenerPlayer from './player/ListenerPlayer'
-
-import styled from 'styled-components'
-import { buttonBase } from '../styles/base'
+import ViewerExpander from '../ViewerExpander'
 
 const Body = styled.section`
   margin: 30px auto;
@@ -35,6 +34,7 @@ function Listener(props) {
   const [broadcastId, setBroadcastId] = useState()
   const [broadcasterProfileImageUrl, setBroadcasterProfileImageUrl] = useState()
   const [syncEnabled, setSyncEnabled] = useState(false)
+  const [viewers, setViewers] = useState([])
 
   const [listenerProfileInfo, setListenerProfileInfo] = useState({
     id: '',
@@ -89,6 +89,12 @@ function Listener(props) {
     setIsBroadcasting(broadcasting)
   }
 
+  const handleViewersUpdate = viewers => {
+    setViewers(viewers)
+    console.log('set viewers')
+    console.log(viewers)
+  }
+
   if (isLoading) {
     return <Body>Loading...</Body>
   } else {
@@ -121,8 +127,10 @@ function Listener(props) {
             broadcastId={broadcastId}
             syncEnabled={syncEnabled}
             handleBroadcastStatusChange={handleBroadcastStatusChange.bind(this)}
+            handleViewersUpdate={handleViewersUpdate.bind(this)}
             listenerProfileInfo={listenerProfileInfo}
           />
+          <ViewerExpander viewers={viewers}></ViewerExpander>
         </>
       )
     }

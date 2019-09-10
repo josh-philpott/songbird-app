@@ -13,6 +13,7 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 # TODO
 
 - Viewers UI
+- See if Angela and I can flush out a design system for more consitency across the app
 - Make sure audio stops upon the broadcast ending
 - On Air sign shouldn't flash if the broadcaster disconnects & there should be a message about the broadcaster not being there. May need to move stream handler logic to the top level of the listener page
 - Add some validation around getting profile information to handle defaulting some items (profile image?)

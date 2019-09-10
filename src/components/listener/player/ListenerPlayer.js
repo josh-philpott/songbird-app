@@ -30,7 +30,7 @@ const TopRow = styled.section`
 const SecondRow = styled.section`
   display: flex;
   flex-direction: row;
-  justify-content: space-between
+  justify-content: space-between;
   height: 137px;
 `
 
@@ -163,6 +163,7 @@ class ListenerPlayer extends React.Component {
           broadcastId={this.props.broadcastId}
           syncEnabled={this.props.syncEnabled}
           listenerProfileInfo={this.props.listenerProfileInfo}
+          viewersUpdateHandler={this.props.handleViewersUpdate}
         />
       </Player>
     )
@@ -174,6 +175,7 @@ export default ListenerPlayer
 ListenerPlayer.propTypes = {
   broadcastId: PropTypes.string,
   handleBroadcastStatusChange: PropTypes.func,
+  handleViewersUpdate: PropTypes.func,
   syncEnabled: PropTypes.bool,
   listenerProfileInfo: PropTypes.object
 }
