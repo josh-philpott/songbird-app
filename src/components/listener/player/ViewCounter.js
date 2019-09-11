@@ -1,18 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const PeopleIcon = styled.img`
-  width: 22px;
-  height: 14px;
-  margin-right: 10px;
+import ProfilesIcon from '../../design-system/icons/ProfilesIcon'
+
+const Row = styled.section`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  * {
+    margin-right: 10px;
+  }
 `
 
 const ViewCounter = props => {
   return (
-    <section>
-      <PeopleIcon src={process.env.PUBLIC_URL + '/img/profile-icon.svg'} />
-      {props.viewCount || 0}
-    </section>
+    <Row>
+      <ProfilesIcon color='white' />
+      {props.count || 0}
+    </Row>
   )
 }
 

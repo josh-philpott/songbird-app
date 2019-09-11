@@ -1,13 +1,13 @@
 import styled from 'styled-components'
-import { grey } from '../styles/base'
+import { grey, sizings } from '../styles/base'
 
 const Avatar = styled.img`
   border-radius: 50%;
-  width: 35px;
-  height: 35px;
+  width: ${props => sizings[props.size] || sizings.lg};
+  height: ${props => sizings[props.size || sizings.lg]};
   object-fit: cover;
-
-  border: 1px solid ${grey};
+  border: ${props => (props.applyBorder ? `1px solid ${grey}` : null)};
+  box-shadow: 0 0 1px transparent; /* trick to anti-alias 1px border */
 `
 
 export default Avatar

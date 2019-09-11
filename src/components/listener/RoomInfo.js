@@ -20,7 +20,11 @@ const RoomText = styled(H1)`
 function RoomInfo(props) {
   return (
     <Banner>
-      <Avatar src={props.broadcasterProfileImage} />
+      <Avatar
+        src={props.broadcasterProfileImage}
+        size='xxl'
+        applyBorder={true}
+      />
       <RoomText>{props.broadcasterName}'s Room</RoomText>
       <OnAirSign onAir={props.isBroadcasting} />
     </Banner>

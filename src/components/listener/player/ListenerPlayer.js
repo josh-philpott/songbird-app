@@ -5,16 +5,23 @@ import styled from 'styled-components'
 import { white, H2, primaryFont, P } from '../../styles/base'
 import ViewCounter from './ViewCounter'
 import ProgressBar from './ProgressBar'
+import ViewerExpander from '../../ViewerExpander'
 
 import ListenerStreamController from '../ListenerStreamController'
 
-const Player = styled.section`
+const PlayerContainer = styled.section`
   width: 480px;
+  margin: 50px auto;
+  > * {
+    margin-bottom: 10px;
+  }
+`
+const Player = styled.section`
+  width: 100%;
   height: 220px;
   background-color: #2a2a2a;
   border: 1px solid #000000;
   border-radius: 6px;
-  margin: 50px auto;
   display: flex;
   flex-direction: column;
   padding: 16px 26px;
@@ -128,44 +135,49 @@ class ListenerPlayer extends React.Component {
 
   render() {
     return (
-      <Player>
-        <TopRow>
-          <Header>Currently Broadcasting</Header>
-          <ViewCounter />
-        </TopRow>
-        {this.state.isBroadcasting ? (
-          <>
-            {this.state.isLoading ? null : (
-              <SecondRow>
-                <AlbumArt src={this.state.currentSongInfo.albumArtUrl} />
-                <BottomRightContainer>
-                  <TopContainer>
-                    <SongTitle>{this.state.currentSongInfo.name}</SongTitle>
-                    <ArtistName>{this.state.currentSongInfo.artist}</ArtistName>
-                  </TopContainer>
-                  <ProgressBar
-                    progress_ms={this.state.currentSongInfo.progress_ms}
-                    duration_ms={this.state.currentSongInfo.duration_ms}
-                    is_playing={this.state.currentlyPlaying.is_playing}
-                  />
-                </BottomRightContainer>
-              </SecondRow>
-            )}
-          </>
-        ) : (
-          <P>Nothing is playing...</P>
-        )}
-        <ListenerStreamController
-          streamUpdateHandler={this.setCurrentSongInfo.bind(this)}
-          broadcasterDisconnectHandler={this.handleBroadcasterDisconnect.bind(
-            this
+      <PlayerContainer>
+        <Player>
+          <TopRow>
+            <Header>Currently Broadcasting</Header>
+            <ViewCounter count={this.props.viewers.length} />
+          </TopRow>
+          {this.state.isBroadcasting ? (
+            <>
+              {this.state.isLoading ? null : (
+                <SecondRow>
+                  <AlbumArt src={this.state.currentSongInfo.albumArtUrl} />
+                  <BottomRightContainer>
+                    <TopContainer>
+                      <SongTitle>{this.state.currentSongInfo.name}</SongTitle>
+                      <ArtistName>
+                        {this.state.currentSongInfo.artist}
+                      </ArtistName>
+                    </TopContainer>
+                    <ProgressBar
+                      progress_ms={this.state.currentSongInfo.progress_ms}
+                      duration_ms={this.state.currentSongInfo.duration_ms}
+                      is_playing={this.state.currentlyPlaying.is_playing}
+                    />
+                  </BottomRightContainer>
+                </SecondRow>
+              )}
+            </>
+          ) : (
+            <P>Nothing is playing...</P>
           )}
-          broadcastId={this.props.broadcastId}
-          syncEnabled={this.props.syncEnabled}
-          listenerProfileInfo={this.props.listenerProfileInfo}
-          viewersUpdateHandler={this.props.handleViewersUpdate}
-        />
-      </Player>
+          <ListenerStreamController
+            streamUpdateHandler={this.setCurrentSongInfo.bind(this)}
+            broadcasterDisconnectHandler={this.handleBroadcasterDisconnect.bind(
+              this
+            )}
+            broadcastId={this.props.broadcastId}
+            syncEnabled={this.props.syncEnabled}
+            listenerProfileInfo={this.props.listenerProfileInfo}
+            viewersUpdateHandler={this.props.handleViewersUpdate}
+          />
+        </Player>
+        <ViewerExpander viewers={this.props.viewers} />
+      </PlayerContainer>
     )
   }
 }

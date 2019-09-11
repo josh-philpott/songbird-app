@@ -7,9 +7,8 @@ import spotifyApi from '../../lib/spotify'
 
 import { buttonBase } from '../styles/base'
 import Navbar from '../home/Navbar'
-import RoomInfo from './RoomInfo'
-import ListenerPlayer from './player/ListenerPlayer'
-import ViewerExpander from '../ViewerExpander'
+import RoomInfo from '../listener/RoomInfo'
+import ListenerPlayer from '../listener/player/ListenerPlayer'
 
 const Body = styled.section`
   margin: 30px auto;
@@ -95,6 +94,8 @@ function Listener(props) {
     console.log(viewers)
   }
 
+  //TODO: Fix the styling here. This element should define the placement of the components
+  //below it!
   if (isLoading) {
     return <Body>Loading...</Body>
   } else {
@@ -129,8 +130,8 @@ function Listener(props) {
             handleBroadcastStatusChange={handleBroadcastStatusChange.bind(this)}
             handleViewersUpdate={handleViewersUpdate.bind(this)}
             listenerProfileInfo={listenerProfileInfo}
+            viewers={viewers}
           />
-          <ViewerExpander viewers={viewers}></ViewerExpander>
         </>
       )
     }

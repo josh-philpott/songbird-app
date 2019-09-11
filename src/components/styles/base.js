@@ -5,23 +5,31 @@ export const black = '#2A2A2A'
 export const white = '#F2F1EB'
 export const green = '#94d7a3'
 
+export const sizings = {
+  xs: '8px',
+  s: '12px',
+  md: '16px',
+  lg: '24px',
+  xl: '32px',
+  xxl: '36px'
+}
+
 export const primaryFont = `
   font-family: Heebo, sans-serif;
   font-style: normal;
   font-weight: 300;
-  font-size: 16px;
+  font-size: ${sizings.md}
   color: ${grey};
 `
 
 export const H1 = styled.h1`
   ${primaryFont}
-  font-size:32px;
+  font-size:${sizings.xl};
 `
 export const H2 = styled.h2`
   ${primaryFont}
-  font-size:32px;
-  font-size: 24px;
-  line-height: 35px;
+  font-size: ${sizings.lg};
+  line-height: ${sizings.xl};
   margin: 0px;
 `
 

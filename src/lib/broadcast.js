@@ -54,7 +54,9 @@ const registerListener = async (
   socket.on('viewers update', async viewers => {
     console.log('viewers updated')
     console.log(viewers)
-    await viewersUpdateHandler(viewers)
+    if (viewersUpdateHandler) {
+      await viewersUpdateHandler(viewers)
+    }
   })
 
   if (listenerProfileInfo) {
