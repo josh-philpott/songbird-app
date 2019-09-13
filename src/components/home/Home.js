@@ -3,10 +3,11 @@ import styled from 'styled-components'
 
 import Navbar from './Navbar'
 import HomeBody from './HomeBody'
+import PulsingGradientBackground from '../PulsingGradientBackground'
+
 import { primaryFont } from '../styles/base'
 
 const Wrapper = styled.section`
-  background-color: #eae7de;
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -29,6 +30,7 @@ const A = styled.a`
 function Home() {
   return (
     <Wrapper>
+      <PulsingGradientBackground />
       <Navbar />
       <HomeBody />
       <Footer>
