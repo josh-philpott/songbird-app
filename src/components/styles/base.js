@@ -19,7 +19,7 @@ export const primaryFont = `
   font-style: normal;
   font-weight: 300;
   font-size: ${sizings.md}
-  color: ${grey};
+  color: #FFFFFF;
 `
 
 export const H1 = styled.h1`
@@ -43,7 +43,7 @@ export const buttonBase = `
   align-items: center;
   justify-content: space-evenly;
 
-  border: 1px solid ${grey};
+  border: 1px solid #FFFFFF;
   border-radius: 3px;
   box-sizing: border-box;
   background-color: inherit;
@@ -51,6 +51,6 @@ export const buttonBase = `
   ${primaryFont}
 
   :hover {
-    background-color: #e2ded2;
+    background-color: #2a2a2a;
   }
 `

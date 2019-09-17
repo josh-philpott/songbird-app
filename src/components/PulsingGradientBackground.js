@@ -23,6 +23,10 @@ function PulsingGradientBackground() {
     [255, 0, 255],
     [255, 128, 0]
   )
+  /*[120, 0, 0], //reddish black
+    [120, 0, 0],
+    [35, 34, 34],
+    [100, 100, 100]*/
 
   let step = 0
   let direction = 'up'
@@ -34,14 +38,15 @@ function PulsingGradientBackground() {
   const colorIndices = [0, 1, 2, 3]
 
   //transition speed
-  let gradientSpeed = 0.0005
+  let gradientSpeed = 0.002
+
+  let translateDistance = 0
 
   function updateGradient() {
-    console.log('updating gradient')
     var currentColorLeft = colors[colorIndices[0]]
     var nextColorLeft = colors[colorIndices[1]]
     var currentColorRight = colors[colorIndices[2]]
-    var c1_1 = colors[colorIndices[3]]
+    var nextColorRight = colors[colorIndices[3]]
 
     var istep = 1 - step
     var r1 = Math.round(istep * currentColorLeft[0] + step * nextColorLeft[0])
@@ -49,13 +54,10 @@ function PulsingGradientBackground() {
     var b1 = Math.round(istep * currentColorLeft[2] + step * nextColorLeft[2])
     var color1 = 'rgb(' + r1 + ',' + g1 + ',' + b1 + ')'
 
-    var r2 = Math.round(istep * currentColorRight[0] + step * c1_1[0])
-    var g2 = Math.round(istep * currentColorRight[1] + step * c1_1[1])
-    var b2 = Math.round(istep * currentColorRight[2] + step * c1_1[2])
+    var r2 = Math.round(istep * currentColorRight[0] + step * nextColorRight[0])
+    var g2 = Math.round(istep * currentColorRight[1] + step * nextColorRight[1])
+    var b2 = Math.round(istep * currentColorRight[2] + step * nextColorRight[2])
     var color2 = 'rgb(' + r2 + ',' + g2 + ',' + b2 + ')'
-
-    console.log(color1)
-    console.log(color2)
 
     const background = {
       background:
@@ -64,6 +66,7 @@ function PulsingGradientBackground() {
         '), to(' +
         color2 +
         '))'
+      //transform: `translate3d(${step * 100}px, ${step * 100}px, 0px)`
       /* background:
         '-moz-linear-gradient(left, ' + color1 + ' 0%, ' + color2 + ' 100%)'*/
       //TODO: Figure out how to set multiple background css tags
@@ -71,8 +74,13 @@ function PulsingGradientBackground() {
 
     setBackgroundStyle(background)
 
-    if (direction === 'up') step += gradientSpeed
-    else step -= gradientSpeed
+    if (direction === 'up') {
+      step += gradientSpeed
+      translateDistance += 10
+    } else {
+      step -= gradientSpeed
+      translateDistance -= 10
+    }
 
     /*if (step >= 1) {
       step %= 1
@@ -90,14 +98,12 @@ function PulsingGradientBackground() {
           Math.floor(1 + Math.random() * (colors.length - 1))) %
         colors.length
     }*/
-    if (step > 0.25) {
+    if (step > 0.2) {
       direction = 'down'
     } else if (step <= 0) {
       direction = 'up'
       step = 0
     }
-
-    console.log(backgroundStyle)
   }
 
   useEffect(() => {

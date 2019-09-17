@@ -57,7 +57,7 @@ function HomeBody() {
             src={process.env.PUBLIC_URL + '/img/spotify-logo.svg'}
             alt='spotify logo'
           />
-          <p>login through Spotify</p>
+          <p>Login With Spotify</p>
         </SpotifyLoginLink>
       </Content>
       <img

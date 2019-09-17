@@ -4,7 +4,7 @@ export const setupSpotifyWebPlayerCallback = onReady => {
   window.onSpotifyWebPlaybackSDKReady = () => {
     const token = spotifyApi.getAccessToken()
     const player = new window.Spotify.Player({
-      name: 'SongBridge',
+      name: 'Soundbridge',
       getOAuthToken: cb => {
         cb(token)
       }

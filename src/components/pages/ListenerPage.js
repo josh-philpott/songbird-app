@@ -14,15 +14,25 @@ const Body = styled.section`
   margin: 30px auto;
   width: 300px;
   text-align: center;
+  background-color: #171716;
 `
 
 const SyncButton = styled.button`
   width: 238px;
   height: 44px;
-
-  margin: 0px auto;
-
   ${buttonBase}
+`
+
+const PageGrid = styled.section`
+  margin: 40px auto;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > * {
+    margin-bottom: 20px;
+  }
 `
 
 function Listener(props) {
@@ -104,34 +114,38 @@ function Listener(props) {
       return (
         <>
           <Navbar loggedIn={true} />
-          <RoomInfo
-            broadcasterProfileImage={broadcasterProfileImageUrl}
-            broadcasterName={broadcasterName}
-            isBroadcasting={isBroadcasting}
-          />
+          <PageGrid>
+            <RoomInfo
+              broadcasterProfileImage={broadcasterProfileImageUrl}
+              broadcasterName={broadcasterName}
+              isBroadcasting={isBroadcasting}
+            />
 
-          {syncEnabled ? (
-            <SyncButton onClick={toggleSyncEnabled.bind(this)}>
-              <span>pause broadcast</span>
-            </SyncButton>
-          ) : (
-            <SyncButton onClick={toggleSyncEnabled.bind(this)}>
-              <img
-                src={process.env.PUBLIC_URL + '/img/play-icon.svg'}
-                alt='play'
-              />
-              <span>play broadcast</span>
-            </SyncButton>
-          )}
+            {syncEnabled ? (
+              <SyncButton onClick={toggleSyncEnabled.bind(this)}>
+                <span>pause broadcast</span>
+              </SyncButton>
+            ) : (
+              <SyncButton onClick={toggleSyncEnabled.bind(this)}>
+                <img
+                  src={process.env.PUBLIC_URL + '/img/play-icon.svg'}
+                  alt='play'
+                />
+                <span>play broadcast</span>
+              </SyncButton>
+            )}
 
-          <ListenerPlayer
-            broadcastId={broadcastId}
-            syncEnabled={syncEnabled}
-            handleBroadcastStatusChange={handleBroadcastStatusChange.bind(this)}
-            handleViewersUpdate={handleViewersUpdate.bind(this)}
-            listenerProfileInfo={listenerProfileInfo}
-            viewers={viewers}
-          />
+            <ListenerPlayer
+              broadcastId={broadcastId}
+              syncEnabled={syncEnabled}
+              handleBroadcastStatusChange={handleBroadcastStatusChange.bind(
+                this
+              )}
+              handleViewersUpdate={handleViewersUpdate.bind(this)}
+              listenerProfileInfo={listenerProfileInfo}
+              viewers={viewers}
+            />
+          </PageGrid>
         </>
       )
     }

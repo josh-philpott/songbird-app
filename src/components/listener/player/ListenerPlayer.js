@@ -10,17 +10,16 @@ import ViewerExpander from '../../ViewerExpander'
 import ListenerStreamController from '../ListenerStreamController'
 
 const PlayerContainer = styled.section`
-  width: 480px;
-  margin: 50px auto;
   > * {
     margin-bottom: 10px;
   }
 `
 const Player = styled.section`
-  width: 100%;
+  width: 500px;
+  min-width: 500px;
   height: 220px;
   background-color: #2a2a2a;
-  border: 1px solid #000000;
+  border: 1px solid #ffffff;
   border-radius: 6px;
   display: flex;
   flex-direction: column;
@@ -139,7 +138,6 @@ class ListenerPlayer extends React.Component {
         <Player>
           <TopRow>
             <Header>Currently Broadcasting</Header>
-            <ViewCounter count={this.props.viewers.length} />
           </TopRow>
           {this.state.isBroadcasting ? (
             <>
