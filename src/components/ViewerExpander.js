@@ -51,7 +51,7 @@ const ViewerContainer = styled.section`
 function ViewerExpander(props) {
   return (
     <ViewerContainer>
-      <ProfilesIcon className='profileIcon' color='black' />
+      <ProfilesIcon className='profileIcon' color='white' />
       {props.viewers.map(function(viewer, index) {
         return (
           <Avatar

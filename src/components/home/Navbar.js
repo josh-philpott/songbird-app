@@ -1,11 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { primaryFont } from '../styles/base'
+import { primaryFont, sizings } from '../styles/base'
 
 const NavContainer = styled.section`
-  height: 50px
-  width: 100vw
-  display: flex
+  height: 50px;
+  width: 100vw;
+  display: flex;
+  border-bottom: 1px solid white;
+  background-color: #2b2b2b;
 `
 
 const NavLinks = styled.section`
@@ -13,9 +15,8 @@ const NavLinks = styled.section`
   justify-content: space-between;
 `
 const NavInnerContainer = styled.section`
-  display: flex
-  justify-content: space-between
-  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
   margin: 0px 80px;
   width: 100%;
   height: 100%;
@@ -26,38 +27,55 @@ const navLinkStyle = `
   background-color: inherit;
   border:0px;
   ${primaryFont}
+  font-size: 18px;
+  font-weight: 400;
   :hover {
-    background-color: #e2ded2
+    font-style: bold
+    font-weight: 500;
   }
 `
 
 const NavLogoButton = styled.button`
+  display: flex;
   ${navLinkStyle}
+  > * {
+    margin-right: 10px;
+  }
+
+  > img {
+    margin-top: -12px;
+  }
+  align-items: center;
 `
 
 const NavLinkButton = styled.button`
   ${navLinkStyle}
   align-self: flex-end;
-  margin-left: 50px;
+  width: 130px;
 `
 
 function Navbar(props) {
   const navLinks = props.loggedIn ? (
     <NavLinks>
-      <NavLinkButton>sign out</NavLinkButton>
+      <NavLinkButton>logout</NavLinkButton>
     </NavLinks>
   ) : (
     <NavLinks>
-      <NavLinkButton>login</NavLinkButton>
+      <NavLinkButton>broadcast</NavLinkButton>
       <NavLinkButton>how it works</NavLinkButton>
-      <NavLinkButton>contact</NavLinkButton>
     </NavLinks>
   )
 
   return (
     <NavContainer>
       <NavInnerContainer>
-        <NavLogoButton>songbridge</NavLogoButton>
+        <NavLogoButton>
+          <img
+            src={process.env.PUBLIC_URL + '/img/soundbridge-icon.svg'}
+            style={{ height: '40px' }}
+          />
+          <span>soundbridge</span>
+        </NavLogoButton>
         {navLinks}
       </NavInnerContainer>
     </NavContainer>

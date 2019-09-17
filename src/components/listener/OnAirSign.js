@@ -1,7 +1,7 @@
 import React from 'react'
 
 import styled from 'styled-components'
-import { white, black } from '../styles/base'
+import { white, grey } from '../styles/base'
 import BlinkingGreenDot from './BlinkingGreenDot'
 import Dot from '../Dot'
 
@@ -9,7 +9,8 @@ const Container = styled.section`
   height: 24px;
   width: 71px;
   border-radius: 3px;
-  background-color: ${black};
+  background-color: ${grey};
+  border: 1px solid #ffffff;
 
   display: flex;
   justify-content: center;

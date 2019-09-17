@@ -9,7 +9,6 @@ import OnAirSign from './OnAirSign'
 const Banner = styled.section`
   height: 55px;
   display: flex;
-  margin: 50px auto;
   align-items: center;
   justify-content: center;
 `
