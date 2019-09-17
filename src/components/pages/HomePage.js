@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Navbar from './Navbar'
-import HomeBody from './HomeBody'
+import Navbar from '../Navbar'
+import HomeBody from '../home/HomeBody'
 import PulsingGradientBackground from '../PulsingGradientBackground'
 
 import { primaryFont } from '../styles/base'
@@ -27,7 +27,7 @@ const A = styled.a`
   ${primaryFont}
 `
 
-function Home() {
+function HomePage() {
   return (
     <Wrapper>
       <PulsingGradientBackground />
@@ -35,11 +35,12 @@ function Home() {
       <HomeBody />
       <Footer>
         <span>
-          Made with ♥ by <A href='#'>JuneDaze</A> + <A href='#'>Josh</A>
+          Made with ♥ by <A href='#'>JuneDaze</A> +{' '}
+          <A href='https://www.josh-philpott.com'>Josh</A>
         </span>
       </Footer>
     </Wrapper>
   )
 }
 
-export default Home
+export default HomePage

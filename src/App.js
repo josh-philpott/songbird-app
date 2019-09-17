@@ -2,7 +2,7 @@ import React from 'react'
 
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import BroadcasterPage from './components/pages/BroadcasterPage'
-import Home from './components/home/Home'
+import Home from './components/pages/HomePage'
 import ListenerPage from './components/pages/ListenerPage'
 import SpotifyAuthenticator from './components/spotify-auth/SpotifyAuthenticator'
 import SpotifyCallback from './components/spotify-auth/SpotifyCallback'

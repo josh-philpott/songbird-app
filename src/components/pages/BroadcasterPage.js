@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import spotifyApi from '../../lib/spotify'
 import broadcastApi from '../../lib/broadcast'
 import { H1, P } from '../styles/base'
+import Navbar from '../Navbar'
 
 function BroadcasterPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -69,6 +70,8 @@ function BroadcasterPage() {
 
     return (
       <>
+        <Navbar loggedIn={true} />
+
         <>
           <H1>Hey, {name}</H1>
           <img src={profileImage} alt='User Profile' />

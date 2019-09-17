@@ -9,7 +9,7 @@ import isSyncRequired from '../../services/syncRequired'
 import Script from 'react-load-script'
 import { setupSpotifyWebPlayerCallback } from '../../lib/spotify-web-player'
 
-class ListenerStreamController extends React.Component {
+class BroadcastStreamController extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -113,9 +113,9 @@ class ListenerStreamController extends React.Component {
   }
 }
 
-export default ListenerStreamController
+export default BroadcastStreamController
 
-ListenerStreamController.propTypes = {
+BroadcastStreamController.propTypes = {
   broadcasterDisconnectHandler: PropTypes.func,
   viewersUpdateHandler: PropTypes.func,
   streamUpdateHandler: PropTypes.func,

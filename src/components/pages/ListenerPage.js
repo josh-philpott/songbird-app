@@ -6,9 +6,9 @@ import broadcastApi from '../../lib/broadcast'
 import spotifyApi from '../../lib/spotify'
 
 import { buttonBase } from '../styles/base'
-import Navbar from '../home/Navbar'
-import RoomInfo from '../listener/RoomInfo'
-import ListenerPlayer from '../listener/player/ListenerPlayer'
+import Navbar from '../Navbar'
+import RoomInfo from '../room/RoomInfo'
+import ListenerPlayer from '../room/player/ListenerPlayer'
 
 const Body = styled.section`
   margin: 30px auto;

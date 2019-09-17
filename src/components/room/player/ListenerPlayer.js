@@ -6,7 +6,7 @@ import { white, H2, primaryFont, P } from '../../styles/base'
 import ProgressBar from './ProgressBar'
 import ViewerExpander from '../../ViewerExpander'
 
-import ListenerStreamController from '../ListenerStreamController'
+import BroadcastStreamController from '../BroadcastStreamController'
 
 const PlayerContainer = styled.section`
   > * {
@@ -162,7 +162,7 @@ class ListenerPlayer extends React.Component {
           ) : (
             <P>Nothing is playing...</P>
           )}
-          <ListenerStreamController
+          <BroadcastStreamController
             streamUpdateHandler={this.setCurrentSongInfo.bind(this)}
             broadcasterDisconnectHandler={this.handleBroadcasterDisconnect.bind(
               this
