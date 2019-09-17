@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { grey, sizings } from '../styles/base'
+import { sizings } from '../styles/base'
 
 const Avatar = styled.img`
   border-radius: 50%;

@@ -15,14 +15,14 @@ const BackgroundContainer = styled.div`
 function PulsingGradientBackground() {
   const [backgroundStyle, setBackgroundStyle] = useState({})
 
-  const colors = new Array(
+  const colors = [
     [62, 35, 255],
     [60, 255, 60],
     [255, 35, 98],
     [45, 175, 230],
     [255, 0, 255],
     [255, 128, 0]
-  )
+  ]
   /*[120, 0, 0], //reddish black
     [120, 0, 0],
     [35, 34, 34],
@@ -39,8 +39,6 @@ function PulsingGradientBackground() {
 
   //transition speed
   let gradientSpeed = 0.002
-
-  let translateDistance = 0
 
   function updateGradient() {
     var currentColorLeft = colors[colorIndices[0]]
@@ -76,10 +74,8 @@ function PulsingGradientBackground() {
 
     if (direction === 'up') {
       step += gradientSpeed
-      translateDistance += 10
     } else {
       step -= gradientSpeed
-      translateDistance -= 10
     }
 
     /*if (step >= 1) {

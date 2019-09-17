@@ -35,7 +35,7 @@ const PageGrid = styled.section`
   }
 `
 
-function Listener(props) {
+function ListenerPage(props) {
   const [isLoading, setIsLoading] = useState(true)
   const [isBroadcasting, setIsBroadcasting] = useState(false)
   const [isValidBroadcastId, setIsValidBroadcastId] = useState(true)
@@ -152,4 +152,4 @@ function Listener(props) {
   }
 }
 
-export default Listener
+export default ListenerPage

@@ -58,6 +58,7 @@ function ViewerExpander(props) {
             src={viewer.profileImageUrl}
             alt={viewer.name}
             title={viewer.name}
+            key={index}
             size='sm'
             applyBorder={true}
             className={['item-' + (index + 1), 'item']}

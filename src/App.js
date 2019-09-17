@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import Broadcaster from './components/Broadcaster'
+import BroadcasterPage from './components/pages/BroadcasterPage'
 import Home from './components/home/Home'
-import Listener from './components/pages/ListenerPage'
+import ListenerPage from './components/pages/ListenerPage'
 import SpotifyAuthenticator from './components/spotify-auth/SpotifyAuthenticator'
 import SpotifyCallback from './components/spotify-auth/SpotifyCallback'
 import AuthenticatedRoute from './components/AuthenticatedRoute'
@@ -18,8 +18,8 @@ class AppRouter extends React.Component {
           <Route path='/spotify/callback' component={SpotifyCallback} />
           <Route path='/login' component={SpotifyAuthenticator} />
 
-          <AuthenticatedRoute path='/broadcaster' component={Broadcaster} />
-          <AuthenticatedRoute path='/listener' component={Listener} />
+          <AuthenticatedRoute path='/broadcaster' component={BroadcasterPage} />
+          <AuthenticatedRoute path='/listener' component={ListenerPage} />
         </Router>
         <Helmet>
           <link

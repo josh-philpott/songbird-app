@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 import styled from 'styled-components'
 import { white, H2, primaryFont, P } from '../../styles/base'
-import ViewCounter from './ViewCounter'
 import ProgressBar from './ProgressBar'
 import ViewerExpander from '../../ViewerExpander'
 

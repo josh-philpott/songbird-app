@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { primaryFont, sizings } from '../styles/base'
+import { primaryFont } from '../styles/base'
 
 const NavContainer = styled.section`
   height: 50px;
