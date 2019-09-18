@@ -12,6 +12,7 @@ import { setupSpotifyWebPlayerCallback } from '../../lib/spotify-web-player'
 class BroadcastStreamController extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
       syncInProgress: false
     }
@@ -101,11 +102,6 @@ class BroadcastStreamController extends React.Component {
       this.props.broadcasterDisconnectHandler,
       this.props.listenerProfileInfo
     )
-    console.log('listener registered')
-  }
-
-  componentDidMount() {
-    console.log('component did mount')
   }
 
   render() {

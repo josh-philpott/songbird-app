@@ -44,6 +44,8 @@ const registerListener = async (
   listenerProfileInfo
 ) => {
   socket.on('broadcast updated', async currentlyPlaying => {
+    console.log('broadcast updated')
+    console.log(currentlyPlaying)
     await broadcastUpdatedCallback(currentlyPlaying)
   })
 

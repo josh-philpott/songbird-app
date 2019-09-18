@@ -4,6 +4,7 @@ import spotifyApi from '../../lib/spotify'
 import broadcastApi from '../../lib/broadcast'
 import { H1, P } from '../styles/base'
 import Navbar from '../Navbar'
+import Room from '../room/Room'
 
 function BroadcasterPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -22,16 +23,14 @@ function BroadcasterPage() {
       profileImageUrl
     )
 
-    broadcastApi.registerListener(newBroadcastId, true, currentlyPlaying => {
-      console.log(`broadcast updated ${JSON.stringify(currentlyPlaying)}`)
-    })
+    console.log(`broadcast ${newBroadcastId} created`)
 
     setName(profile.display_name)
     setProfileImage(profileImageUrl)
     setBroadcastId(newBroadcastId)
     setIsLoading(false)
 
-    broadcast(newBroadcastId)
+    await broadcast(newBroadcastId)
   }
 
   const broadcast = async broadcastId => {
@@ -65,17 +64,15 @@ function BroadcasterPage() {
         </P>
       )
     } else {
-      currentlyBroadcasting = <P>Currently Broadcasting: {songName}</P>
+      currentlyBroadcasting = (
+        <Room isBroadcaster={true} broadcastId={broadcastId} />
+      )
     }
 
+    console.log(currentlyBroadcasting)
     return (
       <>
         <Navbar loggedIn={true} />
-
-        <>
-          <H1>Hey, {name}</H1>
-          <img src={profileImage} alt='User Profile' />
-        </>
         <P>
           Broadcast URL: https://songbridge.netlify.com/listener?broadcastId=
           {broadcastId}

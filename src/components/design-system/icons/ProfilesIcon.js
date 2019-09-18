@@ -6,8 +6,6 @@ const ProfilesIcon = props => {
     width: 22px;
     height: 14px;
   `
-  console.log('rendering ProfilesIcon')
-
   return props.color === 'black' ? (
     <ProfilesIcon src={'/img/profile-icon-black.svg'} />
   ) : (

@@ -124,6 +124,7 @@ class ListenerPlayer extends React.Component {
   }
 
   handleBroadcasterDisconnect() {
+    //TODO: Does this work still?
     console.log('broadcaster disconnected')
     this.setState({
       isBroadcasting: false
