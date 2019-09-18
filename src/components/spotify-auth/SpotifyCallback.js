@@ -21,7 +21,7 @@ class SpotifyCallback extends React.Component {
     const code = params.code || null
     const state = params.state || null
 
-    const redirectLocation = Cookies.get('redirect_location') || '/broadcaster'
+    const redirectLocation = Cookies.get('redirect_location') || '/dashboard'
     Cookies.remove('redirect_location')
 
     await songbirdApi.fetchSpotifyAccessToken(code, state)

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { primaryFont } from './styles/base'
 
@@ -57,12 +58,15 @@ const NavLinkButton = styled.button`
 function Navbar(props) {
   const navLinks = props.loggedIn ? (
     <NavLinks>
-      <NavLinkButton>logout</NavLinkButton>
+      <Link to='/dashboard'>
+        <NavLinkButton>Dashboard</NavLinkButton>
+      </Link>
+      <NavLinkButton>Sign Out</NavLinkButton>
     </NavLinks>
   ) : (
     <NavLinks>
-      <NavLinkButton>broadcast</NavLinkButton>
-      <NavLinkButton>how it works</NavLinkButton>
+      <NavLinkButton>Broadcast</NavLinkButton>
+      <NavLinkButton>How It Works</NavLinkButton>
     </NavLinks>
   )
 

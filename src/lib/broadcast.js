@@ -80,7 +80,13 @@ const getBroadcastInfo = async broadcastId => {
   return response.data
 }
 
+const getActiveBroadcasts = async () => {
+  const response = await axios.get(`${broadcastApiUrl}/list`)
+  return response.data
+}
+
 export default {
+  getActiveBroadcasts,
   create,
   broadcast,
   getBroadcastInfo,

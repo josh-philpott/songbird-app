@@ -8,6 +8,7 @@ import SpotifyAuthenticator from './components/spotify-auth/SpotifyAuthenticator
 import SpotifyCallback from './components/spotify-auth/SpotifyCallback'
 import AuthenticatedRoute from './components/AuthenticatedRoute'
 import Helmet from 'react-helmet'
+import DashboardPage from './components/pages/DashboardPage'
 
 class AppRouter extends React.Component {
   render() {
@@ -20,6 +21,7 @@ class AppRouter extends React.Component {
 
           <AuthenticatedRoute path='/broadcaster' component={BroadcasterPage} />
           <AuthenticatedRoute path='/listener' component={ListenerPage} />
+          <AuthenticatedRoute path='/dashboard' component={DashboardPage} />
         </Router>
         <Helmet>
           <link
