@@ -1,5 +1,6 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
+import LoadingSpinner from '../design-system/LoadingSpinner'
 
 import Cookies from 'js-cookie'
 import queryString from 'query-string'
@@ -33,7 +34,7 @@ class SpotifyCallback extends React.Component {
 
   render() {
     if (this.state.isLoading) {
-      return <div>Loading...</div>
+      return <LoadingSpinner />
     } else {
       return <Redirect to={this.state.redirectLocation} />
     }
