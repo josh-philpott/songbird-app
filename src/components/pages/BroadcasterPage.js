@@ -16,11 +16,8 @@ const CenterFlex = styled.section`
 
 function BroadcasterPage() {
   const [isLoading, setIsLoading] = useState(true)
-  const [name, setName] = useState('')
-  const [profileImage, setProfileImage] = useState('')
   const [isBroadcasting, setIsBroadcasting] = useState(false)
   const [broadcastId, setBroadcastId] = useState('')
-  const [songName, setSongName] = useState('')
 
   const fetchSpotifyProfileAndCreateBroadcast = async () => {
     const profile = await spotifyApi.getProfileInfo()
@@ -33,8 +30,6 @@ function BroadcasterPage() {
 
     console.log(`broadcast ${newBroadcastId} created`)
 
-    setName(profile.display_name)
-    setProfileImage(profileImageUrl)
     setBroadcastId(newBroadcastId)
     setIsLoading(false)
 
@@ -49,7 +44,6 @@ function BroadcasterPage() {
       setIsBroadcasting(false)
     } else {
       setIsBroadcasting(true)
-      setSongName(currentlyPlaying.item.name)
     }
 
     setTimeout(broadcast.bind(this, broadcastId), 1000)
