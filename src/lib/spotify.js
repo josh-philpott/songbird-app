@@ -14,7 +14,7 @@ const getAccessToken = async () => {
     await songbridgeApi.refreshSpotifyToken(refreshToken)
     return Cookies.get('spotify_access_token')
   } else {
-    window.location('/')
+    window.location.assign('/')
   }
 }
 

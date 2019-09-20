@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import Cookies from 'js-cookie'
+import { withRouter, Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { primaryFont } from './styles/base'
 
@@ -55,13 +56,21 @@ const NavLinkButton = styled.button`
   width: 130px;
 `
 
+const signOut = history => {
+  Cookies.remove('spotify_access_token')
+  Cookies.remove('spotify_refresh_token')
+  history.push('/')
+}
+
 function Navbar(props) {
   const navLinks = props.loggedIn ? (
     <NavLinks>
       <Link to='/dashboard'>
         <NavLinkButton>Dashboard</NavLinkButton>
       </Link>
-      <NavLinkButton>Sign Out</NavLinkButton>
+      <NavLinkButton onClick={signOut.bind(this, props.history)}>
+        Sign Out
+      </NavLinkButton>
     </NavLinks>
   ) : (
     <NavLinks>
@@ -73,7 +82,10 @@ function Navbar(props) {
   return (
     <NavContainer>
       <NavInnerContainer>
-        <NavLogoButton>
+        <NavLogoButton
+          onClick={() => {
+            props.history.push('/')
+          }}>
           <img
             src={process.env.PUBLIC_URL + '/img/soundbridge-icon.svg'}
             style={{ height: '40px' }}
@@ -86,4 +98,4 @@ function Navbar(props) {
   )
 }
 
-export default Navbar
+export default withRouter(Navbar)

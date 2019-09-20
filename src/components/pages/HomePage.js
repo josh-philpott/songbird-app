@@ -1,5 +1,7 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
+import Cookies from 'js-cookie'
 
 import Navbar from '../Navbar'
 import HomeBody from '../home/HomeBody'
@@ -28,6 +30,12 @@ const A = styled.a`
 `
 
 function HomePage() {
+  if (
+    Cookies.get('spotify_access_token') ||
+    Cookies.get('spotify_refresh_token')
+  ) {
+    return <Redirect to='/dashboard' />
+  }
   return (
     <Wrapper>
       <PulsingGradientBackground />
