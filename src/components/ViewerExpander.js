@@ -55,7 +55,7 @@ function ViewerExpander(props) {
       {props.viewers.map(function(viewer, index) {
         return (
           <Avatar
-            src={viewer.profileImageUrl}
+            source={viewer.profileImageUrl}
             alt={viewer.name}
             title={viewer.name}
             key={index}

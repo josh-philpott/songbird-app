@@ -20,7 +20,7 @@ function RoomInfo(props) {
   return (
     <Banner>
       <Avatar
-        src={props.broadcasterProfileImage}
+        source={props.broadcasterProfileImage}
         size='xxl'
         applyBorder={true}
       />
