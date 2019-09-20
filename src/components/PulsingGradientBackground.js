@@ -94,7 +94,7 @@ function PulsingGradientBackground() {
           Math.floor(1 + Math.random() * (colors.length - 1))) %
         colors.length
     }*/
-    if (step > 0.2) {
+    if (step > 0.3) {
       direction = 'down'
     } else if (step <= 0) {
       direction = 'up'

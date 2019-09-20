@@ -9,6 +9,8 @@ import isSyncRequired from '../../services/syncRequired'
 import Script from 'react-load-script'
 import { setupSpotifyWebPlayerCallback } from '../../lib/spotify-web-player'
 
+import ProgressTicker from '../../lib/playback-controller'
+
 class BroadcastStreamController extends React.Component {
   constructor(props) {
     super(props)
@@ -24,6 +26,22 @@ class BroadcastStreamController extends React.Component {
       //if the stream was paused
       console.log('pausing because sync was disabled')
       spotifyApi.pause()
+    }
+
+    if (prevProps.syncEnabled === false && this.props.syncEnabled === true) {
+      const {
+        itemId,
+        progressMs,
+        isPlaying
+      } = ProgressTicker.getCurrentPlaybackInfo()
+
+      this.setListener(
+        itemId,
+        progressMs,
+        isPlaying,
+        false,
+        this.state.deviceId
+      )
     }
   }
 
@@ -50,6 +68,13 @@ class BroadcastStreamController extends React.Component {
       //if we're already handling a sync, don't pile on
       return
     }
+
+    ProgressTicker.updateProgressTicker(
+      broadcasterCurrentlyPlaying.item.uri,
+      broadcasterCurrentlyPlaying.progress_ms,
+      broadcasterCurrentlyPlaying.item.duration_ms,
+      broadcasterCurrentlyPlaying.is_playing
+    )
 
     this.setState({
       handlingUpdate: true

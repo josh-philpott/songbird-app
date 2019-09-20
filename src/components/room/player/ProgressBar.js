@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { white } from '../../styles/base'
 import PropTypes from 'prop-types'
@@ -29,31 +29,13 @@ const calculateTimeString = ms => {
 }
 
 const ProgressBar = props => {
-  const [progress, setProgress] = useState(0)
-
-  useEffect(() => {
-    setProgress(props.progress_ms)
-  }, [props.progress_ms])
-
-  useEffect(() => {
-    let progressTimeInterval
-    if (props.is_playing) {
-      progressTimeInterval = setInterval(() => {
-        const nextProgress = progress + 1000
-        if (nextProgress <= props.duration_ms) {
-          setProgress(progress => progress + 1000)
-        }
-      }, 1000)
-    } else {
-      clearInterval(progressTimeInterval)
-    }
-    return () => clearInterval(progressTimeInterval)
-  }, [props.progress_ms, props.duration_ms, props.is_playing])
-
   return (
     <ProgressContainer>
-      <p>{calculateTimeString(progress)}</p>
-      <ProgressBarInner value={progress || 0} max={props.duration_ms || 0} />
+      <p>{calculateTimeString(props.progress_ms)}</p>
+      <ProgressBarInner
+        value={props.progress_ms || 0}
+        max={props.duration_ms || 0}
+      />
       <p>{calculateTimeString(props.duration_ms)}</p>
     </ProgressContainer>
   )
@@ -61,8 +43,7 @@ const ProgressBar = props => {
 
 ProgressBar.propTypes = {
   progress_ms: PropTypes.number,
-  duration_ms: PropTypes.number,
-  is_playing: PropTypes.bool
+  duration_ms: PropTypes.number
 }
 
 export default ProgressBar

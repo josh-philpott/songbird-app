@@ -7,6 +7,7 @@ import ProgressBar from './ProgressBar'
 import ViewerExpander from '../../ViewerExpander'
 
 import BroadcastStreamController from '../BroadcastStreamController'
+import ProgressTicker from '../../../lib/playback-controller'
 
 const PlayerContainer = styled.section`
   > * {
@@ -99,8 +100,21 @@ class ListenerPlayer extends React.Component {
       currentlyPlaying: {},
       progressString: '',
       durationString: '',
+      progress_ms: 0,
+      duration_ms: 0,
+      is_playing: false,
       isBroadcasting: true
     }
+  }
+
+  listenToTick(currentSongId, calculatedProgressMs, currentSongDurationMs) {
+    console.log(
+      `${currentSongId}, ${calculatedProgressMs}, ${currentSongDurationMs}`
+    )
+    this.setState({
+      progress_ms: calculatedProgressMs,
+      duration_ms: currentSongDurationMs
+    })
   }
 
   setCurrentSongInfo(currentlyPlaying) {
@@ -132,6 +146,9 @@ class ListenerPlayer extends React.Component {
     this.props.handleBroadcastStatusChange(false)
   }
 
+  componentDidMount() {
+    ProgressTicker.registerListener(this.listenToTick.bind(this))
+  }
   render() {
     return (
       <PlayerContainer>
@@ -152,9 +169,8 @@ class ListenerPlayer extends React.Component {
                       </ArtistName>
                     </TopContainer>
                     <ProgressBar
-                      progress_ms={this.state.currentSongInfo.progress_ms}
-                      duration_ms={this.state.currentSongInfo.duration_ms}
-                      is_playing={this.state.currentlyPlaying.is_playing}
+                      progress_ms={this.state.progress_ms}
+                      duration_ms={this.state.duration_ms}
                     />
                   </BottomRightContainer>
                 </SecondRow>
