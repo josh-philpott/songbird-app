@@ -56,33 +56,12 @@ function BroadcasterPage() {
   if (isLoading) {
     return <H1>Loading...</H1>
   } else {
-    let currentlyBroadcasting
+    console.log('[BroadcasterPage] isBroadcasting:', isBroadcasting)
 
-    if (!isBroadcasting) {
-      currentlyBroadcasting = (
-        <P>
-          To start broadcasting, open up a spotify player and start playing a
-          song!
-        </P>
-      )
-    } else {
-      currentlyBroadcasting = (
-        <Room isBroadcaster={true} broadcastId={broadcastId} />
-      )
-    }
-
-    console.log(currentlyBroadcasting)
     return (
       <>
         <Navbar loggedIn={true} />
-        {currentlyBroadcasting}
-        <CenterFlex>
-          <H2>Share Your Broadcast</H2>
-          <P>
-            {'https://songbridge.netlify.com/listener?broadcastId=' +
-              broadcastId}
-          </P>
-        </CenterFlex>
+        <Room isBroadcaster={true} broadcastId={broadcastId} />
       </>
     )
   }

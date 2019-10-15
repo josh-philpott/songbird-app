@@ -7,8 +7,7 @@ import broadcastApi from '../../lib/broadcast'
 import spotifyApi from '../../lib/spotify'
 
 import { buttonBase } from '../styles/base'
-import RoomInfo from '../room/RoomInfo'
-import ListenerPlayer from '../room/player/ListenerPlayer'
+import Player from './player/Player'
 
 const Body = styled.section`
   margin: 30px auto;
@@ -106,12 +105,6 @@ function Room(props) {
     else {
       return (
         <PageGrid>
-          <RoomInfo
-            broadcasterProfileImage={broadcasterProfileImageUrl}
-            broadcasterName={broadcasterName}
-            isBroadcasting={isBroadcasting}
-          />
-
           {props.isBroadcaster ? (
             <></>
           ) : syncEnabled ? (
@@ -128,11 +121,14 @@ function Room(props) {
             </SyncButton>
           )}
 
-          <ListenerPlayer
+          <Player
             broadcastId={broadcastId}
             syncEnabled={syncEnabled}
+            profileDisplayName={broadcasterName}
+            profileImageUrl={broadcasterProfileImageUrl}
             handleBroadcastStatusChange={handleBroadcastStatusChange.bind(this)}
             handleViewersUpdate={handleViewersUpdate.bind(this)}
+            isBroadcaster={props.isBroadcaster}
             listenerProfileInfo={listenerProfileInfo}
             viewers={viewers}
           />

@@ -2,9 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import styled from 'styled-components'
-import { white, H2, primaryFont, P } from '../../styles/base'
+import { white, H2, primaryFont, P, A, buttonBase } from '../../styles/base'
+import CopyLinkButton from './CopyLinkButton'
 import ProgressBar from './ProgressBar'
 import ViewerExpander from '../../ViewerExpander'
+import UserHeader from './UserHeader'
 
 import BroadcastStreamController from '../BroadcastStreamController'
 import ProgressTicker from '../../../lib/playback-controller'
@@ -14,10 +16,10 @@ const PlayerContainer = styled.section`
     margin-bottom: 10px;
   }
 `
-const Player = styled.section`
-  width: 500px;
-  min-width: 500px;
-  height: 220px;
+const PlayerInnerContainer = styled.section`
+  width: 485px;
+  min-width: 485px;
+  height: 500;
   background-color: #2a2a2a;
   border: 1px solid #ffffff;
   border-radius: 6px;
@@ -28,7 +30,7 @@ const Player = styled.section`
 const TopRow = styled.section`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 28px;
+  margin-bottom: 10px;
   align-items: center;
   color: ${white};
 `
@@ -41,8 +43,9 @@ const SecondRow = styled.section`
 `
 
 const AlbumArt = styled.img`
-  height: 137px;
-  width: 137px;
+  height: 246px;
+  width: 246px;
+  margin: 0px auto;
 `
 
 const Header = styled(H2)`
@@ -65,10 +68,10 @@ const SongTitle = styled.h3`
   font-size: 24px;
   line-height: 2;
   color: ${white};
-  margin: 0px;
+  margin: 0px auto;
 
   max-width: 345px;
-
+  text-align: center;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -77,10 +80,10 @@ const SongTitle = styled.h3`
 const ArtistName = styled.p`
   ${primaryFont}
   color: ${white};
-  margin: 0px;
+  margin: 0px auto;
 
   max-width: 345px;
-
+  text-align:center;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -91,7 +94,14 @@ const TopContainer = styled.section`
   flex-direction: column;
 `
 
-class ListenerPlayer extends React.Component {
+const SyncButton = styled.button`
+  width: 238px;
+  height: 44px;
+  ${buttonBase}
+  margin: 0px auto;
+`
+
+class Player extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -150,30 +160,41 @@ class ListenerPlayer extends React.Component {
     ProgressTicker.registerListener(this.listenToTick.bind(this))
   }
   render() {
+    let urlBase = `${window.location.host}`
     return (
       <PlayerContainer>
-        <Player>
+        <PlayerInnerContainer>
           <TopRow>
-            <Header>Currently Broadcasting</Header>
+            <UserHeader
+              userImageUrl={this.props.profileImageUrl}
+              displayName={this.props.profileDisplayName}
+            />
+            <CopyLinkButton
+              shareLink={
+                urlBase + `/listener?broadcastId=${this.props.broadcastId}`
+              }
+            />
           </TopRow>
           {this.state.isBroadcasting ? (
             <>
               {this.state.isLoading ? null : (
-                <SecondRow>
+                <>
                   <AlbumArt src={this.state.currentSongInfo.albumArtUrl} />
-                  <BottomRightContainer>
-                    <TopContainer>
-                      <SongTitle>{this.state.currentSongInfo.name}</SongTitle>
-                      <ArtistName>
-                        {this.state.currentSongInfo.artist}
-                      </ArtistName>
-                    </TopContainer>
-                    <ProgressBar
-                      progress_ms={this.state.progress_ms}
-                      duration_ms={this.state.duration_ms}
-                    />
-                  </BottomRightContainer>
-                </SecondRow>
+                  <SongTitle>{this.state.currentSongInfo.name}</SongTitle>
+                  <ArtistName>{this.state.currentSongInfo.artist}</ArtistName>
+                  <ProgressBar
+                    progress_ms={this.state.progress_ms}
+                    duration_ms={this.state.duration_ms}
+                  />
+                  {this.props.isBroadcaster ? (
+                    <SyncButton
+                      onClick={() => {
+                        alert('you should probably make this work dude...')
+                      }}>
+                      Stop Broadcasting
+                    </SyncButton>
+                  ) : null}
+                </>
               )}
             </>
           ) : (
@@ -189,19 +210,22 @@ class ListenerPlayer extends React.Component {
             listenerProfileInfo={this.props.listenerProfileInfo}
             viewersUpdateHandler={this.props.handleViewersUpdate}
           />
-        </Player>
+        </PlayerInnerContainer>
         <ViewerExpander viewers={this.props.viewers} />
       </PlayerContainer>
     )
   }
 }
 
-export default ListenerPlayer
+export default Player
 
-ListenerPlayer.propTypes = {
+Player.propTypes = {
   broadcastId: PropTypes.string,
   handleBroadcastStatusChange: PropTypes.func,
   handleViewersUpdate: PropTypes.func,
+  isBroadcaster: PropTypes.bool,
   syncEnabled: PropTypes.bool,
-  listenerProfileInfo: PropTypes.object
+  listenerProfileInfo: PropTypes.object,
+  profileImageUrl: PropTypes.string,
+  profileDisplayName: PropTypes.string
 }

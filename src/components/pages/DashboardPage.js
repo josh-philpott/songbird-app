@@ -31,7 +31,7 @@ function DashboardPage() {
         <Button> Start A Broadcast </Button>
       </Link>
       <H1>Active Broadcasts</H1>
-      {isLoading ? (
+      {isLoading || !broadcasts || !broadcasts.length ? (
         <P>Loading Broadcasts...</P>
       ) : (
         <ul>
