@@ -10,19 +10,13 @@ const getAccessToken = () => {
   return Cookies.get('spotify_access_token')
 }
 
-const create = async (id, broadcasterName, profileImageUrl) => {
+const init = async (id, broadcasterName, profileImageUrl) => {
   const broadcastCreatePromise = new Promise((resolve, reject) => {
     console.log('creating broadcast')
-    socket.emit(
-      'create broadcast',
-      id,
-      broadcasterName,
-      profileImageUrl,
-      val => {
-        console.log(`broadcast created ${val}`)
-        resolve(val)
-      }
-    ) //TODO: Timeout for reject?
+    socket.emit('init broadcast', id, broadcasterName, profileImageUrl, val => {
+      console.log(`broadcast created ${val}`)
+      resolve(val)
+    }) //TODO: Timeout for reject?
   })
 
   const broadcastId = await broadcastCreatePromise
@@ -31,8 +25,12 @@ const create = async (id, broadcasterName, profileImageUrl) => {
 }
 
 const broadcast = async (broadcastId, currentlyPlaying) => {
-  console.log(`update broadcast ${broadcastId}`)
   socket.emit('update broadcast', broadcastId, currentlyPlaying)
+}
+
+const pauseBroadcast = async broadcastId => {
+  console.log('emiting broadcaster paused')
+  socket.emit('pause broadcast', broadcastId)
 }
 
 const registerListener = async (
@@ -44,8 +42,6 @@ const registerListener = async (
   listenerProfileInfo
 ) => {
   socket.on('broadcast updated', async currentlyPlaying => {
-    console.log('broadcast updated')
-    console.log(currentlyPlaying)
     await broadcastUpdatedCallback(currentlyPlaying)
   })
 
@@ -59,6 +55,10 @@ const registerListener = async (
     if (viewersUpdateHandler) {
       await viewersUpdateHandler(viewers)
     }
+  })
+
+  socket.on('broadcaster paused', async () => {
+    console.log('got broadcaster paused event')
   })
 
   if (listenerProfileInfo) {
@@ -86,9 +86,10 @@ const getActiveBroadcasts = async () => {
 }
 
 export default {
-  getActiveBroadcasts,
-  create,
   broadcast,
+  getActiveBroadcasts,
   getBroadcastInfo,
+  init,
+  pauseBroadcast,
   registerListener
 }

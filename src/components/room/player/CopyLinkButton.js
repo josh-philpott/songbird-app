@@ -19,7 +19,6 @@ const CopyLinkButtonBase = styled.button`
 `
 
 function CopyLinkButton(props) {
-  console.log('shareLink:', props)
   return (
     <CopyLinkButtonBase
       onClick={() => {

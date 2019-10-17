@@ -131,6 +131,8 @@ function Room(props) {
             isBroadcaster={props.isBroadcaster}
             listenerProfileInfo={listenerProfileInfo}
             viewers={viewers}
+            toggleBroadcastEnabled={props.toggleBroadcastEnabled}
+            broadcastEnabled={props.broadcastEnabled}
           />
         </PageGrid>
       )
@@ -142,5 +144,7 @@ export default Room
 
 Room.propTypes = {
   isBroadcaster: PropTypes.bool,
-  broadcastId: PropTypes.string
+  broadcastId: PropTypes.string,
+  toggleBroadcastEnabled: PropTypes.func,
+  broadcastEnabled: PropTypes.bool
 }

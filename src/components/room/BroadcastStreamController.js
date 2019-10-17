@@ -62,8 +62,6 @@ class BroadcastStreamController extends React.Component {
   }
 
   async handleStreamUpdate(broadcasterCurrentlyPlaying) {
-    console.log('handle stream update')
-    console.log(broadcasterCurrentlyPlaying)
     if (this.state.handlingUpdate) {
       //if we're already handling a sync, don't pile on
       return

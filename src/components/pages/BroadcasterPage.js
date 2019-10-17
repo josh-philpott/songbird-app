@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import spotifyApi from '../../lib/spotify'
@@ -16,52 +16,73 @@ const CenterFlex = styled.section`
 
 function BroadcasterPage() {
   const [isLoading, setIsLoading] = useState(true)
-  const [isBroadcasting, setIsBroadcasting] = useState(false)
+  const [broadcastEnabled, setBroadcastEnabled] = useState(true)
   const [broadcastId, setBroadcastId] = useState('')
+
+  const broadcastEnabledRef = useRef(broadcastEnabled)
+  broadcastEnabledRef.current = broadcastEnabled
+
+  const getBroadcastEnabled = () => {
+    return broadcastEnabled
+  }
+
+  const getBroadcastId = () => {
+    return broadcastId
+  }
 
   const fetchSpotifyProfileAndCreateBroadcast = async () => {
     const profile = await spotifyApi.getProfileInfo()
     const profileImageUrl = spotifyApi.extractProfileImage(profile)
-    const newBroadcastId = await broadcastApi.create(
+    const newBroadcastId = await broadcastApi.init(
       profile.id,
       profile.display_name,
       profileImageUrl
     )
 
-    console.log(`broadcast ${newBroadcastId} created`)
+    console.log(`[BroadcasterPage] broadcast ${newBroadcastId} initialized`)
 
     setBroadcastId(newBroadcastId)
     setIsLoading(false)
 
-    await broadcast(newBroadcastId)
+    await broadcast(newBroadcastId, getBroadcastEnabled)
   }
 
-  const broadcast = async broadcastId => {
-    const currentlyPlaying = await spotifyApi.getCurrentlyPlaying()
-    await broadcastApi.broadcast(broadcastId, currentlyPlaying)
-
-    if (!currentlyPlaying) {
-      setIsBroadcasting(false)
-    } else {
-      setIsBroadcasting(true)
+  const broadcast = async (broadcastId, getBroadcastEnabled) => {
+    if (broadcastEnabledRef.current) {
+      console.debug(`[BroadcasterPage] updating broadcast ${broadcastId}`)
+      const currentlyPlaying = await spotifyApi.getCurrentlyPlaying()
+      await broadcastApi.broadcast(broadcastId, currentlyPlaying)
     }
+    setTimeout(broadcast.bind(this, broadcastId, getBroadcastEnabled), 1000)
+  }
 
-    setTimeout(broadcast.bind(this, broadcastId), 1000)
+  const toggleBroadcastEnabled = () => {
+    setBroadcastEnabled(!broadcastEnabled)
+    broadcastEnabledRef.current = broadcastEnabled
   }
 
   useEffect(() => {
     fetchSpotifyProfileAndCreateBroadcast()
   }, [])
 
+  useEffect(() => {
+    if (!broadcastEnabled) {
+      broadcastApi.pauseBroadcast(broadcastId)
+    }
+  }, [broadcastEnabled])
+
   if (isLoading) {
     return <H1>Loading...</H1>
   } else {
-    console.log('[BroadcasterPage] isBroadcasting:', isBroadcasting)
-
     return (
       <>
         <Navbar loggedIn={true} />
-        <Room isBroadcaster={true} broadcastId={broadcastId} />
+        <Room
+          isBroadcaster={true}
+          broadcastId={broadcastId}
+          toggleBroadcastEnabled={toggleBroadcastEnabled}
+          broadcastEnabled={broadcastEnabled}
+        />
       </>
     )
   }

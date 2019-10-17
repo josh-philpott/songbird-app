@@ -42,8 +42,6 @@ const updateProgressTicker = (
   durationMs,
   isPlaying
 ) => {
-  console.log('handling stream update in progress ticker')
-
   //if there's an interval already set, cancel it to avoid race conditions
   if (interval) {
     clearInterval(interval)
@@ -53,8 +51,6 @@ const updateProgressTicker = (
   calculatedProgressMs = actualProgressMs
   currentSongDurationMs = durationMs
   currentSongIsPlaying = isPlaying
-
-  console.log(`${songId}, ${actualProgressMs}, ${durationMs}, ${isPlaying}`)
 
   updateListeners()
 

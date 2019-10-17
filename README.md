@@ -12,32 +12,15 @@ Note: Both Broadcaster and Listeners must have Spotify Premium accounts.
 
 # TODO
 
+# Work Log
+
+10/16/19
+Been a while since I've added to the README
+
 - Viewers UI
 - See if Angela and I can flush out a design system for more consitency across the app
-- Make sure audio stops upon the broadcast ending
-- On Air sign shouldn't flash if the broadcaster disconnects & there should be a message about the broadcaster not being there. May need to move stream handler logic to the top level of the listener page
-- Add some validation around getting profile information to handle defaulting some items (profile image?)
-- Add check if they're a spotify premium member
 - Default to standard profile image
-- Styling
-  - Fix Home Page scaling issues. Get it looking good up to a standard mobile view (pick those sizes?)
-  - Broadcaster Page
-- Handle Spotify Refresh Token
-- progress bar style updates
-  - background color should be white
-  - position not quite on?
-
-Design:
-
-- Error handling
-  - Invalid broadcast id?
-
-## TODO Laters
-
-- Broadcasts to be stored to Postgres or Redis (planning to start with Postgres and move to Redis if it becomes an issue in syncing)
-- Broadcaster info retrived in server instead of posted from client? (this can wait until trying to build a mobile app)
-
-# Work Log
+- Broadcasts to be stored to Postgres
 
 9/10/19
 

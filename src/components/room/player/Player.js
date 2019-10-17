@@ -118,9 +118,6 @@ class Player extends React.Component {
   }
 
   listenToTick(currentSongId, calculatedProgressMs, currentSongDurationMs) {
-    console.log(
-      `${currentSongId}, ${calculatedProgressMs}, ${currentSongDurationMs}`
-    )
     this.setState({
       progress_ms: calculatedProgressMs,
       duration_ms: currentSongDurationMs
@@ -148,7 +145,6 @@ class Player extends React.Component {
   }
 
   handleBroadcasterDisconnect() {
-    //TODO: Does this work still?
     console.log('broadcaster disconnected')
     this.setState({
       isBroadcasting: false
@@ -189,9 +185,11 @@ class Player extends React.Component {
                   {this.props.isBroadcaster ? (
                     <SyncButton
                       onClick={() => {
-                        alert('you should probably make this work dude...')
+                        this.props.toggleBroadcastEnabled()
                       }}>
-                      Stop Broadcasting
+                      {this.props.broadcastEnabled
+                        ? 'Stop Broadcasting'
+                        : 'Resume Broadcast'}
                     </SyncButton>
                   ) : null}
                 </>
@@ -227,5 +225,7 @@ Player.propTypes = {
   syncEnabled: PropTypes.bool,
   listenerProfileInfo: PropTypes.object,
   profileImageUrl: PropTypes.string,
-  profileDisplayName: PropTypes.string
+  profileDisplayName: PropTypes.string,
+  toggleBroadcastEnabled: PropTypes.func,
+  broadcastEnabled: PropTypes.bool
 }
