@@ -6,7 +6,6 @@ import Room from '../room/Room'
 
 function ListenerPage(props) {
   const { broadcastId } = querystring.parse(props.location.search)
-  p(broadcastId)
 
   return (
     <>
