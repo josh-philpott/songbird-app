@@ -22,9 +22,8 @@ const SyncButton = styled.button`
   ${buttonBase}
 `
 
-const PageGrid = styled.section`
-  margin: 40px auto;
-  width: 500px;
+const RoomContainer = styled.section`
+  /*margin: 40px auto;*/
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -104,7 +103,7 @@ function Room(props) {
     if (!isValidBroadcastId) return <Body>Not a valid broadcast id...</Body>
     else {
       return (
-        <PageGrid>
+        <RoomContainer>
           {props.isBroadcaster ? (
             <></>
           ) : syncEnabled ? (
@@ -134,7 +133,7 @@ function Room(props) {
             toggleBroadcastEnabled={props.toggleBroadcastEnabled}
             broadcastEnabled={props.broadcastEnabled}
           />
-        </PageGrid>
+        </RoomContainer>
       )
     }
   }

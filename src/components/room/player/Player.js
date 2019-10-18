@@ -20,7 +20,7 @@ const PlayerInnerContainer = styled.section`
   width: 485px;
   min-width: 485px;
   height: 500;
-  background-color: #2a2a2a;
+  background-color: rgba(10, 10, 10, 0.9);
   border: 1px solid #ffffff;
   border-radius: 6px;
   display: flex;

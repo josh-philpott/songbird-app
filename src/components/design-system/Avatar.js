@@ -8,7 +8,7 @@ const Avatar = styled.img.attrs(props => ({
 }))`
   border-radius: 50%;
   width: ${props => sizings[props.size] || sizings.lg};
-  height: ${props => sizings[props.size || sizings.lg]};
+  height: ${props => sizings[props.size] || sizings.lg};
   object-fit: cover;
   border: ${props => (props.applyBorder ? `1px solid #FFFFFF` : null)};
   box-shadow: 0 0 1px transparent; /* trick to anti-alias 1px border */
