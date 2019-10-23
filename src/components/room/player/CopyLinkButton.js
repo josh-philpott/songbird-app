@@ -9,7 +9,7 @@ const CopyLinkButtonBase = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 110px;
+  width: 100px;
 
   color: #91cce5;
   background-color: unset;
@@ -33,7 +33,7 @@ function CopyLinkButton(props) {
           alert(props.shareLink)
         }}>
         <img src={process.env.PUBLIC_URL + '/img/link-icon.svg'} />
-        <P style={{ color: '#91CCE5' }}>Share Link</P>
+        <P style={{ color: '#91CCE5', fontSize: '16px' }}>share link</P>
       </CopyLinkButtonBase>
     </CopyToClipboard>
   )

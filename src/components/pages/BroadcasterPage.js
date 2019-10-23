@@ -66,8 +66,6 @@ const RoomContainer = styled.section`
 const ChatContainer = styled.section`
   height: 100%;
   width: 350px;
-  background-color: #151515;
-  border-left: 1px solid #303030;
   z-index: 100;
 `
 
