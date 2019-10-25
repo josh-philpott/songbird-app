@@ -1,5 +1,7 @@
 import React from 'react'
 
+import 'normalize.css'
+
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import BroadcasterPage from './components/pages/BroadcasterPage'
 import Home from './components/pages/HomePage'

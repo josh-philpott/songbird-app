@@ -67,10 +67,17 @@ class BroadcastStreamController extends React.Component {
       return
     }
 
+    const itemUri = broadcasterCurrentlyPlaying.item
+      ? broadcasterCurrentlyPlaying.item.uri
+      : undefined
+    const duration_ms = broadcasterCurrentlyPlaying.item
+      ? broadcasterCurrentlyPlaying.item.duration_ms
+      : 0
+
     ProgressTicker.updateProgressTicker(
-      broadcasterCurrentlyPlaying.item.uri,
+      itemUri,
       broadcasterCurrentlyPlaying.progress_ms,
-      broadcasterCurrentlyPlaying.item.duration_ms,
+      duration_ms,
       broadcasterCurrentlyPlaying.is_playing
     )
 

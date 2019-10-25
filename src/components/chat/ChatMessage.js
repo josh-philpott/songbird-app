@@ -8,7 +8,7 @@ const ChatMessageContainer = styled.section`
   width: 100%;
   padding: 15px;
   border-top: 1px solid;
-  border-top-color: rgba(255, 252, 252, 0.5);
+  border-top-color: rgba(255, 252, 252, 0.1);
   display: flex;
   align-items: top;
 `

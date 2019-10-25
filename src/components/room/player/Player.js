@@ -7,6 +7,7 @@ import CopyLinkButton from './CopyLinkButton'
 import ProgressBar from './ProgressBar'
 import ViewerExpander from '../../ViewerExpander'
 import UserHeader from './UserHeader'
+import Flex from '../../design-system/Flex'
 
 import BroadcastStreamController from '../BroadcastStreamController'
 import ProgressTicker from '../../../lib/playback-controller'
@@ -187,9 +188,24 @@ class Player extends React.Component {
                       onClick={() => {
                         this.props.toggleBroadcastEnabled()
                       }}>
-                      {this.props.broadcastEnabled
-                        ? 'Stop Broadcasting'
-                        : 'Resume Broadcast'}
+                      {this.props.broadcastEnabled ? (
+                        <Flex
+                          justifyContent='space-evenly'
+                          alignItems='center'
+                          flexDirection='row'
+                          width='100%'>
+                          <div
+                            style={{
+                              height: '15px',
+                              width: '15px',
+                              backgroundColor: 'white'
+                            }}
+                          />
+                          <span>Stop Broadcasting</span>
+                        </Flex>
+                      ) : (
+                        'Resume Broadcast'
+                      )}
                     </SyncButton>
                   ) : null}
                 </>

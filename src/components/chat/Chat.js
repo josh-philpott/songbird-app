@@ -5,6 +5,8 @@ import { H2, P, primaryFont } from '../styles/base'
 
 import ChatMessage from './ChatMessage'
 
+import broadcastApi from '../../lib/broadcast'
+
 const ChatContainer = styled.section`
   height: 100%;
   width: 100%;
@@ -50,10 +52,27 @@ const MessageEditor = styled.input`
   ${primaryFont}
   width: 100%;
   padding: 0px 10px;
+
+  :focus {
+    outline: none !important;
+  }
 `
 
 function Chat() {
   const [isOpen, setIsOpen] = useState(true) // will be used to detemine if chat is open or closed
+  const [inputMessage, setInputMessage] = useState('')
+
+  const onEditorChange = e => {
+    setInputMessage(e.target.value)
+  }
+
+  const onEditorKeyUp = async e => {
+    if (e.keyCode === 13) {
+      await broadcastApi.sendMessage(inputMessage)
+      setInputMessage('')
+    }
+  }
+
   return (
     <ChatContainer>
       <ChatHeader>
@@ -92,9 +111,22 @@ function Chat() {
           userName={'Josh Philpott'}
           message={'his is another chat message thats longer than the rest'}
         />
+        <ChatMessage
+          userName={'Josh Philpott'}
+          message={'his is another chat message thats longer than the rest'}
+        />
+        <ChatMessage
+          userName={'Josh Philpott'}
+          message={'his is another chat message thats longer than the rest'}
+        />
       </ChatMessagesContainer>
       <WriteMessageContainer>
-        <MessageEditor placeholder='Type a message here' />
+        <MessageEditor
+          placeholder='Type a message here'
+          onChange={onEditorChange}
+          onKeyUp={onEditorKeyUp}
+          value={inputMessage}
+        />
       </WriteMessageContainer>
     </ChatContainer>
   )
