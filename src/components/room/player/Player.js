@@ -2,15 +2,18 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import styled from 'styled-components'
-import { white, H2, primaryFont, P, A, buttonBase } from '../../styles/base'
+import { white, H1, H2, primaryFont, P, A, buttonBase } from '../../styles/base'
 import CopyLinkButton from './CopyLinkButton'
 import ProgressBar from './ProgressBar'
 import UserHeader from './UserHeader'
 import Flex from '../../design-system/Flex'
+import Button from '../../design-system/Button'
 
 import SpotifyDropInController from '../SpotifyDropInController'
 import CalculatedProgressProvider from '../../contexts/calculated-progress-context'
 import CalculatedProgressContext from '../../contexts/calculated-progress-context/context'
+import NothingIsPlaying from './NothingIsPlaying'
+import BottomBar from './BottomBar'
 
 const PlayerContainer = styled.section`
   > * {
@@ -18,7 +21,7 @@ const PlayerContainer = styled.section`
   }
 `
 const PlayerInnerContainer = styled.section`
-  height: 485px;
+  min-height: 480px;
   width: 485px;
   min-width: 485px;
   height: 500;
@@ -28,6 +31,7 @@ const PlayerInnerContainer = styled.section`
   display: flex;
   flex-direction: column;
   padding: 16px 26px;
+  padding-bottom: 0px;
 `
 const TopRow = styled.section`
   display: flex;
@@ -70,18 +74,6 @@ const ArtistName = styled.p`
   overflow: hidden;
 `
 
-const TopContainer = styled.section`
-  display: flex;
-  flex-direction: column;
-`
-
-const SyncButton = styled.button`
-  width: 238px;
-  height: 44px;
-  ${buttonBase}
-  margin: 0px auto;
-`
-
 function Player(props) {
   let urlBase = `${window.location.host}`
 
@@ -95,6 +87,11 @@ function Player(props) {
   const [isLoading, setIsLoading] = useState(true)
   const [currentSongInfo, setCurrentSongInfo] = useState({})
   const [isBroadcasting, setIsBroadcasting] = useState(true)
+  const [syncEnabled, setSyncEnabled] = useState(false)
+
+  const toggleSyncEnabled = () => {
+    setSyncEnabled(!syncEnabled)
+  }
 
   useEffect(() => {
     console.log('setting currentSongInfo')
@@ -152,7 +149,7 @@ function Player(props) {
                         {!props.isBroadcaster ? (
                           <SpotifyDropInController
                             broadcastId={broadcastId}
-                            syncEnabled={props.syncEnabled}
+                            syncEnabled={syncEnabled}
                             listenerProfileInfo={props.listenerProfileInfo}
                             calculatedProgressMs={calculatedProgressMs}
                             broadcasterCurrentlyPlaying={currentlyPlaying}
@@ -162,36 +159,17 @@ function Player(props) {
                     )}
                   </CalculatedProgressContext.Consumer>
                 </CalculatedProgressProvider>
-                {isBroadcaster ? (
-                  <SyncButton
-                    onClick={() => {
-                      props.toggleBroadcastEnabled()
-                    }}>
-                    {props.broadcastEnabled ? (
-                      <Flex
-                        justifyContent='space-evenly'
-                        alignItems='center'
-                        flexDirection='row'
-                        width='100%'>
-                        <div
-                          style={{
-                            height: '15px',
-                            width: '15px',
-                            backgroundColor: 'white'
-                          }}
-                        />
-                        <span>Stop Broadcasting</span>
-                      </Flex>
-                    ) : (
-                      'Resume Broadcast'
-                    )}
-                  </SyncButton>
-                ) : null}
+                <BottomBar
+                  isBroadcaster={isBroadcaster}
+                  broadcastEnabled={props.broadcastEnabled}
+                  toggleBroadcastEnabled={props.toggleBroadcastEnabled}
+                  toggleSyncEnabled={toggleSyncEnabled}
+                  syncEnabled={syncEnabled}></BottomBar>
               </>
             )}
           </>
         ) : (
-          <P>Nothing is playing...</P>
+          <NothingIsPlaying />
         )}
       </PlayerInnerContainer>
     </PlayerContainer>
