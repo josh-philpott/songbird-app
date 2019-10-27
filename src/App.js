@@ -35,7 +35,11 @@ class AppRouter extends React.Component {
             rel='stylesheet'
           />
 
-          <style>{'body { background-color: #171716}'}</style>
+          <style>
+            {
+              'body { background-color: #171716; height: 100%; overflow: auto;} html {overflow:hidden; height:100%;}'
+            }
+          </style>
         </Helmet>
       </section>
     )

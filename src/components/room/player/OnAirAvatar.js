@@ -43,10 +43,7 @@ function OnAirAvatar(props) {
 
   return (
     <OuterCircle degree={degree + 'deg'}>
-      <Avatar
-        size='xxl'
-        source='https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/33748780_10155366585941366_7866216603870822400_n.jpg?_nc_cat=111&_nc_oc=AQn6ZmoQyySKHlPBE4T1VAsNeArBer8VXaUuGzb5vTh5oQ5M7nyf4rCMjIbGSvOBTkE&_nc_ht=scontent.xx&oh=25e31615788e90b5ef1b8644be637633&oe=5E28225E'
-      />
+      <Avatar size='xxl' source={props.source} />
     </OuterCircle>
   )
 }

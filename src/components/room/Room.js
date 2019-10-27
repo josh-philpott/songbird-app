@@ -34,13 +34,6 @@ const RoomContainer = styled.section`
 
 function Room(props) {
   const [isLoading, setIsLoading] = useState(true)
-  const [syncEnabled, setSyncEnabled] = useState(false)
-
-  const {
-    broadcastId,
-    displayName: broadcasterName,
-    profileImageUrl: broadcasterProfileImageUrl
-  } = props.broadcastMeta
 
   const [listenerProfileInfo, setListenerProfileInfo] = useState({
     id: '',
@@ -80,36 +73,15 @@ function Room(props) {
     fetchListenerProfileInfo()
   }, [])
 
-  const toggleSyncEnabled = () => {
-    setSyncEnabled(!syncEnabled)
-  }
-
   if (isLoading) {
     return <Body>Loading...</Body>
   } else {
     return (
       <RoomContainer>
-        {props.isBroadcaster ? (
-          <></>
-        ) : syncEnabled ? (
-          <SyncButton onClick={toggleSyncEnabled.bind(this)}>
-            <span>pause broadcast</span>
-          </SyncButton>
-        ) : (
-          <SyncButton onClick={toggleSyncEnabled.bind(this)}>
-            <img
-              src={process.env.PUBLIC_URL + '/img/play-icon.svg'}
-              alt='play'
-            />
-            <span>play broadcast</span>
-          </SyncButton>
-        )}
-
         <Player
           isBroadcaster={props.isBroadcaster}
           broadcastMeta={props.broadcastMeta}
           currentlyPlaying={props.currentlyPlaying}
-          syncEnabled={syncEnabled}
           listenerProfileInfo={listenerProfileInfo}
           toggleBroadcastEnabled={props.toggleBroadcastEnabled}
           broadcastEnabled={props.broadcastEnabled}

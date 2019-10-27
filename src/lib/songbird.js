@@ -2,6 +2,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 const spotifyApiBaseUrl = `${process.env.REACT_APP_API_URL}/api/spotify`
+const isOfflineMode = process.env.REACT_APP_IS_OFFLINE_MODE === 'true'
 
 const setSpotifyAccessToken = (access_token, expires_in) => {
   // set the expires date
@@ -14,6 +15,11 @@ const setSpotifyAccessToken = (access_token, expires_in) => {
 }
 
 const fetchSpotifyAccessToken = async (code, state) => {
+  console.log('fetch spotfy token')
+  if (isOfflineMode) {
+    return 'offline'
+  }
+  console.log(isOfflineMode)
   const response = await axios.post(`${spotifyApiBaseUrl}/getAccessToken`, {
     code,
     state
@@ -27,6 +33,10 @@ const fetchSpotifyAccessToken = async (code, state) => {
 }
 
 const refreshSpotifyToken = async refresh_token => {
+  console.log('refresh spotify token')
+  if (isOfflineMode) {
+    return 'offline'
+  }
   const response = await axios.post(`${spotifyApiBaseUrl}/refreshToken`, {
     refresh_token
   })
@@ -38,6 +48,7 @@ const refreshSpotifyToken = async refresh_token => {
 }
 
 const fetchSpotifyAuthUri = async () => {
+  
   const response = await axios.get(`${spotifyApiBaseUrl}/login`)
   return response.data
 }
