@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { H2, P, primaryFont } from '../styles/base'
@@ -6,6 +6,7 @@ import { H2, P, primaryFont } from '../styles/base'
 import ChatMessage from './ChatMessage'
 
 import broadcastApi from '../../lib/broadcast'
+import SocketContext from '../socket_context/context'
 
 const ChatContainer = styled.section`
   height: 100%;
@@ -62,16 +63,26 @@ function Chat() {
   const [isOpen, setIsOpen] = useState(true) // will be used to detemine if chat is open or closed
   const [inputMessage, setInputMessage] = useState('')
 
+  const { chatMessages, sendMessage } = useContext(SocketContext)
+  let messagesEnd = null
+
   const onEditorChange = e => {
     setInputMessage(e.target.value)
   }
 
   const onEditorKeyUp = async e => {
-    if (e.keyCode === 13) {
-      await broadcastApi.sendMessage(inputMessage)
+    if (e.keyCode === 13 && inputMessage !== '') {
+      sendMessage(inputMessage)
       setInputMessage('')
     }
   }
+
+  //auto scroll chat on new message
+  useEffect(() => {
+    if (messagesEnd) {
+      messagesEnd.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [chatMessages])
 
   return (
     <ChatContainer>
@@ -79,46 +90,10 @@ function Chat() {
         <H2>chat</H2>
       </ChatHeader>
       <ChatMessagesContainer>
-        <ChatMessage
-          userName={'Josh Philpott'}
-          message={'this is a chat messages'}
-        />
-        <ChatMessage
-          userName={'Josh Philpott'}
-          message={'This is another chat message'}
-        />
-        <ChatMessage
-          userName={'Josh Philpott'}
-          message={'his is another chat message thats longer than the rest'}
-        />
-        <ChatMessage
-          userName={'Josh Philpott'}
-          message={'his is another chat message thats longer than the rest'}
-        />
-        <ChatMessage
-          userName={'Josh Philpott'}
-          message={'his is another chat message thats longer than the rest'}
-        />
-        <ChatMessage
-          userName={'Josh Philpott'}
-          message={'his is another chat message thats longer than the rest'}
-        />
-        <ChatMessage
-          userName={'Josh Philpott'}
-          message={'his is another chat message thats longer than the rest'}
-        />
-        <ChatMessage
-          userName={'Josh Philpott'}
-          message={'his is another chat message thats longer than the rest'}
-        />
-        <ChatMessage
-          userName={'Josh Philpott'}
-          message={'his is another chat message thats longer than the rest'}
-        />
-        <ChatMessage
-          userName={'Josh Philpott'}
-          message={'his is another chat message thats longer than the rest'}
-        />
+        {chatMessages.map(message => {
+          return <ChatMessage userName='Josh Philpott' message={message} />
+        })}
+        <div ref={el => (messagesEnd = el)} />
       </ChatMessagesContainer>
       <WriteMessageContainer>
         <MessageEditor

@@ -1,9 +1,8 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import io from 'socket.io-client'
+import { socket } from '../sockets'
 
 const broadcastApiUrl = `${process.env.REACT_APP_API_URL}/api/broadcast`
-const socket = io(process.env.REACT_APP_API_URL)
 
 const getAccessToken = () => {
   //Check and see if an access_token is available
@@ -31,6 +30,10 @@ const broadcast = async (broadcastId, currentlyPlaying) => {
 const pauseBroadcast = async broadcastId => {
   console.log('emiting broadcaster paused')
   socket.emit('pause broadcast', broadcastId)
+}
+
+const sendMessage = async message => {
+  socket.emit('message', message, '1246738839')
 }
 
 const registerListener = async (
@@ -91,5 +94,6 @@ export default {
   getBroadcastInfo,
   init,
   pauseBroadcast,
-  registerListener
+  registerListener,
+  sendMessage
 }

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import querystring from 'query-string'
 import styled from 'styled-components'
 
 import broadcastApi from '../../lib/broadcast'
