@@ -14,6 +14,7 @@ const ChatMessageContainer = styled.section`
 `
 
 const ChatMessageInner = styled.section`
+  max-width: 80%;
   padding: 0px 15px;
 `
 

@@ -7,6 +7,7 @@ import { H1, H2, P } from '../styles/base'
 import Navbar from '../Navbar'
 import Room from '../room/Room'
 import Chat from '../chat/Chat'
+import SocketProvider from '../socket_context'
 
 const PageContainer = styled.section`
   height: 100vh;
@@ -99,7 +100,7 @@ function BroadcasterPage() {
     setBroadcastId(newBroadcastId)
     setIsLoading(false)
 
-    await broadcast(newBroadcastId, getBroadcastEnabled)
+    broadcast(newBroadcastId, getBroadcastEnabled)
   }
 
   const broadcast = async (broadcastId, getBroadcastEnabled) => {
@@ -141,7 +142,9 @@ function BroadcasterPage() {
             />
           </RoomContainer>
           <ChatContainer>
-            <Chat />
+            <SocketProvider>
+              <Chat />
+            </SocketProvider>
           </ChatContainer>
         </PageContainer>
         <NoiseOverlay />
