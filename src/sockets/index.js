@@ -5,6 +5,7 @@ import {
   initBroadcast,
   sendCurrentlyPlayingUpdate,
   subscribeAsBroadcaster,
+  subscribeAsListener,
   pauseBroadcast
 } from './emit'
 export const socket = io(process.env.REACT_APP_API_URL)
@@ -18,6 +19,7 @@ export const initSockets = ({ setValue }) => {
       initBroadcast,
       sendCurrentlyPlayingUpdate,
       subscribeAsBroadcaster,
+      subscribeAsListener,
       pauseBroadcast
     }
   })

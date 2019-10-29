@@ -11,6 +11,7 @@ const SocketProvider = props => {
     initBroadcast: () => {},
     sendCurrentlyPlayingUpdate: () => {},
     subscribeAsBroadcaster: () => {},
+    subscribeAsListener: () => {},
     pauseBroadcase: () => {}
   })
 

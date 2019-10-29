@@ -1,17 +1,15 @@
 import React from 'react'
+import SocketProvider from '../socket_context'
 import querystring from 'query-string'
-
-import Navbar from '../Navbar'
-import Room from '../room/Room'
+import ListenerPageInner from './ListenerPageInner'
 
 function ListenerPage(props) {
   const { broadcastId } = querystring.parse(props.location.search)
 
   return (
-    <>
-      <Navbar loggedIn={true} />
-      <Room isBroadcaster={false} broadcastId={broadcastId} />
-    </>
+    <SocketProvider>
+      <ListenerPageInner broadcastId={broadcastId} />
+    </SocketProvider>
   )
 }
 
