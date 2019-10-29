@@ -2,7 +2,11 @@ import React, { createContext } from 'react'
 
 const SocketContext = createContext({
   chatMessages: [],
-  sendMessage: () => {}
+  sendMessage: () => {},
+  initBroadcast: () => {},
+  sendCurrentlyPlayingUpdate: () => {},
+  subscribeAsBroadcaster: () => {},
+  pauseBroadcast: () => {}
   /*  songInfo,
   broadcasterInfo,
   viewers,

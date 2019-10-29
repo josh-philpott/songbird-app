@@ -1,39 +1,7 @@
 import { socket } from './index'
 
 export const socketEvents = ({ setValue }) => {
-  /* socket.on('broadcast updated', currentlyPlaying => {
-        //write function to transform currentlyPlaying to 'songInfo' (probably in API)
-
-        setValue(state => {
-            return {...state}//, songInfo}
-        });
-    })
-
-    
-    socket.on('broadcaster disconnected', async () => {
-        //await broadcasterDisconnectedCallback()
-        // maybe I just need one 'broadcasterUpdate' event and the broadcastInfo contain 'isBroadcasterConnected'
-    })
-
-    
-    socket.on('viewers update', async viewers => {
-        console.log('viewers updated')
-        console.log(viewers)
-        if (viewersUpdateHandler) {
-            await viewersUpdateHandler(viewers)
-        }
-        setValue(state => {
-            return {...state//, viewers}
-        });
-    })
-
-    //part of broadcasterInfo? isBroadcasterSyncing
-    socket.on('broadcaster paused', async () => {
-        console.log('got broadcaster paused event')
-    })*/
-
   socket.on('message', message => {
-    console.log('got message', message)
     setValue(state => {
       let chatMessages = []
       if (state.chatMessages) {
@@ -42,6 +10,56 @@ export const socketEvents = ({ setValue }) => {
         chatMessages = [message]
       }
       return { ...state, chatMessages }
+    })
+  })
+
+  socket.on('sob', sob => {
+    setValue(state => {
+      let newState = { ...state }
+      if (sob.currentlyPlaying) {
+        newState.currentlyPlaying = sob.currentlyPlaying
+      }
+      if (sob.viewers) {
+        newState.viewers = sob.viewers
+      }
+      if (sob.broadcastMeta) {
+        newState.broadcastMeta = sob.broadcastMeta
+      }
+      console.log('sob update', newState)
+      return newState
+    })
+  })
+
+  socket.on('broadcast updated', currentlyPlaying => {
+    console.log('boom boom broadcast update')
+    setValue(state => {
+      const stateCopy = { ...state }
+      stateCopy.currentlyPlaying = currentlyPlaying
+      stateCopy.broadcastMeta.isSyncEnabled = true
+      stateCopy.broadcastMeta.isConnected = true
+      return stateCopy
+    })
+  })
+
+  socket.on('viewers update', async viewers => {
+    setValue(state => {
+      return { ...state, viewers }
+    })
+  })
+
+  socket.on('broadcaster paused', async () => {
+    setValue(state => {
+      const stateCopy = { ...state }
+      stateCopy.broadcastMeta.isSyncEnabled = true
+      return stateCopy
+    })
+  })
+
+  socket.on('broadcaster disconnected', async () => {
+    setValue(state => {
+      const stateCopy = { ...state }
+      stateCopy.broadcastMeta.isConnected = false
+      return stateCopy
     })
   })
 }

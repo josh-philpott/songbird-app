@@ -4,15 +4,14 @@ import { socket } from './index'
 export const initBroadcast = (
   broadcastId,
   broadcasterName,
-  profileImageUrl,
-  val
+  profileImageUrl
 ) => {
   socket.emit('init broadcast', broadcastId, broadcasterName, profileImageUrl)
   //TODO: I think I need to potentially rethink broadcast initlization
   //from both perspectives
 }
 
-export const joinBroadcastAsBroadcaster = broadcastId => {
+export const subscribeAsBroadcaster = broadcastId => {
   socket.emit('join', broadcastId, true)
 }
 

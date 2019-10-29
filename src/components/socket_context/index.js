@@ -4,13 +4,23 @@ import { initSockets } from '../../sockets'
 
 const SocketProvider = props => {
   const [value, setValue] = useState({
+    broadcastMeta: {},
+    currentlyPlaying: {},
     chatMessages: [],
-    sendMessage: () => {}
+    sendMessage: () => {},
+    initBroadcast: () => {},
+    sendCurrentlyPlayingUpdate: () => {},
+    subscribeAsBroadcaster: () => {},
+    pauseBroadcase: () => {}
   })
 
   useEffect(() => {
     initSockets({ setValue })
   }, [initSockets])
+
+  useEffect(() => {
+    console.log('Broadcast state changed: ', value)
+  }, [value])
 
   return (
     <SocketContext.Provider value={value}>

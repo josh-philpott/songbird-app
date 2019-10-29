@@ -5,7 +5,6 @@ import { H2, P, primaryFont } from '../styles/base'
 
 import ChatMessage from './ChatMessage'
 
-import broadcastApi from '../../lib/broadcast'
 import SocketContext from '../socket_context/context'
 
 const ChatContainer = styled.section`
@@ -93,6 +92,7 @@ function Chat() {
         {chatMessages.map(message => {
           return <ChatMessage userName='Josh Philpott' message={message} />
         })}
+        {chatMessages.length === 0 ? <P>Ain't no chat messages yet</P> : null}
         <div ref={el => (messagesEnd = el)} />
       </ChatMessagesContainer>
       <WriteMessageContainer>

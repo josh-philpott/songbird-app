@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { white } from '../../styles/base'
 import PropTypes from 'prop-types'
@@ -18,32 +18,53 @@ const ProgressBarInner = styled.progress`
   margin: 0px 10px;
 `
 
-const calculateTimeString = ms => {
-  if (!ms) ms = 0
-  const totalSeconds = Math.floor(ms / 1000)
-  const seconds = totalSeconds % 60
-  const minutes = Math.floor(totalSeconds / 60)
-
-  let secondsString = seconds < 10 ? `0${seconds}` : seconds.toString()
-  return `${minutes}:${secondsString}`
-}
-
 const ProgressBar = props => {
+  const [calculatedProgressMs, setCalculatedProgressMs] = useState(0)
+  const calculatedProgressMsRef = useRef(calculatedProgressMs)
+  calculatedProgressMsRef.current = calculatedProgressMs
+
+  useEffect(() => {
+    setCalculatedProgressMs(props.progressMs)
+  }, [props.progressMs, props.durationMs, props.isPlaying])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (
+        props.isPlaying &&
+        !(calculatedProgressMsRef.current + 1000 > props.durationMs)
+      ) {
+        setCalculatedProgressMs(calculatedProgressMsRef.current + 1000)
+      }
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const msToTimeString = ms => {
+    if (!ms) ms = 0
+    const totalSeconds = Math.floor(ms / 1000)
+    const seconds = totalSeconds % 60
+    const minutes = Math.floor(totalSeconds / 60)
+
+    let secondsString = seconds < 10 ? `0${seconds}` : seconds.toString()
+    return `${minutes}:${secondsString}`
+  }
+
   return (
     <ProgressContainer>
-      <p>{calculateTimeString(props.progress_ms)}</p>
+      <p>{msToTimeString(calculatedProgressMs)}</p>
       <ProgressBarInner
-        value={props.progress_ms || 0}
-        max={props.duration_ms || 0}
+        value={calculatedProgressMs || 0}
+        max={props.durationMs || 0}
       />
-      <p>{calculateTimeString(props.duration_ms)}</p>
+      <p>{msToTimeString(props.durationMs)}</p>
     </ProgressContainer>
   )
 }
 
 ProgressBar.propTypes = {
-  progress_ms: PropTypes.number,
-  duration_ms: PropTypes.number
+  progressMs: PropTypes.number,
+  durationMs: PropTypes.number,
+  isPlaying: PropTypes.bool
 }
 
 export default ProgressBar
