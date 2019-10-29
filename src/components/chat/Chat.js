@@ -5,7 +5,7 @@ import { H2, P, primaryFont } from '../styles/base'
 
 import ChatMessage from './ChatMessage'
 
-import SocketContext from '../socket_context/context'
+import SocketContext from '../contexts/socket-context/context'
 
 const ChatContainer = styled.section`
   height: 100%;

@@ -9,8 +9,8 @@ import UserHeader from './UserHeader'
 import Flex from '../../design-system/Flex'
 
 import SpotifyDropInController from '../SpotifyDropInController'
-import CalculatedProgressProvider from '../../calculated_progress_context'
-import CalculatedProgressContext from '../../calculated_progress_context/context'
+import CalculatedProgressProvider from '../../contexts/calculated-progress-context'
+import CalculatedProgressContext from '../../contexts/calculated-progress-context/context'
 
 const PlayerContainer = styled.section`
   > * {

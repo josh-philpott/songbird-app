@@ -31,7 +31,6 @@ export const socketEvents = ({ setValue }) => {
   })
 
   socket.on('broadcast updated', currentlyPlaying => {
-    console.log('boom boom broadcast update')
     setValue(state => {
       const stateCopy = { ...state }
       stateCopy.currentlyPlaying = currentlyPlaying
