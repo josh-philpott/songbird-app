@@ -1,16 +1,16 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import styled from 'styled-components'
 import { white, H2, primaryFont, P, A, buttonBase } from '../../styles/base'
 import CopyLinkButton from './CopyLinkButton'
 import ProgressBar from './ProgressBar'
-import ViewerExpander from '../../ViewerExpander'
 import UserHeader from './UserHeader'
 import Flex from '../../design-system/Flex'
 
-import BroadcastStreamController from '../BroadcastStreamController'
-import ProgressTicker from '../../../lib/playback-controller'
+import SpotifyDropInController from '../SpotifyDropInController'
+import CalculatedProgressProvider from '../../calculated_progress_context'
+import CalculatedProgressContext from '../../calculated_progress_context/context'
 
 const PlayerContainer = styled.section`
   > * {
@@ -18,6 +18,7 @@ const PlayerContainer = styled.section`
   }
 `
 const PlayerInnerContainer = styled.section`
+  height: 485px;
   width: 485px;
   min-width: 485px;
   height: 500;
@@ -36,31 +37,10 @@ const TopRow = styled.section`
   color: ${white};
 `
 
-const SecondRow = styled.section`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 137px;
-`
-
 const AlbumArt = styled.img`
   height: 246px;
   width: 246px;
   margin: 0px auto;
-`
-
-const Header = styled(H2)`
-  color: ${white};
-`
-
-const BottomRightContainer = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin: 0px auto;
-  padding-left: 20px;
-  flex-grow: 1;
-  max-width: 330px;
 `
 
 const SongTitle = styled.h3`
@@ -102,146 +82,133 @@ const SyncButton = styled.button`
   margin: 0px auto;
 `
 
-class Player extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isLoading: true,
-      currentSongInfo: {},
-      currentlyPlaying: {},
-      progressString: '',
-      durationString: '',
-      progress_ms: 0,
-      duration_ms: 0,
-      is_playing: false,
-      isBroadcasting: true
-    }
-  }
+function Player(props) {
+  let urlBase = `${window.location.host}`
 
-  listenToTick(currentSongId, calculatedProgressMs, currentSongDurationMs) {
-    this.setState({
-      progress_ms: calculatedProgressMs,
-      duration_ms: currentSongDurationMs
-    })
-  }
+  const { currentlyPlaying, isBroadcaster } = props
+  const {
+    broadcastId,
+    profileImageUrl: broadcasterProfileImageUrl,
+    displayName: broadcasterDisplayName
+  } = props.broadcastMeta
 
-  setCurrentSongInfo(currentlyPlaying) {
-    this.props.handleBroadcastStatusChange(true)
+  const [isLoading, setIsLoading] = useState(true)
+  const [currentSongInfo, setCurrentSongInfo] = useState({})
+  const [isBroadcasting, setIsBroadcasting] = useState(true)
+
+  useEffect(() => {
+    console.log('setting currentSongInfo')
     let currentSongInfo = {}
     if (currentlyPlaying && currentlyPlaying.item) {
+      currentSongInfo.id = currentlyPlaying.item.id
       currentSongInfo.name = currentlyPlaying.item.name
       currentSongInfo.artist = currentlyPlaying.item.artists[0].name
       currentSongInfo.albumArtUrl = currentlyPlaying.item.album.images[0].url
-      currentSongInfo.progress_ms = currentlyPlaying.progress_ms
-      currentSongInfo.duration_ms = currentlyPlaying.item.duration_ms
-      this.setState({
-        isLoading: false,
-        currentSongInfo,
-        currentlyPlaying,
-        isBroadcasting: true
-      })
+      currentSongInfo.progressMs = currentlyPlaying.progress_ms
+      currentSongInfo.durationMs = currentlyPlaying.item.duration_ms
+      currentSongInfo.isPlaying = currentlyPlaying.is_playing
+      console.log('albumArtUrl: ', currentSongInfo.albumArtUrl)
+
+      setIsLoading(false)
+      setCurrentSongInfo(currentSongInfo)
+      setIsBroadcasting(true)
     } else {
-      this.setState({ isLoading: false, isBroadcasting: false })
+      setIsLoading(false)
+      setIsBroadcasting(false)
     }
-  }
+  }, [currentlyPlaying])
 
-  handleBroadcasterDisconnect() {
-    console.log('broadcaster disconnected')
-    this.setState({
-      isBroadcasting: false
-    })
-    this.props.handleBroadcastStatusChange(false)
-  }
-
-  componentDidMount() {
-    ProgressTicker.registerListener(this.listenToTick.bind(this))
-  }
-  render() {
-    let urlBase = `${window.location.host}`
-    return (
-      <PlayerContainer>
-        <PlayerInnerContainer>
-          <TopRow>
-            <UserHeader
-              userImageUrl={this.props.profileImageUrl}
-              displayName={this.props.profileDisplayName}
-            />
-            <CopyLinkButton
-              shareLink={
-                urlBase + `/listener?broadcastId=${this.props.broadcastId}`
-              }
-            />
-          </TopRow>
-          {this.state.isBroadcasting ? (
-            <>
-              {this.state.isLoading ? null : (
-                <>
-                  <AlbumArt src={this.state.currentSongInfo.albumArtUrl} />
-                  <SongTitle>{this.state.currentSongInfo.name}</SongTitle>
-                  <ArtistName>{this.state.currentSongInfo.artist}</ArtistName>
-                  <ProgressBar
-                    progress_ms={this.state.progress_ms}
-                    duration_ms={this.state.duration_ms}
-                  />
-                  {this.props.isBroadcaster ? (
-                    <SyncButton
-                      onClick={() => {
-                        this.props.toggleBroadcastEnabled()
-                      }}>
-                      {this.props.broadcastEnabled ? (
-                        <Flex
-                          justifyContent='space-evenly'
-                          alignItems='center'
-                          flexDirection='row'
-                          width='100%'>
-                          <div
-                            style={{
-                              height: '15px',
-                              width: '15px',
-                              backgroundColor: 'white'
-                            }}
-                          />
-                          <span>Stop Broadcasting</span>
-                        </Flex>
-                      ) : (
-                        'Resume Broadcast'
-                      )}
-                    </SyncButton>
-                  ) : null}
-                </>
-              )}
-            </>
-          ) : (
-            <P>Nothing is playing...</P>
-          )}
-          <BroadcastStreamController
-            streamUpdateHandler={this.setCurrentSongInfo.bind(this)}
-            broadcasterDisconnectHandler={this.handleBroadcasterDisconnect.bind(
-              this
-            )}
-            broadcastId={this.props.broadcastId}
-            syncEnabled={this.props.syncEnabled}
-            listenerProfileInfo={this.props.listenerProfileInfo}
-            viewersUpdateHandler={this.props.handleViewersUpdate}
+  return (
+    <PlayerContainer>
+      <PlayerInnerContainer>
+        <TopRow>
+          <UserHeader
+            userImageUrl={broadcasterProfileImageUrl}
+            displayName={broadcasterDisplayName}
           />
-        </PlayerInnerContainer>
-        <ViewerExpander viewers={this.props.viewers} />
-      </PlayerContainer>
-    )
-  }
+          <CopyLinkButton
+            shareLink={urlBase + `/listener?broadcastId=${broadcastId}`}
+          />
+        </TopRow>
+        {isBroadcasting ? (
+          <>
+            {isLoading ? null : (
+              <>
+                <AlbumArt src={currentSongInfo.albumArtUrl} />
+                <SongTitle>{currentSongInfo.name}</SongTitle>
+                <ArtistName>{currentSongInfo.artist}</ArtistName>
+                <CalculatedProgressProvider>
+                  <CalculatedProgressContext.Consumer>
+                    {({ setCalculatedProgressMs, calculatedProgressMs }) => (
+                      <>
+                        <ProgressBar
+                          progressMs={currentSongInfo.progressMs}
+                          durationMs={currentSongInfo.durationMs}
+                          isPlaying={currentSongInfo.isPlaying}
+                          updateCalculatedProgressContext={
+                            setCalculatedProgressMs
+                          }
+                        />
+                        {!props.isBroadcaster ? (
+                          <SpotifyDropInController
+                            broadcastId={broadcastId}
+                            syncEnabled={props.syncEnabled}
+                            listenerProfileInfo={props.listenerProfileInfo}
+                            calculatedProgressMs={calculatedProgressMs}
+                            broadcasterCurrentlyPlaying={currentlyPlaying}
+                          />
+                        ) : null}
+                      </>
+                    )}
+                  </CalculatedProgressContext.Consumer>
+                </CalculatedProgressProvider>
+                {isBroadcaster ? (
+                  <SyncButton
+                    onClick={() => {
+                      props.toggleBroadcastEnabled()
+                    }}>
+                    {props.broadcastEnabled ? (
+                      <Flex
+                        justifyContent='space-evenly'
+                        alignItems='center'
+                        flexDirection='row'
+                        width='100%'>
+                        <div
+                          style={{
+                            height: '15px',
+                            width: '15px',
+                            backgroundColor: 'white'
+                          }}
+                        />
+                        <span>Stop Broadcasting</span>
+                      </Flex>
+                    ) : (
+                      'Resume Broadcast'
+                    )}
+                  </SyncButton>
+                ) : null}
+              </>
+            )}
+          </>
+        ) : (
+          <P>Nothing is playing...</P>
+        )}
+      </PlayerInnerContainer>
+    </PlayerContainer>
+  )
 }
 
 export default Player
+//      <ViewerExpander viewers={props.viewers} />
 
 Player.propTypes = {
-  broadcastId: PropTypes.string,
+  broadcastMeta: PropTypes.object,
+  currentlyPlaying: PropTypes.object,
   handleBroadcastStatusChange: PropTypes.func,
   handleViewersUpdate: PropTypes.func,
   isBroadcaster: PropTypes.bool,
   syncEnabled: PropTypes.bool,
   listenerProfileInfo: PropTypes.object,
-  profileImageUrl: PropTypes.string,
-  profileDisplayName: PropTypes.string,
   toggleBroadcastEnabled: PropTypes.func,
   broadcastEnabled: PropTypes.bool
 }

@@ -32,6 +32,7 @@ const Message = styled(P)`
   padding: 0px;
   margin-top: 3px;
   margin-bottom: 0px;
+  overflow-wrap: break-word;
 `
 function ChatMessage(props) {
   return (
