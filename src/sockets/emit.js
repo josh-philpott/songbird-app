@@ -28,7 +28,7 @@ export const pauseBroadcast = broadcastId => {
 }
 
 //listener actions
-export const joinBroadcastAsListener = (broadcastId, listenerProfileInfo) => {
+export const subscribeAsListener = (broadcastId, listenerProfileInfo) => {
   socket.emit(
     'join',
     broadcastId,

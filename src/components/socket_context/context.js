@@ -6,6 +6,7 @@ const SocketContext = createContext({
   initBroadcast: () => {},
   sendCurrentlyPlayingUpdate: () => {},
   subscribeAsBroadcaster: () => {},
+  subscribeAsListener: () => {},
   pauseBroadcast: () => {}
   /*  songInfo,
   broadcasterInfo,
