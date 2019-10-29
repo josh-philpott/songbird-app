@@ -5,7 +5,7 @@ import spotifyApi from '../../lib/spotify'
 import { H1 } from '../styles/base'
 import Room from '../room/Room'
 import Chat from '../chat/Chat'
-import SocketContext from '../socket_context/context'
+import SocketContext from '../contexts/socket-context/context'
 
 const PageContainer = styled.section`
   height: 100vh;

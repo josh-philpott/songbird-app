@@ -1,6 +1,6 @@
 import React from 'react'
 
-import SocketProvider from '../socket_context'
+import SocketProvider from '../contexts/socket-context'
 import BroadcasterPageInner from './BroadcasterPageInner'
 
 function BroadcasterPage() {

@@ -5,7 +5,7 @@ import spotifyApi from '../../lib/spotify'
 import { H1 } from '../styles/base'
 import Room from '../room/Room'
 import Chat from '../chat/Chat'
-import SocketContext from '../socket_context/context'
+import SocketContext from '../contexts/socket-context/context'
 
 const PageContainer = styled.section`
   height: 100vh;
@@ -70,6 +70,11 @@ const ChatContainer = styled.section`
 
 function ListenerPageInner(props) {
   const [isLoading, setIsLoading] = useState(true)
+  const [user, setUser] = useState({
+    id: null,
+    displayName: '',
+    imageUrl: ''
+  })
 
   const {
     //broadcast subscription return
@@ -104,6 +109,11 @@ function ListenerPageInner(props) {
         imageUrl: profileImageUrl
       })
       setIsLoading(false)
+      setUser({
+        id: profile.id,
+        displayName: profile.display_name,
+        imageUrl: profileImageUrl
+      })
     }
     subscribe()
   }, [subscribeAsListener])
@@ -123,7 +133,7 @@ function ListenerPageInner(props) {
             />
           </RoomContainer>
           <ChatContainer>
-            <Chat />
+            <Chat user={user} />
           </ChatContainer>
         </PageContainer>
         <NoiseOverlay />
