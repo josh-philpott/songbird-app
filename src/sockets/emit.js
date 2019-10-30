@@ -40,8 +40,8 @@ export const subscribeAsListener = (broadcastId, listenerProfileInfo) => {
 }
 
 //mutual actions
-export const sendMessage = async (message, broadcastId) => {
-  socket.emit('message', message, '1246738839')
+export const sendMessage = async (message, user, broadcastId) => {
+  socket.emit('message', { message, user }, broadcastId)
 }
 
 /*

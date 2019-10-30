@@ -58,7 +58,7 @@ const MessageEditor = styled.input`
   }
 `
 
-function Chat() {
+function Chat(props) {
   const [isOpen, setIsOpen] = useState(true) // will be used to detemine if chat is open or closed
   const [inputMessage, setInputMessage] = useState('')
 
@@ -71,7 +71,7 @@ function Chat() {
 
   const onEditorKeyUp = async e => {
     if (e.keyCode === 13 && inputMessage !== '') {
-      sendMessage(inputMessage)
+      sendMessage(inputMessage, props.user, props.broadcastId)
       setInputMessage('')
     }
   }
@@ -89,8 +89,8 @@ function Chat() {
         <H2>chat</H2>
       </ChatHeader>
       <ChatMessagesContainer>
-        {chatMessages.map(message => {
-          return <ChatMessage userName='Josh Philpott' message={message} />
+        {chatMessages.map(({ message, user }) => {
+          return <ChatMessage user={user} message={message} />
         })}
         {chatMessages.length === 0 ? <P>Ain't no chat messages yet</P> : null}
         <div ref={el => (messagesEnd = el)} />

@@ -6,6 +6,7 @@ import { H1 } from '../styles/base'
 import Room from '../room/Room'
 import Chat from '../chat/Chat'
 import SocketContext from '../contexts/socket-context/context'
+import UserContext from '../contexts/user-context/context'
 
 const PageContainer = styled.section`
   height: 100vh;
@@ -73,20 +74,8 @@ function BroadcasterPageInner() {
   const [broadcastId, setBroadcastId] = useState('')
   const [broadcastEnabled, setBroadcastEnabled] = useState(true)
 
-  const {
-    //broadcast subscription return
-    broadcastMeta,
-    currentlyPlaying,
-    viewers,
-
-    //subscription
-    subscribeAsBroadcaster,
-
-    //broadcast control functions
-    pauseBroadcast,
-    initBroadcast,
-    sendCurrentlyPlayingUpdate
-  } = useContext(SocketContext)
+  const Socket = useContext(SocketContext)
+  const User = useContext(UserContext)
 
   /**
    * These are being used within the timer function and get updated when SocketContext is initialized so
@@ -95,14 +84,8 @@ function BroadcasterPageInner() {
   const broadcastEnabledRef = useRef(broadcastEnabled)
   broadcastEnabledRef.current = broadcastEnabled
 
-  const sendCurrentlyPlayingUpdateRef = useRef(sendCurrentlyPlayingUpdate)
-  sendCurrentlyPlayingUpdateRef.current = sendCurrentlyPlayingUpdate
-
   const broadcastIdRef = useRef(broadcastId)
   broadcastIdRef.current = broadcastId
-
-  const pauseBroadcastRef = useRef(pauseBroadcast)
-  pauseBroadcastRef.current = pauseBroadcast
 
   /**
    * broadcastEnabled indicates if the broadcaster is sending stream updates or not
@@ -112,24 +95,22 @@ function BroadcasterPageInner() {
     broadcastEnabledRef.current = broadcastEnabled
   }
 
+  //TODO: Note - I may have a race condition here as I need User and Socket contexts initialized and I'm only waiting for User
   useEffect(() => {
     const initializeBroadcast = async () => {
-      //initialize the broadcast on component load
-      const profile = await spotifyApi.getProfileInfo()
-      const profileImageUrl = spotifyApi.extractProfileImage(profile)
-      const newBroadcastId = await initBroadcast(
-        profile.id,
-        profile.display_name,
-        profileImageUrl
-      )
+      if (User.id !== '') {
+        const { id, displayName, imageUrl } = User
+        //initialize the broadcast on component load
+        await Socket.initBroadcast(id, displayName, imageUrl)
 
-      console.log(`[BroadcasterPage] broadcast ${profile.id} initialized`)
-      setBroadcastId(profile.id)
-      setIsLoading(false)
-      subscribeAsBroadcaster(profile.id)
+        console.log(`[BroadcasterPage] broadcast ${User.id} initialized`)
+        setBroadcastId(User.id)
+        setIsLoading(false)
+        Socket.subscribeAsBroadcaster(User.id)
+      }
     }
     initializeBroadcast()
-  }, [initBroadcast])
+  }, [User])
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -137,10 +118,7 @@ function BroadcasterPageInner() {
       if (broadcastId && broadcastEnabledRef.current) {
         console.debug(`[BroadcasterPage] updating broadcast ${broadcastId}`)
         const currentlyPlaying = await spotifyApi.getCurrentlyPlaying()
-        await sendCurrentlyPlayingUpdateRef.current(
-          broadcastId,
-          currentlyPlaying
-        )
+        await Socket.sendCurrentlyPlayingUpdate(broadcastId, currentlyPlaying)
       }
     }, 2000)
     return () => clearInterval(interval)
@@ -148,7 +126,7 @@ function BroadcasterPageInner() {
 
   useEffect(() => {
     if (!broadcastEnabled) {
-      pauseBroadcastRef.current(broadcastId)
+      Socket.pauseBroadcast(broadcastId)
     }
   }, [broadcastEnabled])
 
@@ -161,15 +139,15 @@ function BroadcasterPageInner() {
           <RoomContainer>
             <Room
               isBroadcaster={true}
-              broadcastMeta={broadcastMeta}
-              currentlyPlaying={currentlyPlaying}
-              viewers={viewers}
+              broadcastMeta={Socket.broadcastMeta}
+              currentlyPlaying={Socket.currentlyPlaying}
+              viewers={Socket.viewers}
               toggleBroadcastEnabled={toggleBroadcastEnabled}
               broadcastEnabled={broadcastEnabled}
             />
           </RoomContainer>
           <ChatContainer>
-            <Chat />
+            <Chat user={User} broadcastId={broadcastId} />
           </ChatContainer>
         </PageContainer>
         <NoiseOverlay />
