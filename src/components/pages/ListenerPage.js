@@ -1,5 +1,6 @@
 import React from 'react'
 import SocketProvider from '../contexts/socket-context'
+import UserProvider from '../contexts/user-context'
 import querystring from 'query-string'
 import ListenerPageInner from './ListenerPageInner'
 
@@ -8,7 +9,9 @@ function ListenerPage(props) {
 
   return (
     <SocketProvider>
-      <ListenerPageInner broadcastId={broadcastId} />
+      <UserProvider>
+        <ListenerPageInner broadcastId={broadcastId} />
+      </UserProvider>
     </SocketProvider>
   )
 }

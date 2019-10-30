@@ -6,6 +6,7 @@ import { H1 } from '../styles/base'
 import Room from '../room/Room'
 import Chat from '../chat/Chat'
 import SocketContext from '../contexts/socket-context/context'
+import UserContext from '../contexts/user-context/context'
 
 const PageContainer = styled.section`
   height: 100vh;
@@ -70,53 +71,23 @@ const ChatContainer = styled.section`
 
 function ListenerPageInner(props) {
   const [isLoading, setIsLoading] = useState(true)
-  const [user, setUser] = useState({
-    id: null,
-    displayName: '',
-    imageUrl: ''
-  })
 
-  const {
-    //broadcast subscription return
-    broadcastMeta,
-    currentlyPlaying,
-    viewers,
-
-    //subscription
-    subscribeAsListener
-  } = useContext(SocketContext)
-
-  /**
-   * These are being used within the timer function and get updated when SocketContext is initialized so
-   * I'm using a ref to access them. I feel like there must be a better way to do this?
-   */
-  const subscribeAsListenerRef = useRef(subscribeAsListener)
-  subscribeAsListenerRef.current = subscribeAsListener
+  const Socket = useContext(SocketContext)
+  const User = useContext(UserContext)
 
   /**
    * broadcastEnabled indicates if the broadcaster is sending stream updates or not
    */
-
   useEffect(() => {
-    const subscribe = async () => {
-      //initialize the broadcast on component load
-      const profile = await spotifyApi.getProfileInfo()
-      const profileImageUrl = spotifyApi.extractProfileImage(profile)
-
-      subscribeAsListenerRef.current(props.broadcastId, {
-        id: profile.id,
-        name: profile.display_name,
-        imageUrl: profileImageUrl
+    if (User.id !== '') {
+      Socket.subscribeAsListener(props.broadcastId, {
+        id: User.id,
+        name: User.display_name,
+        imageUrl: User.imageUrl
       })
       setIsLoading(false)
-      setUser({
-        id: profile.id,
-        displayName: profile.display_name,
-        imageUrl: profileImageUrl
-      })
     }
-    subscribe()
-  }, [subscribeAsListener])
+  }, [User])
 
   if (isLoading) {
     return <H1>Loading...</H1>
@@ -127,13 +98,13 @@ function ListenerPageInner(props) {
           <RoomContainer>
             <Room
               isBroadcaster={false}
-              broadcastMeta={broadcastMeta}
-              currentlyPlaying={currentlyPlaying}
-              viewers={viewers}
+              broadcastMeta={Socket.broadcastMeta}
+              currentlyPlaying={Socket.currentlyPlaying}
+              viewers={Socket.viewers}
             />
           </RoomContainer>
           <ChatContainer>
-            <Chat user={user} />
+            <Chat user={User} broadcastId={props.broadcastId} />
           </ChatContainer>
         </PageContainer>
         <NoiseOverlay />
