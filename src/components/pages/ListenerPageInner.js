@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import styled from 'styled-components'
 
-import spotifyApi from '../../lib/spotify'
-import { H1 } from '../styles/base'
+import { H1, H2, P } from '../styles/base'
+import Flex from '../design-system/Flex'
 import Room from '../room/Room'
 import Chat from '../chat/Chat'
 import SocketContext from '../contexts/socket-context/context'
@@ -60,6 +60,7 @@ const RoomContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  flex-direction: column;
   z-index: 100;
 `
 
@@ -96,12 +97,29 @@ function ListenerPageInner(props) {
       <>
         <PageContainer>
           <RoomContainer>
-            <Room
-              isBroadcaster={false}
-              broadcastMeta={Socket.broadcastMeta}
-              currentlyPlaying={Socket.currentlyPlaying}
-              viewers={Socket.viewers}
-            />
+            <Flex
+              height='50px'
+              width='100%'
+              flexDirection='row'
+              justifyContent='flex-start'
+              style={{ marginLeft: '20px' }}>
+              <P
+                style={{
+                  fontSize: '20px',
+                  fontWeight: 'light',
+                  color: '#F1EEEA'
+                }}>
+                soundbridge
+              </P>
+            </Flex>
+            <Flex style={{ flexGrow: 1 }}>
+              <Room
+                isBroadcaster={false}
+                broadcastMeta={Socket.broadcastMeta}
+                currentlyPlaying={Socket.currentlyPlaying}
+                viewers={Socket.viewers}
+              />
+            </Flex>
           </RoomContainer>
           <ChatContainer>
             <Chat user={User} broadcastId={props.broadcastId} />

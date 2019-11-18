@@ -2,6 +2,8 @@ import React from 'react'
 import Cookies from 'js-cookie'
 import { Route, Redirect } from 'react-router-dom'
 
+const isOfflineMode = process.env.REACT_APP_IS_OFFLINE_MODE === 'true'
+
 const isLoggedIn = () => {
   const isLoggedIn = Cookies.get('spotify_access_token') !== undefined
   return isLoggedIn
@@ -15,7 +17,7 @@ const AuthenticatedRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      isLoggedIn() === true ? (
+      isLoggedIn() === true || isOfflineMode ? (
         <Component {...props} />
       ) : (
         <Redirect to={getRedirectLocation()} />

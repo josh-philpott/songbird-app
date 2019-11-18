@@ -6,6 +6,7 @@ const Flex = styled.div`
   justify-content: ${props => props.justifyContent || 'space-around'};
   flex-direction: ${props => props.flexDirection || 'column'};
   align-items: ${props => props.alignItems || 'inherit'};
-  width: ${props => props.width || 'inherit'};
+  width: ${props => props.width};
+  height: ${props => props.height};
 `
 export default Flex

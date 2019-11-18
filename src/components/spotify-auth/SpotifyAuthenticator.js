@@ -4,6 +4,8 @@ import queryString from 'query-string'
 
 import songbirdApi from '../../lib/songbird'
 
+const isOfflineMode = process.env.REACT_APP_IS_OFFLINE_MODE === 'true'
+
 class SpotifyAuthenticator extends React.Component {
   constructor(props) {
     super(props)
@@ -15,6 +17,11 @@ class SpotifyAuthenticator extends React.Component {
 
   async componentDidMount() {
     const params = queryString.parse(this.props.location.search)
+
+    if (isOfflineMode) {
+      window.location.assign(params.to)
+    }
+    console.log(isOfflineMode)
 
     if (params.to) {
       Cookies.set('redirect_location', params.to)

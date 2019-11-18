@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 
-import { H2, P, primaryFont } from '../styles/base'
+import { H3, P, primaryFont } from '../styles/base'
+import Flex from '../design-system/Flex'
 
 import ChatMessage from './ChatMessage'
 
@@ -21,7 +22,7 @@ const ChatContainer = styled.section`
 
 const ChatHeader = styled.section`
   width: 100%;
-  height: 70px;
+  height: 50px;
   display: flex;
   justify-content: space-around;
   border-bottom: 1px solid;
@@ -69,7 +70,7 @@ function Chat(props) {
     setInputMessage(e.target.value)
   }
 
-  const onEditorKeyUp = async e => {
+  const onEditorKeyDown = async e => {
     if (e.keyCode === 13 && inputMessage !== '') {
       sendMessage(inputMessage, props.user, props.broadcastId)
       setInputMessage('')
@@ -86,20 +87,28 @@ function Chat(props) {
   return (
     <ChatContainer>
       <ChatHeader>
-        <H2>chat</H2>
+        <P>Room Chat</P>
       </ChatHeader>
       <ChatMessagesContainer>
         {chatMessages.map(({ message, user }) => {
           return <ChatMessage user={user} message={message} />
         })}
-        {chatMessages.length === 0 ? <P>Ain't no chat messages yet</P> : null}
+        {chatMessages.length === 0 ? (
+          <Flex
+            width='100%'
+            height='100%'
+            alignItems='center'
+            justifyContent='center'>
+            <P style={{ color: '#888888' }}>There are no chat messages yet</P>
+          </Flex>
+        ) : null}
         <div ref={el => (messagesEnd = el)} />
       </ChatMessagesContainer>
       <WriteMessageContainer>
         <MessageEditor
           placeholder='Type a message here'
           onChange={onEditorChange}
-          onKeyUp={onEditorKeyUp}
+          onKeyDown={onEditorKeyDown}
           value={inputMessage}
         />
       </WriteMessageContainer>
