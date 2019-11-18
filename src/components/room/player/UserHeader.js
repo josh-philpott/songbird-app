@@ -15,7 +15,7 @@ function UserHeader(props) {
   const { userImageUrl, displayName } = props
   return (
     <Container>
-      <OnAirAvatar />
+      <OnAirAvatar source={userImageUrl} />
 
       <H2>{displayName}</H2>
     </Container>
