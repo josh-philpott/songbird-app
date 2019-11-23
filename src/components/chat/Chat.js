@@ -87,7 +87,7 @@ const MessageEditor = styled.input`
 `
 
 function Chat(props) {
-  const [isExpanded, setIsExpanded] = useState(false) // will be used to detemine if chat is open or closed
+  const [isExpanded, setIsExpanded] = useState(true) // will be used to detemine if chat is open or closed
   const [inputMessage, setInputMessage] = useState('')
 
   const { chatMessages, sendMessage } = useContext(SocketContext)
