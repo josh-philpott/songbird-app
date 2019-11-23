@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Flex from '../../design-system/Flex'
 import Button from '../../design-system/Button'
 import { buttonBase } from '../../styles/base'
+import IconButton from '../../design-system/IconButton'
 
 const SyncButton = styled.button`
   width: 200px;
@@ -10,23 +11,6 @@ const SyncButton = styled.button`
   ${buttonBase}
   margin: 0px auto;
   outline: none;
-`
-
-const IconButton = styled.button`
-  height: 44px;
-  text-align: center;
-  ${buttonBase}
-  outline: none;
-  border: none;
-  margin: 0px auto;
-`
-
-const BottomBarRightSection = styled.section`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  width: 100px;
 `
 
 function BottomBar(props) {
@@ -69,14 +53,14 @@ function BottomBar(props) {
           )}
         </SyncButton>
       ) : props.syncEnabled ? (
-        <IconButton onClick={props.toggleSyncEnabled}>
+        <IconButton height={44} onClick={props.toggleSyncEnabled}>
           <img
             src={process.env.PUBLIC_URL + '/img/pause-icon.svg'}
             alt='pause'
           />
         </IconButton>
       ) : (
-        <IconButton onClick={props.toggleSyncEnabled}>
+        <IconButton height={44} onClick={props.toggleSyncEnabled}>
           <img src={process.env.PUBLIC_URL + '/img/play-icon.svg'} alt='play' />
         </IconButton>
       )}

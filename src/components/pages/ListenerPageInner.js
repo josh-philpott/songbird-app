@@ -7,7 +7,7 @@ import Room from '../room/Room'
 import Chat from '../chat/Chat'
 import SocketContext from '../contexts/socket-context/context'
 import UserContext from '../contexts/user-context/context'
-
+import CopyLinkButton from '../room/player/CopyLinkButton'
 const PageContainer = styled.section`
   height: 100vh;
   width: 100vw;
@@ -64,12 +64,6 @@ const RoomContainer = styled.section`
   z-index: 100;
 `
 
-const ChatContainer = styled.section`
-  height: 100%;
-  width: 350px;
-  z-index: 100;
-`
-
 function ListenerPageInner(props) {
   const [isLoading, setIsLoading] = useState(true)
 
@@ -101,8 +95,8 @@ function ListenerPageInner(props) {
               height='50px'
               width='100%'
               flexDirection='row'
-              justifyContent='flex-start'
-              style={{ marginLeft: '20px' }}>
+              justifyContent='space-between'
+              style={{ padding: '0px 20px' }}>
               <P
                 style={{
                   fontSize: '20px',
@@ -111,8 +105,18 @@ function ListenerPageInner(props) {
                 }}>
                 soundbridge
               </P>
+              <CopyLinkButton
+                shareLink={
+                  window.location.host +
+                  `/listener?broadcastId=${props.broadcastId}`
+                }
+              />
             </Flex>
-            <Flex style={{ flexGrow: 1 }}>
+            <Flex
+              flexDirection='row'
+              alignItems='center'
+              justifyContent='center'
+              style={{ flexGrow: 1, width: '100%' }}>
               <Room
                 isBroadcaster={false}
                 broadcastMeta={Socket.broadcastMeta}
@@ -121,9 +125,7 @@ function ListenerPageInner(props) {
               />
             </Flex>
           </RoomContainer>
-          <ChatContainer>
-            <Chat user={User} broadcastId={props.broadcastId} />
-          </ChatContainer>
+          <Chat user={User} broadcastId={props.broadcastId} />
         </PageContainer>
         <NoiseOverlay />
       </>

@@ -8,6 +8,7 @@ import ProgressBar from './ProgressBar'
 import UserHeader from './UserHeader'
 import Flex from '../../design-system/Flex'
 import Button from '../../design-system/Button'
+import IconButton from '../../design-system/IconButton'
 
 import SpotifyDropInController from '../SpotifyDropInController'
 import CalculatedProgressProvider from '../../contexts/calculated-progress-context'
@@ -16,15 +17,16 @@ import NothingIsPlaying from './NothingIsPlaying'
 import BottomBar from './BottomBar'
 
 const PlayerContainer = styled.section`
+  flex-grow: 1;
+  max-width: 485px;
   > * {
     margin-bottom: 10px;
   }
 `
 const PlayerInnerContainer = styled.section`
   min-height: 480px;
-  width: 485px;
-  min-width: 485px;
-  height: 500;
+  max-width: 485px;
+  min-width: 250px;
   background-color: rgba(241, 238, 234, 0.1);
   border: 2px solid rgba(241, 238, 234, 0.3); /*f1eeea at 30% opacity*/
   border-radius: 6px;
@@ -123,9 +125,14 @@ function Player(props) {
             userImageUrl={broadcasterProfileImageUrl}
             displayName={broadcasterDisplayName}
           />
-          <CopyLinkButton
-            shareLink={urlBase + `/listener?broadcastId=${broadcastId}`}
-          />
+          <Flex alignItems='center' flexDirection='row'>
+            <img
+              src={process.env.PUBLIC_URL + '/img/profile-icon-white.svg'}
+              alt='listeners'
+              style={{ marginRight: '5px', height: '15px' }}
+            />
+            <p>{props.viewerCount}</p>
+          </Flex>
         </TopRow>
         {isBroadcasting ? (
           <>

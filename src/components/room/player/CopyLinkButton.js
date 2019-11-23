@@ -21,7 +21,7 @@ const CopyLinkButtonBase = styled.button`
   }
 
   :hover {
-    font-weight: 800;
+    font-weight: 600;
   }
 `
 
@@ -33,7 +33,10 @@ function CopyLinkButton(props) {
           alert(props.shareLink)
         }}>
         <img src={process.env.PUBLIC_URL + '/img/link-icon.svg'} />
-        <P style={{ color: '#91CCE5', fontSize: '16px' }}>share link</P>
+        <P
+          style={{ color: '#91CCE5', fontSize: '16px', fontWeight: 'inherit' }}>
+          copy link
+        </P>
       </CopyLinkButtonBase>
     </CopyToClipboard>
   )

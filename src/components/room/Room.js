@@ -21,17 +21,6 @@ const SyncButton = styled.button`
   ${buttonBase}
 `
 
-const RoomContainer = styled.section`
-  /*margin: 40px auto;*/
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  > * {
-    margin-bottom: 20px;
-  }
-`
-
 function Room(props) {
   const [isLoading, setIsLoading] = useState(true)
 
@@ -76,17 +65,17 @@ function Room(props) {
   if (isLoading) {
     return <Body>Loading...</Body>
   } else {
+    console.log(props.viewers)
     return (
-      <RoomContainer>
-        <Player
-          isBroadcaster={props.isBroadcaster}
-          broadcastMeta={props.broadcastMeta}
-          currentlyPlaying={props.currentlyPlaying}
-          listenerProfileInfo={listenerProfileInfo}
-          toggleBroadcastEnabled={props.toggleBroadcastEnabled}
-          broadcastEnabled={props.broadcastEnabled}
-        />
-      </RoomContainer>
+      <Player
+        isBroadcaster={props.isBroadcaster}
+        broadcastMeta={props.broadcastMeta}
+        currentlyPlaying={props.currentlyPlaying}
+        listenerProfileInfo={listenerProfileInfo}
+        toggleBroadcastEnabled={props.toggleBroadcastEnabled}
+        broadcastEnabled={props.broadcastEnabled}
+        viewerCount={props.viewers.length}
+      />
     )
   }
 }

@@ -8,11 +8,10 @@ function NothingIsPlaying() {
   return (
     <>
       <Flex
-        height='100%'
         width='100%'
         alignItems='center'
         justifyContent='center'
-        style={{ textAlign: 'center' }}>
+        style={{ textAlign: 'center', flexGrow: 1 }}>
         <H2>You're not playing anything...</H2>
         <P>
           To begin broadcasting, open Spotify and start playing music. Share the

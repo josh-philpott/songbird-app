@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 
-import { H3, P, primaryFont } from '../styles/base'
+import { H2, P, primaryFont } from '../styles/base'
 import Flex from '../design-system/Flex'
+import IconButton from '../design-system/IconButton'
 
 import ChatMessage from './ChatMessage'
 
@@ -10,15 +11,39 @@ import SocketContext from '../contexts/socket-context/context'
 
 const ChatContainer = styled.section`
   height: 100%;
-  width: 100%;
+  width: 300px;
 
   box-sizing: border-box;
   border: 2px solid #141414;
 
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
   color: white;
   background-color: rgba(15, 14, 15, 0.6);
+  z-index: 100;
+`
+
+const UnexpandedChatContainer = styled.section`
+  height: 100%;
+  width: 50px;
+
+  box-sizing: border-box;
+  border: 2px solid #141414;
+
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  color: white;
+  background-color: rgba(15, 14, 15, 0.6);
+  z-index: 100;
+
+  align-items: center;
+  padding: 10px;
+`
+
+const UnexpandedChatLabel = styled(H2)`
+  transform: rotate(-90deg);
 `
 
 const ChatHeader = styled.section`
@@ -61,7 +86,7 @@ const MessageEditor = styled.input`
 `
 
 function Chat(props) {
-  const [isOpen, setIsOpen] = useState(true) // will be used to detemine if chat is open or closed
+  const [isExpanded, setIsExpanded] = useState(false) // will be used to detemine if chat is open or closed
   const [inputMessage, setInputMessage] = useState('')
 
   const { chatMessages, sendMessage } = useContext(SocketContext)
@@ -85,36 +110,69 @@ function Chat(props) {
     }
   }, [chatMessages])
 
-  return (
-    <ChatContainer>
-      <ChatHeader>
-        <P>Room Chat</P>
-      </ChatHeader>
-      <ChatMessagesContainer>
-        {chatMessages.map(({ message, user }) => {
-          return <ChatMessage user={user} message={message} />
-        })}
-        {chatMessages.length === 0 ? (
-          <Flex
-            width='100%'
-            height='100%'
-            alignItems='center'
-            justifyContent='center'>
-            <P style={{ color: '#888888' }}>There are no chat messages yet</P>
-          </Flex>
-        ) : null}
-        <div ref={el => (messagesEnd = el)} />
-      </ChatMessagesContainer>
-      <WriteMessageContainer>
-        <MessageEditor
-          placeholder='Type a message here'
-          onChange={onEditorChange}
-          onKeyDown={onEditorKeyDown}
-          value={inputMessage}
-        />
-      </WriteMessageContainer>
-    </ChatContainer>
-  )
+  if (isExpanded) {
+    return (
+      <ChatContainer>
+        <ChatHeader>
+          <IconButton
+            onClick={() => {
+              setIsExpanded(false)
+            }}>
+            <img
+              src={process.env.PUBLIC_URL + '/img/right-collapse-icon.svg'}
+              alt='collapse'
+            />
+          </IconButton>
+          <P>Room Chat</P>
+          <IconButton onClick={() => {}}>
+            <img
+              src={process.env.PUBLIC_URL + '/img/profile-icon-white.svg'}
+              alt='listeners'
+            />
+          </IconButton>
+        </ChatHeader>
+        <ChatMessagesContainer>
+          {chatMessages.map(({ message, user }) => {
+            return <ChatMessage user={user} message={message} />
+          })}
+          {chatMessages.length === 0 ? (
+            <Flex
+              width='100%'
+              height='100%'
+              alignItems='center'
+              justifyContent='center'>
+              <P style={{ color: '#888888' }}>There are no chat messages yet</P>
+            </Flex>
+          ) : null}
+          <div ref={el => (messagesEnd = el)} />
+        </ChatMessagesContainer>
+        <WriteMessageContainer>
+          <MessageEditor
+            placeholder='Type a message here'
+            onChange={onEditorChange}
+            onKeyDown={onEditorKeyDown}
+            value={inputMessage}
+          />
+        </WriteMessageContainer>
+      </ChatContainer>
+    )
+  } else {
+    return (
+      <UnexpandedChatContainer>
+        <IconButton
+          onClick={() => {
+            setIsExpanded(true)
+          }}>
+          <img
+            src={process.env.PUBLIC_URL + '/img/left-expand-icon.svg'}
+            alt='expand'
+          />
+        </IconButton>
+        <UnexpandedChatLabel>chat</UnexpandedChatLabel>
+        <span></span>
+      </UnexpandedChatContainer>
+    )
+  }
 }
 
 export default Chat

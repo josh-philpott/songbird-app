@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import styled from 'styled-components'
 
 import spotifyApi from '../../lib/spotify'
-import { H1 } from '../styles/base'
+import { H1, P } from '../styles/base'
+import Flex from '../design-system/Flex'
 import Room from '../room/Room'
 import Chat from '../chat/Chat'
 import SocketContext from '../contexts/socket-context/context'
 import UserContext from '../contexts/user-context/context'
+import CopyLinkButton from '../room/player/CopyLinkButton'
 
 const PageContainer = styled.section`
   height: 100vh;
@@ -60,12 +62,7 @@ const RoomContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  z-index: 100;
-`
-
-const ChatContainer = styled.section`
-  height: 100%;
-  width: 350px;
+  flex-direction: column;
   z-index: 100;
 `
 
@@ -137,18 +134,42 @@ function BroadcasterPageInner() {
       <>
         <PageContainer>
           <RoomContainer>
-            <Room
-              isBroadcaster={true}
-              broadcastMeta={Socket.broadcastMeta}
-              currentlyPlaying={Socket.currentlyPlaying}
-              viewers={Socket.viewers}
-              toggleBroadcastEnabled={toggleBroadcastEnabled}
-              broadcastEnabled={broadcastEnabled}
-            />
+            <Flex
+              height='50px'
+              width='100%'
+              flexDirection='row'
+              justifyContent='space-between'
+              style={{ padding: '0px 20px' }}>
+              <P
+                style={{
+                  fontSize: '20px',
+                  fontWeight: 'light',
+                  color: '#F1EEEA'
+                }}>
+                soundbridge
+              </P>
+              <CopyLinkButton
+                shareLink={
+                  window.location.host + `/listener?broadcastId=${broadcastId}`
+                }
+              />
+            </Flex>
+            <Flex
+              flexDirection='row'
+              alignItems='center'
+              justifyContent='center'
+              style={{ flexGrow: 1, width: '100%' }}>
+              <Room
+                isBroadcaster={true}
+                broadcastMeta={Socket.broadcastMeta}
+                currentlyPlaying={Socket.currentlyPlaying}
+                viewers={Socket.viewers}
+                toggleBroadcastEnabled={toggleBroadcastEnabled}
+                broadcastEnabled={broadcastEnabled}
+              />
+            </Flex>
           </RoomContainer>
-          <ChatContainer>
-            <Chat user={User} broadcastId={broadcastId} />
-          </ChatContainer>
+          <Chat user={User} broadcastId={broadcastId} />
         </PageContainer>
         <NoiseOverlay />
       </>
