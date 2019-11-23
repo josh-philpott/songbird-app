@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
+import ReactTooltip from 'react-tooltip'
 
 import { H2, P, primaryFont } from '../styles/base'
 import Flex from '../design-system/Flex'
@@ -115,6 +116,7 @@ function Chat(props) {
       <ChatContainer>
         <ChatHeader>
           <IconButton
+            data-tip='Collapse'
             onClick={() => {
               setIsExpanded(false)
             }}>
@@ -124,12 +126,13 @@ function Chat(props) {
             />
           </IconButton>
           <P>Room Chat</P>
-          <IconButton onClick={() => {}}>
+          <IconButton data-tip='Listener List' onClick={() => {}}>
             <img
               src={process.env.PUBLIC_URL + '/img/profile-icon-white.svg'}
               alt='listeners'
             />
           </IconButton>
+          <ReactTooltip place='bottom' delayShow={100} />
         </ChatHeader>
         <ChatMessagesContainer>
           {chatMessages.map(({ message, user }) => {
@@ -160,6 +163,7 @@ function Chat(props) {
     return (
       <UnexpandedChatContainer>
         <IconButton
+          data-tip='Expand'
           onClick={() => {
             setIsExpanded(true)
           }}>
@@ -170,6 +174,7 @@ function Chat(props) {
         </IconButton>
         <UnexpandedChatLabel>chat</UnexpandedChatLabel>
         <span></span>
+        <ReactTooltip place='bottom' delayShow={100} />
       </UnexpandedChatContainer>
     )
   }
