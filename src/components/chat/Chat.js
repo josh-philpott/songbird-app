@@ -7,6 +7,7 @@ import Flex from '../design-system/Flex'
 import IconButton from '../design-system/IconButton'
 
 import ChatMessage from './ChatMessage'
+import UnexpandedChat from './UnexpandedChat'
 
 import SocketContext from '../contexts/socket-context/context'
 
@@ -23,28 +24,6 @@ const ChatContainer = styled.section`
   color: white;
   background-color: rgba(15, 14, 15, 0.6);
   z-index: 100;
-`
-
-const UnexpandedChatContainer = styled.section`
-  height: 100%;
-  width: 50px;
-
-  box-sizing: border-box;
-  border: 2px solid #141414;
-
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  color: white;
-  background-color: rgba(15, 14, 15, 0.6);
-  z-index: 100;
-
-  align-items: center;
-  padding: 10px;
-`
-
-const UnexpandedChatLabel = styled(H2)`
-  transform: rotate(-90deg);
 `
 
 const ChatHeader = styled.section`
@@ -89,6 +68,8 @@ const MessageEditor = styled.input`
 function Chat(props) {
   const [isExpanded, setIsExpanded] = useState(true) // will be used to detemine if chat is open or closed
   const [inputMessage, setInputMessage] = useState('')
+  const [isNewMessage, setIsNewMessage] = useState(false)
+  const [isListenerListVisible, setIsListenerListVisible] = useState(false)
 
   const { chatMessages, sendMessage } = useContext(SocketContext)
   let messagesEnd = null
@@ -106,10 +87,20 @@ function Chat(props) {
 
   //auto scroll chat on new message
   useEffect(() => {
-    if (messagesEnd) {
+    if (messagesEnd && isExpanded) {
       messagesEnd.scrollIntoView({ behavior: 'smooth' })
+      setIsNewMessage(false)
+    } else {
+      setIsNewMessage(true)
     }
   }, [chatMessages])
+
+  useEffect(() => {
+    if (isExpanded && messagesEnd) {
+      messagesEnd.scrollIntoView({ behavior: 'smooth' })
+      setIsNewMessage(false)
+    }
+  }, [isExpanded])
 
   if (isExpanded) {
     return (
@@ -126,7 +117,11 @@ function Chat(props) {
             />
           </IconButton>
           <P>Room Chat</P>
-          <IconButton data-tip='Listener List' onClick={() => {}}>
+          <IconButton
+            data-tip='Listener List'
+            onClick={() => {
+              setIsListenerListVisible(!isListenerListVisible)
+            }}>
             <img
               src={process.env.PUBLIC_URL + '/img/profile-icon-white.svg'}
               alt='listeners'
@@ -134,48 +129,45 @@ function Chat(props) {
           </IconButton>
           <ReactTooltip place='bottom' delayShow={100} />
         </ChatHeader>
-        <ChatMessagesContainer>
-          {chatMessages.map(({ message, user }) => {
-            return <ChatMessage user={user} message={message} />
-          })}
-          {chatMessages.length === 0 ? (
-            <Flex
-              width='100%'
-              height='100%'
-              alignItems='center'
-              justifyContent='center'>
-              <P style={{ color: '#888888' }}>There are no chat messages yet</P>
-            </Flex>
-          ) : null}
-          <div ref={el => (messagesEnd = el)} />
-        </ChatMessagesContainer>
-        <WriteMessageContainer>
-          <MessageEditor
-            placeholder='Type a message here'
-            onChange={onEditorChange}
-            onKeyDown={onEditorKeyDown}
-            value={inputMessage}
-          />
-        </WriteMessageContainer>
+        {isListenerListVisible ? (
+          <P>Listener List</P>
+        ) : (
+          <>
+            <ChatMessagesContainer>
+              {chatMessages.map(({ message, user }) => {
+                return <ChatMessage user={user} message={message} />
+              })}
+              {chatMessages.length === 0 ? (
+                <Flex
+                  width='100%'
+                  height='100%'
+                  alignItems='center'
+                  justifyContent='center'>
+                  <P style={{ color: '#888888' }}>
+                    There are no chat messages yet
+                  </P>
+                </Flex>
+              ) : null}
+              <div ref={el => (messagesEnd = el)} />
+            </ChatMessagesContainer>
+            <WriteMessageContainer>
+              <MessageEditor
+                placeholder='Type a message here'
+                onChange={onEditorChange}
+                onKeyDown={onEditorKeyDown}
+                value={inputMessage}
+              />
+            </WriteMessageContainer>
+          </>
+        )}
       </ChatContainer>
     )
   } else {
     return (
-      <UnexpandedChatContainer>
-        <IconButton
-          data-tip='Expand'
-          onClick={() => {
-            setIsExpanded(true)
-          }}>
-          <img
-            src={process.env.PUBLIC_URL + '/img/left-expand-icon.svg'}
-            alt='expand'
-          />
-        </IconButton>
-        <UnexpandedChatLabel>chat</UnexpandedChatLabel>
-        <span></span>
-        <ReactTooltip place='bottom' delayShow={100} />
-      </UnexpandedChatContainer>
+      <UnexpandedChat
+        isNewMessage={isNewMessage}
+        setIsExpanded={setIsExpanded}
+      />
     )
   }
 }

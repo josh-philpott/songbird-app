@@ -13,9 +13,7 @@ const Button = styled.button`
   background-color: inherit;
   padding: 10px 20px;
 
-  ${primaryFont}
-
-  :hover {
+  ${primaryFont} :hover {
     background-color: #2a2a2a;
   }
 `

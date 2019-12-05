@@ -6,6 +6,8 @@ import Cookies from 'js-cookie'
 import Navbar from '../Navbar'
 import HomeBody from '../home/HomeBody'
 import PulsingGradientBackground from '../PulsingGradientBackground'
+import Flex from '../design-system/Flex'
+import { P } from '../styles/base'
 
 import { primaryFont } from '../styles/base'
 
@@ -38,8 +40,21 @@ function HomePage() {
   }
   return (
     <Wrapper>
-      <PulsingGradientBackground />
-      <Navbar />
+      <Flex
+        height='50px'
+        width='100%'
+        flexDirection='row'
+        justifyContent='flex-start'
+        style={{ padding: '0px 20px' }}>
+        <P
+          style={{
+            fontSize: '20px',
+            fontWeight: 'light',
+            color: '#F1EEEA'
+          }}>
+          soundbridge
+        </P>
+      </Flex>
       <HomeBody />
       <Footer>
         <span>

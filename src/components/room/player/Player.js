@@ -28,7 +28,7 @@ const PlayerInnerContainer = styled.section`
   max-width: 485px;
   min-width: 250px;
   background-color: rgba(241, 238, 234, 0.1);
-  border: 2px solid rgba(241, 238, 234, 0.3); /*f1eeea at 30% opacity*/
+  border: 1px solid rgba(241, 238, 234, 0.3); /*f1eeea at 30% opacity*/
   border-radius: 6px;
   display: flex;
   flex-direction: column;
