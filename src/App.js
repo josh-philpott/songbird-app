@@ -12,10 +12,30 @@ import AuthenticatedRoute from './components/AuthenticatedRoute'
 import Helmet from 'react-helmet'
 import DashboardPage from './components/pages/DashboardPage'
 
+import { createGlobalStyle } from 'styled-components'
+
+const GlobalStyle = createGlobalStyle`
+  body { 
+    background-color: #171716; 
+    height: 100%; 
+    overflow: auto;
+  } 
+  
+  html {
+    overflow:hidden; 
+    height:100%;
+    font-size:16px;
+  } 
+  
+  *{
+    box-sizing: border-box
+  }
+`
+
 class AppRouter extends React.Component {
   render() {
     return (
-      <section>
+      <>
         <Router>
           <Route exact path='/' component={Home} />
           <Route path='/spotify/callback' component={SpotifyCallback} />
@@ -34,14 +54,9 @@ class AppRouter extends React.Component {
             href='https://fonts.googleapis.com/css?family=Open+Sans&display=swap'
             rel='stylesheet'
           />
-
-          <style>
-            {
-              'body { background-color: #171716; height: 100%; overflow: auto;} html {overflow:hidden; height:100%;} *{box-sizing: border-box}'
-            }
-          </style>
         </Helmet>
-      </section>
+        <GlobalStyle />
+      </>
     )
   }
 }

@@ -16,6 +16,8 @@ const Button = styled.button`
   ${primaryFont} :hover {
     background-color: #2a2a2a;
   }
+
+  outline: none;
 `
 
 export default Button

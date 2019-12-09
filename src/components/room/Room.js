@@ -74,7 +74,9 @@ function Room(props) {
         listenerProfileInfo={listenerProfileInfo}
         toggleBroadcastEnabled={props.toggleBroadcastEnabled}
         broadcastEnabled={props.broadcastEnabled}
-        viewerCount={props.viewers.length}
+        viewerCount={
+          props.viewers && props.viewers.length ? props.viewers.length : 0
+        }
       />
     )
   }

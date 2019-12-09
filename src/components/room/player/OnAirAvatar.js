@@ -4,9 +4,9 @@ import styled from 'styled-components'
 import Avatar from '../../design-system/Avatar'
 
 const OuterCircle = styled.section`
-  height: 46px;
-  width: 46px;
-  border-radius: 23px;
+  height: 42px;
+  width: 42px;
+  border-radius: 21px;
   background-color: blue;
 
   display: flex;
@@ -33,7 +33,7 @@ function OnAirAvatar(props) {
   degreeRef.current = degree
 
   function rotateGradient() {
-    degreeRef.current = degreeRef.current >= 359 ? 0 : degreeRef.current + 2
+    degreeRef.current = degreeRef.current >= 359 ? 0 : degreeRef.current + 1
     setDegree(degreeRef.current)
   }
 

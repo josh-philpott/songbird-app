@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const grey = '#2B2A2A'
 export const black = '#2A2A2A'
@@ -6,13 +6,17 @@ export const white = '#F2F1EB'
 export const green = '#94d7a3'
 
 export const sizings = {
-  xs: '8px',
-  s: '12px',
-  md: '16px',
-  lg: '24px',
-  xl: '32px',
-  xxl: '36px'
+  xs: '.5rem',
+  s: '.8rem',
+  md: '1rem',
+  lg: '1.5rem',
+  xl: '2rem',
+  xxl: '2.2rem'
 }
+
+export const fontStack = css`
+  font-family: Heebo, sans-serif;
+`
 
 export const primaryFont = `
   font-family: Heebo, sans-serif;
@@ -23,19 +27,31 @@ export const primaryFont = `
 `
 
 export const H1 = styled.h1`
-  ${primaryFont}
-  font-size:${sizings.xl};
+  ${fontStack};
+  color: ${white};
+  font-weight: 300;
+  font-size: ${sizings.xl};
+  line-height: 1.3;
+  margin: 0;
+  padding: 0;
 `
-export const H2 = styled.h2`
-  ${primaryFont}
+
+export const H2 = styled.h1`
+  ${fontStack};
+  color: ${white};
+  font-weight: 300;
   font-size: ${sizings.lg};
-  line-height: ${sizings.xl};
-  margin: 0px;
+  line-height: 1.3;
+  margin: 0;
+  padding: 0;
 `
 
 export const P = styled.p`
-  ${primaryFont}
-  color: ${white}
+  ${fontStack};
+  font-style: normal;
+  font-weight: 300;
+  font-size: ${sizings.md};
+  color: ${white};
 `
 
 export const buttonBase = `
