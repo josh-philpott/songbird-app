@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly when nothing is playing 1`] = `
+<section
+  className="sc-VigVT joeZjF"
+>
+  <section
+    className="sc-jTzLTM iBujzB"
+  >
+    <section
+      className="sc-fjdhpX imliDg"
+    >
+      <section
+        className="sc-htoDjs deLdjq"
+      >
+        <section
+          className="sc-gzVnrw ezcGqQ"
+        >
+          <img
+            className="sc-bZQynM iJBnsI"
+            size="xxl"
+            src="/img/round-account-button-with-user-inside.svg"
+          />
+        </section>
+        <h1
+          className="sc-bwzfXH jXjfgy"
+        >
+          Josh Philpott
+        </h1>
+      </section>
+      <div
+        className="sc-dnqmqq ilfwzS"
+      >
+        <img
+          alt="listeners"
+          src="/img/profile-icon-white.svg"
+          style={
+            Object {
+              "height": "15px",
+              "marginRight": "5px",
+            }
+          }
+        />
+        <p />
+      </div>
+    </section>
+  </section>
+</section>
+`;
