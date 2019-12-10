@@ -14,7 +14,7 @@ const getBroadcastInfo = async broadcastId => {
 }
 
 const getActiveBroadcasts = async () => {
-  const response = await axios.get(`${broadcastApiUrl}/list`)
+  const response = await axios.get(`${broadcastApiUrl}/`)
   return response.data
 }
 
